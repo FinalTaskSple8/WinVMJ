@@ -14,7 +14,7 @@
 				</dictionary>
 				<dictionary>
 					<key>composer</key>
-					<value>de.ovgu.featureide.core.vmj.composer</value>
+					<value>de.ovgu.featureide.core.winvmj.composer</value>
 				</dictionary>
 				<dictionary>
 					<key>equations</key>
@@ -38,7 +38,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1746160429588</id>
+			<id>1746192219721</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
