@@ -1,0 +1,23 @@
+namespace SIPH
+
+features
+	SIPH {abstract true}
+		mandatory
+			Booking
+				optional
+					AddOns
+						or
+							RoomUpgrade
+							AdditionalServices
+							EarlyCheckInOut
+			Payment
+				or
+					OnlinePayment
+					PromoDiscount
+			UserProfile
+				optional
+					Points
+			HotelManagement
+				optional
+					RoomManagement
+
