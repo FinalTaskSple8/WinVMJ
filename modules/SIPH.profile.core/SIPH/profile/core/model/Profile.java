@@ -16,6 +16,6 @@ public interface Profile {
 	public void setUser(User user);
 	public User getUser();
 	public void setUser(User user);
-	org.eclipse.uml2.uml.internal.impl.ClassImpl@fdc109 (name: User, visibility: public) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)org.eclipse.uml2.uml.internal.impl.ClassImpl@e85a0c4 (name: ProfileImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
+	org.eclipse.uml2.uml.internal.impl.ClassImpl@25d2ac76 (name: User, visibility: public) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)org.eclipse.uml2.uml.internal.impl.ClassImpl@2dc98c4d (name: ProfileImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
 	HashMap<String, Object> toHashMap();
 }

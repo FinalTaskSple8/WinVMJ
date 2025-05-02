@@ -16,6 +16,6 @@ public interface Payment {
 	public void setPaymentMethod(String paymentMethod);
 	public BookingImpl getBookingimpl();
 	public void setBookingimpl(BookingImpl bookingimpl);
-	org.eclipse.uml2.uml.internal.impl.ClassImpl@16d59837 (name: PaymentImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
+	org.eclipse.uml2.uml.internal.impl.ClassImpl@5486aefc (name: PaymentImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
 	HashMap<String, Object> toHashMap();
 }
