@@ -30,15 +30,7 @@ public class BookingServiceImpl extends BookingServiceComponent{
 	}
 
     public Booking createBooking(Map<String, Object> requestBody){
-		String bookingIdStr = (String) requestBody.get("bookingId");
-		int bookingId = Integer.parseInt(bookingIdStr);
-		String userIdStr = (String) requestBody.get("userId");
-		int userId = Integer.parseInt(userIdStr);
 		String status = (String) requestBody.get("status");
-		String roomIdStr = (String) requestBody.get("roomId");
-		int roomId = Integer.parseInt(roomIdStr);
-		String paymentIdStr = (String) requestBody.get("paymentId");
-		int paymentId = Integer.parseInt(paymentIdStr);
 		
 		//to do: fix association attributes
 		Booking Booking = BookingFactory.createBooking(
@@ -53,21 +45,14 @@ public class BookingServiceImpl extends BookingServiceComponent{
 		, roomId
 		, paymentId
 		, roomimpl
+		, id
 		);
 		Repository.saveObject(booking);
 		return booking;
 	}
 
     public Booking createBooking(Map<String, Object> requestBody, int id){
-		String bookingIdStr = (String) vmjExchange.getRequestBodyForm("bookingId");
-		int bookingId = Integer.parseInt(bookingIdStr);
-		String userIdStr = (String) vmjExchange.getRequestBodyForm("userId");
-		int userId = Integer.parseInt(userIdStr);
 		String status = (String) vmjExchange.getRequestBodyForm("status");
-		String roomIdStr = (String) vmjExchange.getRequestBodyForm("roomId");
-		int roomId = Integer.parseInt(roomIdStr);
-		String paymentIdStr = (String) vmjExchange.getRequestBodyForm("paymentId");
-		int paymentId = Integer.parseInt(paymentIdStr);
 		
 		//to do: fix association attributes
 		
@@ -76,19 +61,11 @@ public class BookingServiceImpl extends BookingServiceComponent{
 	}
 
     public HashMap<String, Object> updateBooking(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("bookingIduserIdroomIdpaymentId");
+		String idStr = (String) requestBody.get("bookingIduserIdroomIdpaymentIdid");
 		int id = Integer.parseInt(idStr);
 		Booking booking = Repository.getObject(id);
 		
-		String bookingIdStr = (String) requestBody.get("bookingId");
-		booking.setBookingId(Integer.parseInt(bookingIdStr));
-		String userIdStr = (String) requestBody.get("userId");
-		booking.setUserId(Integer.parseInt(userIdStr));
 		booking.setStatus((String) requestBody.get("status"));
-		String roomIdStr = (String) requestBody.get("roomId");
-		booking.setRoomId(Integer.parseInt(roomIdStr));
-		String paymentIdStr = (String) requestBody.get("paymentId");
-		booking.setPaymentId(Integer.parseInt(paymentIdStr));
 		
 		Repository.updateObject(booking);
 		
@@ -110,7 +87,7 @@ public class BookingServiceImpl extends BookingServiceComponent{
 	}
 
 	public HashMap<String, Object> getBookingById(int id){
-		String idStr = vmjExchange.getGETParam("bookingIduserIdroomIdpaymentId"); 
+		String idStr = vmjExchange.getGETParam("bookingIduserIdroomIdpaymentIdid"); 
 		int id = Integer.parseInt(idStr);
 		Booking booking = bookingRepository.getObject(id);
 		return booking.toHashMap();
@@ -138,11 +115,11 @@ public class BookingServiceImpl extends BookingServiceComponent{
 		return getAllBooking(requestBody);
 	}
 
-	private void cancelBooking() {
+	public void cancelBooking() {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 }

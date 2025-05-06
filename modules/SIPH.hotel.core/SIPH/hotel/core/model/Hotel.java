@@ -4,6 +4,15 @@ import vmj.routing.route.VMJExchange;
 import java.util.*;
 
 public interface Hotel {
-	org.eclipse.uml2.uml.internal.impl.ClassImpl@31e7ab3 (name: HotelImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)org.eclipse.uml2.uml.internal.impl.RealizationImpl@5c53249 (name: <unset>, visibility: <unset>)
+	public UUID getId();
+	public void setId(UUID id);
+	public String getName();
+	public void setName(String name);
+	public String getLocation();
+	public void setLocation(String location);
+	public int getPrice();
+	public void setPrice(int price);
+	public RoomImpl getRoomimpl();
+	public void setRoomimpl(RoomImpl roomimpl);
 	HashMap<String, Object> toHashMap();
 }

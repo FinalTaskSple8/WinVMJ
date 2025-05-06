@@ -15,14 +15,12 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class RoomComponent implements Room{
 	@Id
-	protected int hotelId; 
-	protected int hotelId;
+	protected UUID id; 
+	protected UUID hotelId;
 	protected int number;
 	protected String type;
 	protected int price;
 	protected boolean isAvailable;
-	@ManyToOne(targetEntity=SIPH..core.Component.class)
-	public  hotelimpl;
 	protected String objectName = RoomComponent.class.getName();
 
 	public RoomComponent() {
@@ -30,21 +28,21 @@ public abstract class RoomComponent implements Room{
 	} 
 
 	public RoomComponent(
-        int hotelId, int number, String type, int price, boolean isAvailable, HotelImpl hotelimpl
+        UUID hotelId, int number, String type, int price, boolean isAvailable, UUID id
     ) {
         this.hotelId = hotelId;
         this.number = number;
         this.type = type;
         this.price = price;
         this.isAvailable = isAvailable;
-        this.hotelimpl = hotelimpl;
+        this.id = id;
     }
 
-	public int getHotelId() {
+	public UUID getHotelId() {
 		return this.hotelId;
 	}
 
-	public void setHotelId(int hotelId) {
+	public void setHotelId(UUID hotelId) {
 		this.hotelId = hotelId;
 	}
 	public int getNumber() {
@@ -75,11 +73,15 @@ public abstract class RoomComponent implements Room{
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	public abstract HotelImpl getHotelimpl();
-	public abstract void setHotelimpl(HotelImpl hotelimpl);
-	
+	public UUID getId() {
+		return this.id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
  
-	private abstract Room getRoomByHotelId(int hotelId);
+	public abstract Room getRoomByHotelId(int hotelId);
 
 	@Override
     public String toString() {
@@ -89,7 +91,7 @@ public abstract class RoomComponent implements Room{
             " type='" + getType() + "'" +
             " price='" + getPrice() + "'" +
             " isAvailable='" + getIsAvailable() + "'" +
-            " hotelimpl='" + getHotelimpl() + "'" +
+            " id='" + getId() + "'" +
             "}";
     }
 	

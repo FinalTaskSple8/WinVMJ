@@ -15,16 +15,16 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class BookingComponent implements Booking{
 	@Id
-	protected int bookingId; protected int userId; protected int roomId; protected int paymentId; 
-	protected int bookingId;
-	protected int userId;
+	protected UUID bookingId; protected UUID userId; protected UUID roomId; protected UUID paymentId; protected UUID id; 
+	protected UUID bookingId;
+	protected UUID userId;
 	protected EDate checkInDate;
 	protected EDate checkOutDate;
 	protected EDate numberOfGuests;
 	protected EDate totalPrice;
 	protected String status;
-	protected int roomId;
-	protected int paymentId;
+	protected UUID roomId;
+	protected UUID paymentId;
 	@ManyToOne(targetEntity=SIPH..core.Component.class)
 	public  roomimpl;
 	protected String objectName = BookingComponent.class.getName();
@@ -34,7 +34,7 @@ public abstract class BookingComponent implements Booking{
 	} 
 
 	public BookingComponent(
-        int bookingId, int userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, int roomId, int paymentId, RoomImpl roomimpl
+        UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id
     ) {
         this.bookingId = bookingId;
         this.userId = userId;
@@ -46,20 +46,21 @@ public abstract class BookingComponent implements Booking{
         this.roomId = roomId;
         this.paymentId = paymentId;
         this.roomimpl = roomimpl;
+        this.id = id;
     }
 
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return this.bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		this.bookingId = bookingId;
 	}
-	public int getUserId() {
+	public UUID getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
 	public EDate getCheckInDate() {
@@ -97,27 +98,34 @@ public abstract class BookingComponent implements Booking{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getRoomId() {
+	public UUID getRoomId() {
 		return this.roomId;
 	}
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(UUID roomId) {
 		this.roomId = roomId;
 	}
-	public int getPaymentId() {
+	public UUID getPaymentId() {
 		return this.paymentId;
 	}
 
-	public void setPaymentId(int paymentId) {
+	public void setPaymentId(UUID paymentId) {
 		this.paymentId = paymentId;
 	}
 	public abstract RoomImpl getRoomimpl();
 	public abstract void setRoomimpl(RoomImpl roomimpl);
 	
- 
-	private abstract void cancelBooking();
+	public UUID getId() {
+		return this.id;
+	}
 
-	private abstract Real calculateTotalPrice();
+	public void setId(UUID id) {
+		this.id = id;
+	}
+ 
+	public abstract void cancelBooking();
+
+	public abstract Real calculateTotalPrice();
 
 	@Override
     public String toString() {
@@ -132,6 +140,7 @@ public abstract class BookingComponent implements Booking{
             " roomId='" + getRoomId() + "'" +
             " paymentId='" + getPaymentId() + "'" +
             " roomimpl='" + getRoomimpl() + "'" +
+            " id='" + getId() + "'" +
             "}";
     }
 	

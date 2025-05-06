@@ -14,11 +14,11 @@ public class BookingServiceImpl extends BookingServiceDecorator {
     }
 
     
-	private void requestRoomUpgrade(String newRoomType, Real additionalCost) {
+	public void requestRoomUpgrade(String newRoomType, Real additionalCost) {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 }

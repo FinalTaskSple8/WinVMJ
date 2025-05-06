@@ -1,59 +1,122 @@
 package SIPH.profile.core;
 
-import java.lang.Math;
 import java.util.*;
-import vmj.routing.route.Route;
-import vmj.routing.route.VMJExchange;
+import javax.persistence.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.ForeignKey;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-
-@Entity(name="profile_impl")
-@Table(name="profile_impl")
+@Entity(name = "profile_impl")
+@Table(name = "profile_impl")
 public class ProfileImpl extends ProfileComponent {
 
-	public ProfileImpl(User user, User user) {
-		this.user = user;
-		this.user = user;
-	}
+    @Column(name = "name")
+    protected String name;
 
-	public ProfileImpl(User user, User user) {
-		this. =  .randomUUID();;
-		this.user = user;
-		this.user = user;
-	}
+    @Column(name = "email")
+    protected String email;
 
-	public ProfileImpl() { }
+    @Column(name = "phone_num")
+    protected String phoneNum;
 
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	private String showProfile(int userId) {
-		// TODO: implement this method
-	}
-
-	private boolean editProfile(int userId, String name, String email, String phoneNum) {
-		// TODO: implement this method
-	}
-	
-	public HashMap<String, Object> toHashMap() {
-        HashMap<String, Object> profileMap = new HashMap<String,Object>();
-		profileMap.put("user",getUser());
-		profileMap.put("user",getUser());
-
-        return profileMap;
+    public ProfileImpl(UUID userId, User user, UUID id) {
+        this.userId = userId;
+        this.user = user;
+        this.id = id;
     }
 
+    public ProfileImpl(UUID userId, User user) {
+        this.userId = UUID.randomUUID();
+        this.user = user;
+    }
+
+    public ProfileImpl() {
+        this.userId = UUID.randomUUID();
+    }
+
+    @Override
+    public UUID getUserId() {
+        return this.userId;
+    }
+
+    @Override
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    @Override
+    public User getUser() {
+        return this.user;
+    }
+
+    @Override
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String getEmail() {
+        return this.email;
+    }
+
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPhoneNum() {
+        return this.phoneNum;
+    }
+
+    @Override
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    @Override
+    public String showProfile(int userId) {
+        // implement as needed
+        return "Profile for userId: " + userId;
+    }
+
+    @Override
+    public boolean editProfile(int userId, String name, String email, String phoneNum) {
+        if (this.userId.hashCode() == userId) {
+            setName(name);
+            setEmail(email);
+            setPhoneNum(phoneNum);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public HashMap<String, Object> toHashMap() {
+        HashMap<String, Object> profileMap = new HashMap<>();
+        profileMap.put("userId", getUserId());
+        profileMap.put("user", getUser());
+        profileMap.put("id", getId());
+        profileMap.put("name", getName());
+        profileMap.put("email", getEmail());
+        profileMap.put("phoneNum", getPhoneNum());
+        return profileMap;
+    }
 }

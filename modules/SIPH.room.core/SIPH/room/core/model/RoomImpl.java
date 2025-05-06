@@ -19,32 +19,31 @@ import javax.persistence.OneToMany;
 @Table(name="room_impl")
 public class RoomImpl extends RoomComponent {
 
-	public RoomImpl(int hotelId, int number, String type, int price, boolean isAvailable, HotelImpl hotelimpl) {
+	public RoomImpl(UUID hotelId, int number, String type, int price, boolean isAvailable, UUID id) {
 		this.hotelId = hotelId;
 		this.number = number;
 		this.type = type;
 		this.price = price;
 		this.isAvailable = isAvailable;
-		this.hotelimpl = hotelimpl;
+		this.id = id;
 	}
 
-	public RoomImpl(int hotelId, int number, String type, int price, boolean isAvailable, HotelImpl hotelimpl) {
-		this.hotelId =  hotelId.randomUUID();;
+	public RoomImpl(UUID hotelId, int number, String type, int price, boolean isAvailable) {
+		this.id =  UUID.randomUUID();;
 		this.hotelId = hotelId;
 		this.number = number;
 		this.type = type;
 		this.price = price;
 		this.isAvailable = isAvailable;
-		this.hotelimpl = hotelimpl;
 	}
 
 	public RoomImpl() { }
 
-	public int getHotelId() {
+	public UUID getHotelId() {
 		return this.hotelId;
 	}
 
-	public void setHotelId(int hotelId) {
+	public void setHotelId(UUID hotelId) {
 		this.hotelId = hotelId;
 	}
 	public int getNumber() {
@@ -75,9 +74,17 @@ public class RoomImpl extends RoomComponent {
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+	public UUID getId() {
+		return this.id;
+	}
 
-	private Room getRoomByHotelId(int hotelId) {
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public Room getRoomByHotelId(int hotelId) {
 		// TODO: implement this method
+		return null;
 	}
 	
 	public HashMap<String, Object> toHashMap() {
@@ -87,7 +94,7 @@ public class RoomImpl extends RoomComponent {
 		roomMap.put("type",getType());
 		roomMap.put("price",getPrice());
 		roomMap.put("isAvailable",getIsAvailable());
-		roomMap.put("hotelimpl",getHotelimpl());
+		roomMap.put("id",getId());
 
         return roomMap;
     }

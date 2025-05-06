@@ -11,16 +11,8 @@ public abstract class ProfileResourceDecorator extends ProfileResourceComponent{
         this.record = record;
     }
 
-    public List<HashMap<String,Object>> saveProfile(VMJExchange vmjExchange){
-		return record.saveProfile(vmjExchange);
-	}
-
-    public Profile createProfile(VMJExchange vmjExchange){
+    public HashMap<String, Object> createProfile(VMJExchange vmjExchange){
 		return record.createProfile(vmjExchange);
-	}
-
-    public Profile createProfile(VMJExchange vmjExchange, int id){
-		return record.createProfile(vmjExchange, id);
 	}
 
     public HashMap<String, Object> updateProfile(VMJExchange vmjExchange){
@@ -39,11 +31,11 @@ public abstract class ProfileResourceDecorator extends ProfileResourceComponent{
 		return record.deleteProfile(vmjExchange);
 	}
 
-	private String showProfile(int userId) {
+	public String showProfile(int userId) {
 		return record.showProfile(userId);
 	}
 
-	private boolean editProfile(int userId, String name, String email, String phoneNum) {
+	public boolean editProfile(int userId, String name, String email, String phoneNum) {
 		return record.editProfile(userId, name, email, phoneNum);
 	}
 }

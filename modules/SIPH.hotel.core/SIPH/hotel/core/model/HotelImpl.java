@@ -19,27 +19,29 @@ import javax.persistence.OneToMany;
 @Table(name="hotel_impl")
 public class HotelImpl extends HotelComponent {
 
-	public HotelImpl(String id, String name, String location, int price) {
+	public HotelImpl(UUID id, String name, String location, int price, RoomImpl roomimpl) {
 		this.id = id;
 		this.name = name;
 		this.location = location;
 		this.price = price;
+		this.roomimpl = roomimpl;
 	}
 
-	public HotelImpl(String name, String location, int price) {
-		this. =  .randomUUID();;
+	public HotelImpl(String name, String location, int price, RoomImpl roomimpl) {
+		this.id =  id.randomUUID();;
 		this.name = name;
 		this.location = location;
 		this.price = price;
+		this.roomimpl = roomimpl;
 	}
 
 	public HotelImpl() { }
 
-	public String getId() {
+	public UUID getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -64,7 +66,7 @@ public class HotelImpl extends HotelComponent {
 		this.price = price;
 	}
 
-	private void addRoomToHotel(Room rooms) {
+	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method
 	}
 	
@@ -74,6 +76,7 @@ public class HotelImpl extends HotelComponent {
 		hotelMap.put("name",getName());
 		hotelMap.put("location",getLocation());
 		hotelMap.put("price",getPrice());
+		hotelMap.put("roomimpl",getRoomimpl());
 
         return hotelMap;
     }

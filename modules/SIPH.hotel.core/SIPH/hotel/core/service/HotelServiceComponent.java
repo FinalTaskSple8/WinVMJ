@@ -22,5 +22,5 @@ public abstract class HotelServiceComponent implements HotelService{
     public abstract List<HashMap<String,Object>> deleteHotel(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> getHotelById(int id);
 
-	private abstract void addRoomToHotel(Room rooms);
+	public abstract void addRoomToHotel(Room rooms);
 }

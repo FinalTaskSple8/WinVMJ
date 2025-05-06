@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 @Table(name="booking_impl")
 public class BookingImpl extends BookingComponent {
 
-	public BookingImpl(int bookingId, int userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, int roomId, int paymentId, RoomImpl roomimpl) {
+	public BookingImpl(UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id) {
 		this.bookingId = bookingId;
 		this.userId = userId;
 		this.checkInDate = checkInDate;
@@ -30,10 +30,11 @@ public class BookingImpl extends BookingComponent {
 		this.roomId = roomId;
 		this.paymentId = paymentId;
 		this.roomimpl = roomimpl;
+		this.id = id;
 	}
 
-	public BookingImpl(int bookingId, int userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, int roomId, int paymentId, RoomImpl roomimpl) {
-		this.bookingIduserIdroomIdpaymentId =  bookingIduserIdroomIdpaymentId.randomUUID();;
+	public BookingImpl(UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl) {
+		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();;
 		this.bookingId = bookingId;
 		this.userId = userId;
 		this.checkInDate = checkInDate;
@@ -48,18 +49,18 @@ public class BookingImpl extends BookingComponent {
 
 	public BookingImpl() { }
 
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return this.bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		this.bookingId = bookingId;
 	}
-	public int getUserId() {
+	public UUID getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
 	public EDate getCheckInDate() {
@@ -97,26 +98,33 @@ public class BookingImpl extends BookingComponent {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getRoomId() {
+	public UUID getRoomId() {
 		return this.roomId;
 	}
 
-	public void setRoomId(int roomId) {
+	public void setRoomId(UUID roomId) {
 		this.roomId = roomId;
 	}
-	public int getPaymentId() {
+	public UUID getPaymentId() {
 		return this.paymentId;
 	}
 
-	public void setPaymentId(int paymentId) {
+	public void setPaymentId(UUID paymentId) {
 		this.paymentId = paymentId;
 	}
+	public UUID getId() {
+		return this.id;
+	}
 
-	private void cancelBooking() {
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public void cancelBooking() {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 	
@@ -132,6 +140,7 @@ public class BookingImpl extends BookingComponent {
 		bookingMap.put("roomId",getRoomId());
 		bookingMap.put("paymentId",getPaymentId());
 		bookingMap.put("roomimpl",getRoomimpl());
+		bookingMap.put("id",getId());
 
         return bookingMap;
     }

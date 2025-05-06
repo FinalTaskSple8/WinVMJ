@@ -4,10 +4,10 @@ import vmj.routing.route.VMJExchange;
 import java.util.*;
 
 public interface Payment {
-	public int getUserId();
-	public void setUserId(int userId);
-	public int getBookingId();
-	public void setBookingId(int bookingId);
+	public UUID getUserId();
+	public void setUserId(UUID userId);
+	public UUID getBookingId();
+	public void setBookingId(UUID bookingId);
 	public Real getTotalAmount();
 	public void setTotalAmount(Real totalAmount);
 	public String getStatus();
@@ -16,6 +16,7 @@ public interface Payment {
 	public void setPaymentMethod(String paymentMethod);
 	public BookingImpl getBookingimpl();
 	public void setBookingimpl(BookingImpl bookingimpl);
-	org.eclipse.uml2.uml.internal.impl.ClassImpl@5486aefc (name: PaymentImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
+	public UUID getId();
+	public void setId(UUID id);
 	HashMap<String, Object> toHashMap();
 }

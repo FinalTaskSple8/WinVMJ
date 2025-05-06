@@ -9,5 +9,5 @@ public interface PaymentResource {
     HashMap<String, Object> getPayment(VMJExchange vmjExchange);
     List<HashMap<String,Object>> getAllPayment(VMJExchange vmjExchange);
     List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange);
-	HashMap<String, Object> Payment(VMJExchange vmjExhange);
+	HashMap<String, Object> createPayment(VMJExchange vmjExhange);
 }

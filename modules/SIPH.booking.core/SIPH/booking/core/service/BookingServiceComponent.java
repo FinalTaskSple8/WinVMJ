@@ -22,7 +22,7 @@ public abstract class BookingServiceComponent implements BookingService{
     public abstract List<HashMap<String,Object>> deleteBooking(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> getBookingById(int id);
 
-	private abstract void cancelBooking();
+	public abstract void cancelBooking();
 
-	private abstract Real calculateTotalPrice();
+	public abstract Real calculateTotalPrice();
 }

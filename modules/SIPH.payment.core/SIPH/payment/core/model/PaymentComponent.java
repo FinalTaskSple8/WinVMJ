@@ -15,9 +15,9 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PaymentComponent implements Payment{
 	@Id
-	protected int userId; protected int bookingId; 
-	protected int userId;
-	protected int bookingId;
+	protected UUID id; protected UUID userId; protected UUID bookingId; 
+	protected UUID userId;
+	protected UUID bookingId;
 	protected Real totalAmount;
 	protected String status;
 	protected String paymentMethod;
@@ -30,7 +30,7 @@ public abstract class PaymentComponent implements Payment{
 	} 
 
 	public PaymentComponent(
-        int userId, int bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl
+        UUID userId, UUID bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl, UUID id
     ) {
         this.userId = userId;
         this.bookingId = bookingId;
@@ -38,20 +38,21 @@ public abstract class PaymentComponent implements Payment{
         this.status = status;
         this.paymentMethod = paymentMethod;
         this.bookingimpl = bookingimpl;
+        this.id = id;
     }
 
-	public int getUserId() {
+	public UUID getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return this.bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		this.bookingId = bookingId;
 	}
 	public Real getTotalAmount() {
@@ -78,8 +79,15 @@ public abstract class PaymentComponent implements Payment{
 	public abstract BookingImpl getBookingimpl();
 	public abstract void setBookingimpl(BookingImpl bookingimpl);
 	
+	public UUID getId() {
+		return this.id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
  
-	private abstract void processPayment();
+	public abstract void processPayment();
 
 	@Override
     public String toString() {
@@ -90,6 +98,7 @@ public abstract class PaymentComponent implements Payment{
             " status='" + getStatus() + "'" +
             " paymentMethod='" + getPaymentMethod() + "'" +
             " bookingimpl='" + getBookingimpl() + "'" +
+            " id='" + getId() + "'" +
             "}";
     }
 	

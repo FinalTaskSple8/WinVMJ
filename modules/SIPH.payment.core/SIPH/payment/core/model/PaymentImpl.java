@@ -19,17 +19,18 @@ import javax.persistence.OneToMany;
 @Table(name="payment_impl")
 public class PaymentImpl extends PaymentComponent {
 
-	public PaymentImpl(int userId, int bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl) {
+	public PaymentImpl(UUID userId, UUID bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl, UUID id) {
 		this.userId = userId;
 		this.bookingId = bookingId;
 		this.totalAmount = totalAmount;
 		this.status = status;
 		this.paymentMethod = paymentMethod;
 		this.bookingimpl = bookingimpl;
+		this.id = id;
 	}
 
-	public PaymentImpl(int userId, int bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl) {
-		this.userIdbookingId =  userIdbookingId.randomUUID();;
+	public PaymentImpl(UUID userId, UUID bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl) {
+		this.userIdbookingIdid =  userIdbookingIdid.randomUUID();;
 		this.userId = userId;
 		this.bookingId = bookingId;
 		this.totalAmount = totalAmount;
@@ -40,18 +41,18 @@ public class PaymentImpl extends PaymentComponent {
 
 	public PaymentImpl() { }
 
-	public int getUserId() {
+	public UUID getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return this.bookingId;
 	}
 
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		this.bookingId = bookingId;
 	}
 	public Real getTotalAmount() {
@@ -75,8 +76,15 @@ public class PaymentImpl extends PaymentComponent {
 	public void setPaymentMethod(String paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
+	public UUID getId() {
+		return this.id;
+	}
 
-	private void processPayment() {
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public void processPayment() {
 		// TODO: implement this method
 	}
 	
@@ -88,6 +96,7 @@ public class PaymentImpl extends PaymentComponent {
 		paymentMap.put("status",getStatus());
 		paymentMap.put("paymentMethod",getPaymentMethod());
 		paymentMap.put("bookingimpl",getBookingimpl());
+		paymentMap.put("id",getId());
 
         return paymentMap;
     }

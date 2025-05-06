@@ -1,4 +1,5 @@
 module SIPH.hotel.core {
+	requires SIPH.room.core;
 	exports SIPH.hotel;
     exports SIPH.hotel.core;
 	requires vmj.routing.route;

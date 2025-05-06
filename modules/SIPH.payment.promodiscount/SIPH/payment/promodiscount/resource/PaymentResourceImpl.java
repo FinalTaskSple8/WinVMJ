@@ -19,71 +19,66 @@ public class PaymentResourceImpl extends PaymentResourceDecorator {
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		PaymentPromoDiscount paymentpromodiscount = createPaymentPromoDiscount(vmjExchange);
-		paymentpromodiscountRepository.saveObject(paymentpromodiscount);
-		return getAllPaymentPromoDiscount(vmjExchange);
+		  = create(vmjExchange);
+		Repository.saveObject();
+		return getAll(vmjExchange);
 	}
 
-    public Payment createPaymentPromoDiscount(VMJExchange vmjExchange){
+    public Payment create(VMJExchange vmjExchange){
 		String code = (String) vmjExchange.getRequestBodyForm("code");
 		
-		PaymentPromoDiscount paymentpromodiscount = record.createPaymentPromoDiscount(vmjExchange);
-		PaymentPromoDiscount paymentpromodiscountdeco = PaymentPromoDiscountFactory.createPaymentPromoDiscount("SIPH.promodiscount.core.PaymentImpl", paymentpromodiscount, userId, bookingId, totalAmount, status, paymentMethod, bookingimpl
-		code, discountAmount
-		);
-			return paymentpromodiscountdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.promodiscount.core.PaymentImpl", , code, discountAmount);
+			return deco;
 	}
 
-
-    public Payment createPaymentPromoDiscount(VMJExchange vmjExchange, int id){
+    public Payment create(VMJExchange vmjExchange, int id){
 		String code = (String) vmjExchange.getRequestBodyForm("code");
-		PaymentPromoDiscount paymentpromodiscount = paymentpromodiscountRepository.getObject(id);
-		int recordPaymentPromoDiscountId = (((PaymentPromoDiscountDecorator) savedPaymentPromoDiscount.getRecord()).getId();
+		  = Repository.getObject(id);
+		int recordId = (((Decorator) saved.getRecord()).getId();
 		
-		PaymentPromoDiscount paymentpromodiscount = record.createPaymentPromoDiscount(vmjExchange);
-		PaymentPromoDiscount paymentpromodiscountdeco = PaymentPromoDiscountFactory.createPaymentPromoDiscount("SIPH.promodiscount.core.PaymentImpl", id, paymentpromodiscount, userId, bookingId, totalAmount, status, paymentMethod, bookingimpl
-		code, discountAmount
-		);
-			return paymentpromodiscountdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.promodiscount.core.PaymentImpl", id, , code, discountAmount);
+			return deco;
 	}
 
-	// @Restriced(permission = "")
+    // @Restriced(permission = "")
     @Route(url="call/promodiscount/update")
-    public HashMap<String, Object> updatePaymentPromoDiscount(VMJExchange vmjExchange){
+    public HashMap<String, Object> update(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		String idStr = (String) vmjExchange.getRequestBodyForm("userIdbookingId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
 		
-		PaymentPromoDiscount paymentpromodiscount = paymentpromodiscountRepository.getObject(id);
-		paymentpromodiscount = createPaymentPromoDiscount(vmjExchange, id);
+		  = Repository.getObject(id);
+		 = create(vmjExchange, id);
 		
-		paymentpromodiscountRepository.updateObject(paymentpromodiscount);
-		paymentpromodiscount = paymentpromodiscountRepository.getObject(id);
+		Repository.updateObject();
+		 = Repository.getObject(id);
 		//to do: fix association attributes
 		
-		return paymentpromodiscount.toHashMap();
+		return .toHashMap();
 		
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/promodiscount/detail")
-    public HashMap<String, Object> getPaymentPromoDiscount(VMJExchange vmjExchange){
-		return record.getPaymentPromoDiscount(vmjExchange);
+    public HashMap<String, Object> get(VMJExchange vmjExchange){
+		return record.getPayment(vmjExchange);
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/promodiscount/list")
-    public List<HashMap<String,Object>> getAllPaymentPromoDiscount(VMJExchange vmjExchange){
-		List<PaymentPromoDiscount> paymentpromodiscountList = paymentpromodiscountRepository.getAllObject("paymentpromodiscount_impl");
-		return transformPaymentPromoDiscountListToHashMap(paymentpromodiscountList);
+    public List<HashMap<String,Object>> getAll(VMJExchange vmjExchange){
+		List<> List = Repository.getAllObject("_impl");
+		return transformListToHashMap(List);
 	}
 
-    public List<HashMap<String,Object>> transformPaymentPromoDiscountListToHashMap(List<PaymentPromoDiscount> PaymentPromoDiscountList){
+    public List<HashMap<String,Object>> transformListToHashMap(List<> List){
 		List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
-        for(int i = 0; i < PaymentPromoDiscountList.size(); i++) {
-            resultList.add(PaymentPromoDiscountList.get(i).toHashMap());
+        for(int i = 0; i < List.size(); i++) {
+            resultList.add(List.get(i).toHashMap());
         }
 
         return resultList;
@@ -91,23 +86,22 @@ public class PaymentResourceImpl extends PaymentResourceDecorator {
 
 	// @Restriced(permission = "")
     @Route(url="call/promodiscount/delete")
-    public List<HashMap<String,Object>> deletePaymentPromoDiscount(VMJExchange vmjExchange){
+    public List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
 		
-		String idStr = (String) vmjExchange.getRequestBodyForm("userIdbookingId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
-		paymentpromodiscountRepository.deleteObject(id);
-		return getAllPaymentPromoDiscount(vmjExchange);
+		Repository.deleteObject(id);
+		return getAll(vmjExchange);
 	}
 
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 
-	private void applyDiscount() {
+	public void applyDiscount() {
 		// TODO: implement this method
 	}
-	
 }

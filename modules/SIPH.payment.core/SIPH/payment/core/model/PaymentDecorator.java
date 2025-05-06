@@ -17,36 +17,36 @@ public abstract class PaymentDecorator extends PaymentComponent{
 	public PaymentDecorator () {
 		super();
 		this.record = record;
-		this.userIdbookingId =  userIdbookingId.randomUUID();
+		this.userIdbookingIdid =  userIdbookingIdid.randomUUID();
 		
 	public PaymentDecorator (PaymentComponent record) {
-		this.userIdbookingId =  userIdbookingId.randomUUID();
+		this.userIdbookingIdid =  userIdbookingIdid.randomUUID();
 		this.record = record;
 	}
 
-	public PaymentDecorator (int userIdint bookingId, PaymentComponent record) {
-		this.userIdbookingId =  userIdbookingId;
+	public PaymentDecorator (UUID userIdUUID bookingIdUUID id, PaymentComponent record) {
+		this.userIdbookingIdid =  userIdbookingIdid;
 		this.record = record;
 	}
 	
 	public PaymentDecorator (PaymentComponent record, String objectName) {
-		this.userIdbookingId =  userIdbookingId.randomUUID();
+		this.userIdbookingIdid =  userIdbookingIdid.randomUUID();
 		this.record = record;	
 		this.objectName=objectName;
 	}
 
 	public PaymentDecorator() { }
 
-	public int getUserId() {
+	public UUID getUserId() {
 		return record.getUserId();
 	}
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		record.setUserId(userId);
 	}
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return record.getBookingId();
 	}
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		record.setBookingId(bookingId);
 	}
 	public Real getTotalAmount() {
@@ -67,8 +67,14 @@ public abstract class PaymentDecorator extends PaymentComponent{
 	public void setPaymentMethod(String paymentMethod) {
 		record.setPaymentMethod(paymentMethod);
 	}
+	public UUID getId() {
+		return record.getId();
+	}
+	public void setId(UUID id) {
+		record.setId(id);
+	}
 
-	private void processPayment() {
+	public void processPayment() {
 		return record.processPayment();
 	}
 

@@ -9,5 +9,5 @@ public interface HotelResource {
     HashMap<String, Object> getHotel(VMJExchange vmjExchange);
     List<HashMap<String,Object>> getAllHotel(VMJExchange vmjExchange);
     List<HashMap<String,Object>> deleteHotel(VMJExchange vmjExchange);
-	HashMap<String, Object> Hotel(VMJExchange vmjExhange);
+	HashMap<String, Object> createHotel(VMJExchange vmjExhange);
 }

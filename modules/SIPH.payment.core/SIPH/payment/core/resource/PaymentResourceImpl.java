@@ -5,28 +5,16 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.payment.PaymentFactory;
-import prices.auth.vmj.annotations.Restricted;
+//import prices.auth.vmj.annotations.Restricted;
 //add other required packages
-
 
 public class PaymentResourceImpl extends PaymentResourceComponent{
 	
 	private PaymentServiceImpl paymentServiceImpl = new PaymentServiceImpl();
 
 	// @Restriced(permission = "")
-    @Route(url="call/payment/save")
-    public List<HashMap<String,Object>> savePayment(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		Payment payment = createPayment(vmjExchange);
-		paymentRepository.saveObject(payment);
-		return getAllPayment(vmjExchange);
-	}
-
-	// @Restriced(permission = "")
     @Route(url="call/payment")
-    public HashMap<String,Object> payment(VMJExchange vmjExchange){
+    public HashMap<String,Object> createpayment(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Payment result = paymentServiceImpl.createPayment(requestBody);
@@ -35,25 +23,7 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		throw new NotFoundException("Route tidak ditemukan");
 	}
 
-    public Payment createPayment(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Payment result = paymentServiceImpl.createPayment(requestBody);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-    public Payment createPayment(VMJExchange vmjExchange, int id){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Payment result = paymentServiceImpl.createPayment(requestBody, id);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-	// @Restriced(permission = "")
+    // @Restriced(permission = "")
     @Route(url="call/payment/update")
     public HashMap<String, Object> updatePayment(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
@@ -78,6 +48,7 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		return paymentServiceImpl.getAllPayment(requestBody);
 	}
 
+    
 	// @Restriced(permission = "")
     @Route(url="call/payment/delete")
     public List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange){
@@ -89,9 +60,7 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		return paymentServiceImpl.deletePayment(requestBody);
 	}
 
-
-	
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 }

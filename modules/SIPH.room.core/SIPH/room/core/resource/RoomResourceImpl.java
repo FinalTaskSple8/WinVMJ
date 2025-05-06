@@ -5,28 +5,16 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.room.RoomFactory;
-import prices.auth.vmj.annotations.Restricted;
+//import prices.auth.vmj.annotations.Restricted;
 //add other required packages
-
 
 public class RoomResourceImpl extends RoomResourceComponent{
 	
 	private RoomServiceImpl roomServiceImpl = new RoomServiceImpl();
 
 	// @Restriced(permission = "")
-    @Route(url="call/room/save")
-    public List<HashMap<String,Object>> saveRoom(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		Room room = createRoom(vmjExchange);
-		roomRepository.saveObject(room);
-		return getAllRoom(vmjExchange);
-	}
-
-	// @Restriced(permission = "")
     @Route(url="call/room")
-    public HashMap<String,Object> room(VMJExchange vmjExchange){
+    public HashMap<String,Object> createRoom(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Room result = roomServiceImpl.createRoom(requestBody);
@@ -35,25 +23,7 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		throw new NotFoundException("Route tidak ditemukan");
 	}
 
-    public Room createRoom(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Room result = roomServiceImpl.createRoom(requestBody);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-    public Room createRoom(VMJExchange vmjExchange, int id){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Room result = roomServiceImpl.createRoom(requestBody, id);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-	// @Restriced(permission = "")
+    // @Restriced(permission = "")
     @Route(url="call/room/update")
     public HashMap<String, Object> updateRoom(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
@@ -78,6 +48,7 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		return roomServiceImpl.getAllRoom(requestBody);
 	}
 
+    
 	// @Restriced(permission = "")
     @Route(url="call/room/delete")
     public List<HashMap<String,Object>> deleteRoom(VMJExchange vmjExchange){
@@ -88,10 +59,20 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		
 		return roomServiceImpl.deleteRoom(requestBody);
 	}
+    
+ // @Restriced(permission = "")
+    @Route(url="call/room/save-room")
+    public List<HashMap<String,Object>> saveRoom(VMJExchange vmjExchange){
+		Map<String, Object> requestBody = vmjExchange.getPayload(); 
+		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+			return null;
+		}
+		
+		return null;
+	}
 
-
-	
-	private Room getRoomByHotelId(int hotelId) {
+	public Room getRoomByHotelId(int hotelId) {
 		// TODO: implement this method
+		return null;
 	}
 }

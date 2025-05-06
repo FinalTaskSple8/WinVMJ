@@ -11,16 +11,8 @@ public abstract class BookingResourceDecorator extends BookingResourceComponent{
         this.record = record;
     }
 
-    public List<HashMap<String,Object>> saveBooking(VMJExchange vmjExchange){
-		return record.saveBooking(vmjExchange);
-	}
-
     public Booking createBooking(VMJExchange vmjExchange){
 		return record.createBooking(vmjExchange);
-	}
-
-    public Booking createBooking(VMJExchange vmjExchange, int id){
-		return record.createBooking(vmjExchange, id);
 	}
 
     public HashMap<String, Object> updateBooking(VMJExchange vmjExchange){
@@ -39,11 +31,11 @@ public abstract class BookingResourceDecorator extends BookingResourceComponent{
 		return record.deleteBooking(vmjExchange);
 	}
 
-	private void cancelBooking() {
+	public void cancelBooking() {
 		return record.cancelBooking();
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		return record.calculateTotalPrice();
 	}
 }

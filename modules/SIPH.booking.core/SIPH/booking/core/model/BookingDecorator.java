@@ -17,36 +17,36 @@ public abstract class BookingDecorator extends BookingComponent{
 	public BookingDecorator () {
 		super();
 		this.record = record;
-		this.bookingIduserIdroomIdpaymentId =  bookingIduserIdroomIdpaymentId.randomUUID();
+		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
 		
 	public BookingDecorator (BookingComponent record) {
-		this.bookingIduserIdroomIdpaymentId =  bookingIduserIdroomIdpaymentId.randomUUID();
+		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
 		this.record = record;
 	}
 
-	public BookingDecorator (int bookingIdint userIdint roomIdint paymentId, BookingComponent record) {
-		this.bookingIduserIdroomIdpaymentId =  bookingIduserIdroomIdpaymentId;
+	public BookingDecorator (UUID bookingIdUUID userIdUUID roomIdUUID paymentIdUUID id, BookingComponent record) {
+		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid;
 		this.record = record;
 	}
 	
 	public BookingDecorator (BookingComponent record, String objectName) {
-		this.bookingIduserIdroomIdpaymentId =  bookingIduserIdroomIdpaymentId.randomUUID();
+		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
 		this.record = record;	
 		this.objectName=objectName;
 	}
 
 	public BookingDecorator() { }
 
-	public int getBookingId() {
+	public UUID getBookingId() {
 		return record.getBookingId();
 	}
-	public void setBookingId(int bookingId) {
+	public void setBookingId(UUID bookingId) {
 		record.setBookingId(bookingId);
 	}
-	public int getUserId() {
+	public UUID getUserId() {
 		return record.getUserId();
 	}
-	public void setUserId(int userId) {
+	public void setUserId(UUID userId) {
 		record.setUserId(userId);
 	}
 	public EDate getCheckInDate() {
@@ -79,24 +79,30 @@ public abstract class BookingDecorator extends BookingComponent{
 	public void setStatus(String status) {
 		record.setStatus(status);
 	}
-	public int getRoomId() {
+	public UUID getRoomId() {
 		return record.getRoomId();
 	}
-	public void setRoomId(int roomId) {
+	public void setRoomId(UUID roomId) {
 		record.setRoomId(roomId);
 	}
-	public int getPaymentId() {
+	public UUID getPaymentId() {
 		return record.getPaymentId();
 	}
-	public void setPaymentId(int paymentId) {
+	public void setPaymentId(UUID paymentId) {
 		record.setPaymentId(paymentId);
 	}
+	public UUID getId() {
+		return record.getId();
+	}
+	public void setId(UUID id) {
+		record.setId(id);
+	}
 
-	private void cancelBooking() {
+	public void cancelBooking() {
 		return record.cancelBooking();
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		return record.calculateTotalPrice();
 	}
 

@@ -52,11 +52,11 @@ public class BookingImpl extends BookingDecorator {
 		this.upgradeCost = upgradeCost;
 	}
 
-	private void requestRoomUpgrade(String newRoomType, Real additionalCost) {
+	public void requestRoomUpgrade(String newRoomType, Real additionalCost) {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 

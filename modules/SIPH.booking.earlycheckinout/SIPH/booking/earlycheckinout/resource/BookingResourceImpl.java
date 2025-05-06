@@ -19,73 +19,68 @@ public class BookingResourceImpl extends BookingResourceDecorator {
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		BookingEarlyCheckInOut bookingearlycheckinout = createBookingEarlyCheckInOut(vmjExchange);
-		bookingearlycheckinoutRepository.saveObject(bookingearlycheckinout);
-		return getAllBookingEarlyCheckInOut(vmjExchange);
+		  = create(vmjExchange);
+		Repository.saveObject();
+		return getAll(vmjExchange);
 	}
 
-    public Booking createBookingEarlyCheckInOut(VMJExchange vmjExchange){
+    public Booking create(VMJExchange vmjExchange){
 		boolean earlyCheckIn = (boolean) vmjExchange.getRequestBodyForm("earlyCheckIn");
 		boolean lateCheckOut = (boolean) vmjExchange.getRequestBodyForm("lateCheckOut");
 		
-		BookingEarlyCheckInOut bookingearlycheckinout = record.createBookingEarlyCheckInOut(vmjExchange);
-		BookingEarlyCheckInOut bookingearlycheckinoutdeco = BookingEarlyCheckInOutFactory.createBookingEarlyCheckInOut("SIPH.earlycheckinout.core.BookingImpl", bookingearlycheckinout, bookingId, userId, checkInDate, checkOutDate, numberOfGuests, totalPrice, status, roomId, paymentId, roomimpl
-		earlyCheckIn, lateCheckOut, earlyCheckInFee, lateCheckOutFee
-		);
-			return bookingearlycheckinoutdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.earlycheckinout.core.BookingImpl", , earlyCheckIn, lateCheckOut, earlyCheckInFee, lateCheckOutFee);
+			return deco;
 	}
 
-
-    public Booking createBookingEarlyCheckInOut(VMJExchange vmjExchange, int id){
+    public Booking create(VMJExchange vmjExchange, int id){
 		boolean earlyCheckIn = (boolean) vmjExchange.getRequestBodyForm("earlyCheckIn");
 		boolean lateCheckOut = (boolean) vmjExchange.getRequestBodyForm("lateCheckOut");
-		BookingEarlyCheckInOut bookingearlycheckinout = bookingearlycheckinoutRepository.getObject(id);
-		int recordBookingEarlyCheckInOutId = (((BookingEarlyCheckInOutDecorator) savedBookingEarlyCheckInOut.getRecord()).getId();
+		  = Repository.getObject(id);
+		int recordId = (((Decorator) saved.getRecord()).getId();
 		
-		BookingEarlyCheckInOut bookingearlycheckinout = record.createBookingEarlyCheckInOut(vmjExchange);
-		BookingEarlyCheckInOut bookingearlycheckinoutdeco = BookingEarlyCheckInOutFactory.createBookingEarlyCheckInOut("SIPH.earlycheckinout.core.BookingImpl", id, bookingearlycheckinout, bookingId, userId, checkInDate, checkOutDate, numberOfGuests, totalPrice, status, roomId, paymentId, roomimpl
-		earlyCheckIn, lateCheckOut, earlyCheckInFee, lateCheckOutFee
-		);
-			return bookingearlycheckinoutdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.earlycheckinout.core.BookingImpl", id, , earlyCheckIn, lateCheckOut, earlyCheckInFee, lateCheckOutFee);
+			return deco;
 	}
 
-	// @Restriced(permission = "")
+    // @Restriced(permission = "")
     @Route(url="call/earlycheckinout/update")
-    public HashMap<String, Object> updateBookingEarlyCheckInOut(VMJExchange vmjExchange){
+    public HashMap<String, Object> update(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		String idStr = (String) vmjExchange.getRequestBodyForm("bookingIduserIdroomIdpaymentId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
 		
-		BookingEarlyCheckInOut bookingearlycheckinout = bookingearlycheckinoutRepository.getObject(id);
-		bookingearlycheckinout = createBookingEarlyCheckInOut(vmjExchange, id);
+		  = Repository.getObject(id);
+		 = create(vmjExchange, id);
 		
-		bookingearlycheckinoutRepository.updateObject(bookingearlycheckinout);
-		bookingearlycheckinout = bookingearlycheckinoutRepository.getObject(id);
+		Repository.updateObject();
+		 = Repository.getObject(id);
 		//to do: fix association attributes
 		
-		return bookingearlycheckinout.toHashMap();
+		return .toHashMap();
 		
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/earlycheckinout/detail")
-    public HashMap<String, Object> getBookingEarlyCheckInOut(VMJExchange vmjExchange){
-		return record.getBookingEarlyCheckInOut(vmjExchange);
+    public HashMap<String, Object> get(VMJExchange vmjExchange){
+		return record.getBooking(vmjExchange);
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/earlycheckinout/list")
-    public List<HashMap<String,Object>> getAllBookingEarlyCheckInOut(VMJExchange vmjExchange){
-		List<BookingEarlyCheckInOut> bookingearlycheckinoutList = bookingearlycheckinoutRepository.getAllObject("bookingearlycheckinout_impl");
-		return transformBookingEarlyCheckInOutListToHashMap(bookingearlycheckinoutList);
+    public List<HashMap<String,Object>> getAll(VMJExchange vmjExchange){
+		List<> List = Repository.getAllObject("_impl");
+		return transformListToHashMap(List);
 	}
 
-    public List<HashMap<String,Object>> transformBookingEarlyCheckInOutListToHashMap(List<BookingEarlyCheckInOut> BookingEarlyCheckInOutList){
+    public List<HashMap<String,Object>> transformListToHashMap(List<> List){
 		List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
-        for(int i = 0; i < BookingEarlyCheckInOutList.size(); i++) {
-            resultList.add(BookingEarlyCheckInOutList.get(i).toHashMap());
+        for(int i = 0; i < List.size(); i++) {
+            resultList.add(List.get(i).toHashMap());
         }
 
         return resultList;
@@ -93,27 +88,26 @@ public class BookingResourceImpl extends BookingResourceDecorator {
 
 	// @Restriced(permission = "")
     @Route(url="call/earlycheckinout/delete")
-    public List<HashMap<String,Object>> deleteBookingEarlyCheckInOut(VMJExchange vmjExchange){
+    public List<HashMap<String,Object>> deleteBooking(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
 		
-		String idStr = (String) vmjExchange.getRequestBodyForm("bookingIduserIdroomIdpaymentId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
-		bookingearlycheckinoutRepository.deleteObject(id);
-		return getAllBookingEarlyCheckInOut(vmjExchange);
+		Repository.deleteObject(id);
+		return getAll(vmjExchange);
 	}
 
-	private void requestEarlyCheckIn(Real fee) {
+	public void requestEarlyCheckIn(Real fee) {
 		// TODO: implement this method
 	}
 
-	private void requestLateCheckOut(Real fee) {
+	public void requestLateCheckOut(Real fee) {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
-	
 }

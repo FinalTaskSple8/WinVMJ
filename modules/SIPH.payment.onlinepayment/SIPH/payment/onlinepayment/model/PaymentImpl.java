@@ -42,11 +42,11 @@ public class PaymentImpl extends PaymentDecorator {
 		this.gateway = gateway;
 	}
 
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 
-	private void authenticate() {
+	public void authenticate() {
 		// TODO: implement this method
 	}
 

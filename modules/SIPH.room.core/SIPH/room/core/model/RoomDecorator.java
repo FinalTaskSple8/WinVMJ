@@ -17,30 +17,31 @@ public abstract class RoomDecorator extends RoomComponent{
 	public RoomDecorator () {
 		super();
 		this.record = record;
-		this.hotelId =  hotelId.randomUUID();
+		this.id =   UUID.randomUUID();
 		
+	}
+	
 	public RoomDecorator (RoomComponent record) {
-		this.hotelId =  hotelId.randomUUID();
+		this.id =   UUID.randomUUID();
 		this.record = record;
 	}
 
-	public RoomDecorator (int hotelId, RoomComponent record) {
+	public RoomDecorator (UUID hotelId, UUID id, RoomComponent record) {
 		this.hotelId =  hotelId;
+		this.id = id;
 		this.record = record;
 	}
 	
 	public RoomDecorator (RoomComponent record, String objectName) {
-		this.hotelId =  hotelId.randomUUID();
+		this.id =  UUID.randomUUID();
 		this.record = record;	
 		this.objectName=objectName;
 	}
 
-	public RoomDecorator() { }
-
-	public int getHotelId() {
+	public UUID getHotelId() {
 		return record.getHotelId();
 	}
-	public void setHotelId(int hotelId) {
+	public void setHotelId(UUID hotelId) {
 		record.setHotelId(hotelId);
 	}
 	public int getNumber() {
@@ -67,8 +68,14 @@ public abstract class RoomDecorator extends RoomComponent{
 	public void setIsAvailable(boolean isAvailable) {
 		record.setIsAvailable(isAvailable);
 	}
+	public UUID getId() {
+		return record.getId();
+	}
+	public void setId(UUID id) {
+		record.setId(id);
+	}
 
-	private Room getRoomByHotelId(int hotelId) {
+	public Room getRoomByHotelId(int hotelId) {
 		return record.getRoomByHotelId(hotelId);
 	}
 

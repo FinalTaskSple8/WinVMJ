@@ -19,71 +19,66 @@ public class PaymentResourceImpl extends PaymentResourceDecorator {
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		PaymentOnlinePayment paymentonlinepayment = createPaymentOnlinePayment(vmjExchange);
-		paymentonlinepaymentRepository.saveObject(paymentonlinepayment);
-		return getAllPaymentOnlinePayment(vmjExchange);
+		  = create(vmjExchange);
+		Repository.saveObject();
+		return getAll(vmjExchange);
 	}
 
-    public Payment createPaymentOnlinePayment(VMJExchange vmjExchange){
+    public Payment create(VMJExchange vmjExchange){
 		String gateway = (String) vmjExchange.getRequestBodyForm("gateway");
 		
-		PaymentOnlinePayment paymentonlinepayment = record.createPaymentOnlinePayment(vmjExchange);
-		PaymentOnlinePayment paymentonlinepaymentdeco = PaymentOnlinePaymentFactory.createPaymentOnlinePayment("SIPH.onlinepayment.core.PaymentImpl", paymentonlinepayment, userId, bookingId, totalAmount, status, paymentMethod, bookingimpl
-		gateway
-		);
-			return paymentonlinepaymentdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.onlinepayment.core.PaymentImpl", , gateway);
+			return deco;
 	}
 
-
-    public Payment createPaymentOnlinePayment(VMJExchange vmjExchange, int id){
+    public Payment create(VMJExchange vmjExchange, int id){
 		String gateway = (String) vmjExchange.getRequestBodyForm("gateway");
-		PaymentOnlinePayment paymentonlinepayment = paymentonlinepaymentRepository.getObject(id);
-		int recordPaymentOnlinePaymentId = (((PaymentOnlinePaymentDecorator) savedPaymentOnlinePayment.getRecord()).getId();
+		  = Repository.getObject(id);
+		int recordId = (((Decorator) saved.getRecord()).getId();
 		
-		PaymentOnlinePayment paymentonlinepayment = record.createPaymentOnlinePayment(vmjExchange);
-		PaymentOnlinePayment paymentonlinepaymentdeco = PaymentOnlinePaymentFactory.createPaymentOnlinePayment("SIPH.onlinepayment.core.PaymentImpl", id, paymentonlinepayment, userId, bookingId, totalAmount, status, paymentMethod, bookingimpl
-		gateway
-		);
-			return paymentonlinepaymentdeco;
+		  = record.create(vmjExchange);
+		 deco = Factory.create("SIPH.onlinepayment.core.PaymentImpl", id, , gateway);
+			return deco;
 	}
 
-	// @Restriced(permission = "")
+    // @Restriced(permission = "")
     @Route(url="call/onlinepayment/update")
-    public HashMap<String, Object> updatePaymentOnlinePayment(VMJExchange vmjExchange){
+    public HashMap<String, Object> update(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		String idStr = (String) vmjExchange.getRequestBodyForm("userIdbookingId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
 		
-		PaymentOnlinePayment paymentonlinepayment = paymentonlinepaymentRepository.getObject(id);
-		paymentonlinepayment = createPaymentOnlinePayment(vmjExchange, id);
+		  = Repository.getObject(id);
+		 = create(vmjExchange, id);
 		
-		paymentonlinepaymentRepository.updateObject(paymentonlinepayment);
-		paymentonlinepayment = paymentonlinepaymentRepository.getObject(id);
+		Repository.updateObject();
+		 = Repository.getObject(id);
 		//to do: fix association attributes
 		
-		return paymentonlinepayment.toHashMap();
+		return .toHashMap();
 		
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/onlinepayment/detail")
-    public HashMap<String, Object> getPaymentOnlinePayment(VMJExchange vmjExchange){
-		return record.getPaymentOnlinePayment(vmjExchange);
+    public HashMap<String, Object> get(VMJExchange vmjExchange){
+		return record.getPayment(vmjExchange);
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/onlinepayment/list")
-    public List<HashMap<String,Object>> getAllPaymentOnlinePayment(VMJExchange vmjExchange){
-		List<PaymentOnlinePayment> paymentonlinepaymentList = paymentonlinepaymentRepository.getAllObject("paymentonlinepayment_impl");
-		return transformPaymentOnlinePaymentListToHashMap(paymentonlinepaymentList);
+    public List<HashMap<String,Object>> getAll(VMJExchange vmjExchange){
+		List<> List = Repository.getAllObject("_impl");
+		return transformListToHashMap(List);
 	}
 
-    public List<HashMap<String,Object>> transformPaymentOnlinePaymentListToHashMap(List<PaymentOnlinePayment> PaymentOnlinePaymentList){
+    public List<HashMap<String,Object>> transformListToHashMap(List<> List){
 		List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
-        for(int i = 0; i < PaymentOnlinePaymentList.size(); i++) {
-            resultList.add(PaymentOnlinePaymentList.get(i).toHashMap());
+        for(int i = 0; i < List.size(); i++) {
+            resultList.add(List.get(i).toHashMap());
         }
 
         return resultList;
@@ -91,23 +86,22 @@ public class PaymentResourceImpl extends PaymentResourceDecorator {
 
 	// @Restriced(permission = "")
     @Route(url="call/onlinepayment/delete")
-    public List<HashMap<String,Object>> deletePaymentOnlinePayment(VMJExchange vmjExchange){
+    public List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
 		
-		String idStr = (String) vmjExchange.getRequestBodyForm("userIdbookingId");
+		String idStr = (String) vmjExchange.getRequestBodyForm("");
 		int id = Integer.parseInt(idStr);
-		paymentonlinepaymentRepository.deleteObject(id);
-		return getAllPaymentOnlinePayment(vmjExchange);
+		Repository.deleteObject(id);
+		return getAll(vmjExchange);
 	}
 
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 
-	private void authenticate() {
+	public void authenticate() {
 		// TODO: implement this method
 	}
-	
 }

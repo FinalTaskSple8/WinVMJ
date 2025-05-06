@@ -5,28 +5,16 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.profile.ProfileFactory;
-import prices.auth.vmj.annotations.Restricted;
+//import prices.auth.vmj.annotations.Restricted;
 //add other required packages
-
 
 public class ProfileResourceImpl extends ProfileResourceComponent{
 	
 	private ProfileServiceImpl profileServiceImpl = new ProfileServiceImpl();
 
 	// @Restriced(permission = "")
-    @Route(url="call/profile/save")
-    public List<HashMap<String,Object>> saveProfile(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		Profile profile = createProfile(vmjExchange);
-		profileRepository.saveObject(profile);
-		return getAllProfile(vmjExchange);
-	}
-
-	// @Restriced(permission = "")
     @Route(url="call/profile")
-    public HashMap<String,Object> profile(VMJExchange vmjExchange){
+    public HashMap<String,Object> createProfile(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Profile result = profileServiceImpl.createProfile(requestBody);
@@ -34,26 +22,8 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		}
 		throw new NotFoundException("Route tidak ditemukan");
 	}
-
-    public Profile createProfile(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Profile result = profileServiceImpl.createProfile(requestBody);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-    public Profile createProfile(VMJExchange vmjExchange, int id){
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Profile result = profileServiceImpl.createProfile(requestBody, id);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
-
-	// @Restriced(permission = "")
+   
+    // @Restriced(permission = "")
     @Route(url="call/profile/update")
     public HashMap<String, Object> updateProfile(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
@@ -78,6 +48,7 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		return profileServiceImpl.getAllProfile(requestBody);
 	}
 
+    
 	// @Restriced(permission = "")
     @Route(url="call/profile/delete")
     public List<HashMap<String,Object>> deleteProfile(VMJExchange vmjExchange){
@@ -89,14 +60,13 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		return profileServiceImpl.deleteProfile(requestBody);
 	}
 
-
-	
-	private String showProfile(int userId) {
+	public String showProfile(int userId) {
 		// TODO: implement this method
+		return "";
 	}
 
-	
-	private boolean editProfile(int userId, String name, String email, String phoneNum) {
+	public boolean editProfile(int userId, String name, String email, String phoneNum) {
 		// TODO: implement this method
+		return false;
 	}
 }

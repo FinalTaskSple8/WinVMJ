@@ -11,16 +11,8 @@ public abstract class RoomResourceDecorator extends RoomResourceComponent{
         this.record = record;
     }
 
-    public List<HashMap<String,Object>> saveRoom(VMJExchange vmjExchange){
-		return record.saveRoom(vmjExchange);
-	}
-
-    public Room createRoom(VMJExchange vmjExchange){
+    public HashMap<String, Object> createRoom(VMJExchange vmjExchange){
 		return record.createRoom(vmjExchange);
-	}
-
-    public Room createRoom(VMJExchange vmjExchange, int id){
-		return record.createRoom(vmjExchange, id);
 	}
 
     public HashMap<String, Object> updateRoom(VMJExchange vmjExchange){
@@ -39,7 +31,7 @@ public abstract class RoomResourceDecorator extends RoomResourceComponent{
 		return record.deleteRoom(vmjExchange);
 	}
 
-	private Room getRoomByHotelId(int hotelId) {
+	public Room getRoomByHotelId(int hotelId) {
 		return record.getRoomByHotelId(hotelId);
 	}
 }

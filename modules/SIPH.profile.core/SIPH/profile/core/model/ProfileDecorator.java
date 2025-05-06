@@ -17,38 +17,44 @@ public abstract class ProfileDecorator extends ProfileComponent{
 	public ProfileDecorator () {
 		super();
 		this.record = record;
-		this. =  .randomUUID();
+		this.id =  UUID.randomUUID();
+	}
 		
 	public ProfileDecorator (ProfileComponent record) {
-		this. =  .randomUUID();
+		this.userId =  UUID.randomUUID();
 		this.record = record;
 	}
 
-	public ProfileDecorator (, ProfileComponent record) {
-		this. =  ;
+	public ProfileDecorator (UUID userId, UUID id, ProfileComponent record) {
+		this.userId = userId;
+		this.id = id;
 		this.record = record;
 	}
 	
 	public ProfileDecorator (ProfileComponent record, String objectName) {
-		this. =  .randomUUID();
+		this.userId =  UUID.randomUUID();
 		this.record = record;	
 		this.objectName=objectName;
 	}
 
-	public ProfileDecorator() { }
-
-	public User getUser() {
-		return record.getUser();
+	public UUID getUserId() {
+		return record.getUserId();
 	}
-	public void setUser(User user) {
-		record.setUser(user);
+	public void setUserId(UUID userId) {
+		record.setUserId(userId);
+	}
+	public UUID getId() {
+		return record.getId();
+	}
+	public void setId(UUID id) {
+		record.setId(id);
 	}
 
-	private String showProfile(int userId) {
+	public String showProfile(int userId) {
 		return record.showProfile(userId);
 	}
 
-	private boolean editProfile(int userId, String name, String email, String phoneNum) {
+	public boolean editProfile(int userId, String name, String email, String phoneNum) {
 		return record.editProfile(userId, name, email, phoneNum);
 	}
 

@@ -4,8 +4,8 @@ import vmj.routing.route.VMJExchange;
 import java.util.*;
 
 public interface Profile {
-	public int getUserId();
-	public void setUserId(int userId);
+	public UUID getUserId();
+	public void setUserId(UUID userId);
 	public String getName();
 	public void setName(String name);
 	public String getEmail();
@@ -14,8 +14,7 @@ public interface Profile {
 	public void setPhoneNum(String phoneNum);
 	public User getUser();
 	public void setUser(User user);
-	public User getUser();
-	public void setUser(User user);
-	org.eclipse.uml2.uml.internal.impl.ClassImpl@25d2ac76 (name: User, visibility: public) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)org.eclipse.uml2.uml.internal.impl.ClassImpl@2dc98c4d (name: ProfileImpl, visibility: <unset>) (isLeaf: false, isAbstract: false, isFinalSpecialization: false) (isActive: false)
+	public UUID getId();
+	public void setId(UUID id);
 	HashMap<String, Object> toHashMap();
 }

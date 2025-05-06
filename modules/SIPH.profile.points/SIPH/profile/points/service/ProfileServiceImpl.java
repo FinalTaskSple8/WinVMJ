@@ -14,15 +14,6 @@ public class ProfileServiceImpl extends ProfileServiceDecorator {
     }
 
     
-	private int getPoints() {
-		// TODO: implement this method
-	}
 
-	private void redeemPoints(String redeem) {
-		// TODO: implement this method
-	}
 
-	private void calculatePoints() {
-		// TODO: implement this method
-	}
 }

@@ -30,10 +30,6 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 	}
 
     public Payment createPayment(Map<String, Object> requestBody){
-		String userIdStr = (String) requestBody.get("userId");
-		int userId = Integer.parseInt(userIdStr);
-		String bookingIdStr = (String) requestBody.get("bookingId");
-		int bookingId = Integer.parseInt(bookingIdStr);
 		String status = (String) requestBody.get("status");
 		String paymentMethod = (String) requestBody.get("paymentMethod");
 		
@@ -46,16 +42,13 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 		, status
 		, paymentMethod
 		, bookingimpl
+		, id
 		);
 		Repository.saveObject(payment);
 		return payment;
 	}
 
     public Payment createPayment(Map<String, Object> requestBody, int id){
-		String userIdStr = (String) vmjExchange.getRequestBodyForm("userId");
-		int userId = Integer.parseInt(userIdStr);
-		String bookingIdStr = (String) vmjExchange.getRequestBodyForm("bookingId");
-		int bookingId = Integer.parseInt(bookingIdStr);
 		String status = (String) vmjExchange.getRequestBodyForm("status");
 		String paymentMethod = (String) vmjExchange.getRequestBodyForm("paymentMethod");
 		
@@ -66,14 +59,10 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 	}
 
     public HashMap<String, Object> updatePayment(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("userIdbookingId");
+		String idStr = (String) requestBody.get("userIdbookingIdid");
 		int id = Integer.parseInt(idStr);
 		Payment payment = Repository.getObject(id);
 		
-		String userIdStr = (String) requestBody.get("userId");
-		payment.setUserId(Integer.parseInt(userIdStr));
-		String bookingIdStr = (String) requestBody.get("bookingId");
-		payment.setBookingId(Integer.parseInt(bookingIdStr));
 		payment.setStatus((String) requestBody.get("status"));
 		payment.setPaymentMethod((String) requestBody.get("paymentMethod"));
 		
@@ -97,7 +86,7 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 	}
 
 	public HashMap<String, Object> getPaymentById(int id){
-		String idStr = vmjExchange.getGETParam("userIdbookingId"); 
+		String idStr = vmjExchange.getGETParam("userIdbookingIdid"); 
 		int id = Integer.parseInt(idStr);
 		Payment payment = paymentRepository.getObject(id);
 		return payment.toHashMap();
@@ -125,7 +114,7 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 		return getAllPayment(requestBody);
 	}
 
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 }

@@ -6,15 +6,13 @@ import vmj.routing.route.VMJExchange;
 //add other required packages
 
 public abstract class ProfileServiceComponent implements ProfileService{
-	protected RepositoryUtil<Profile> Repository;
+	protected RepositoryUtil<Profile> profileRepository;
 
     public ProfileServiceComponent(){
-        this.Repository = new RepositoryUtil<Profile>(SIPH.profile.core.ProfileComponent.class);
+        this.profileRepository = new RepositoryUtil<Profile>(SIPH.profile.core.ProfileComponent.class);
     }	
 
-    public abstract List<HashMap<String,Object>> saveProfile(VMJExchange vmjExchange);
-    public abstract Profile createProfile(Map<String, Object> requestBodye);
-	public abstract Profile createProfile(Map<String, Object> requestBody, Map<String, Object> response);    
+    public abstract Profile createProfile(Map<String, Object> requestBody);  
 	public abstract HashMap<String, Object> updateProfile(Map<String, Object> requestBody);
     public abstract HashMap<String, Object> getProfile(Map<String, Object> requestBody);
     public abstract List<HashMap<String,Object>> getAllProfile(Map<String, Object> requestBody);
@@ -22,7 +20,7 @@ public abstract class ProfileServiceComponent implements ProfileService{
     public abstract List<HashMap<String,Object>> deleteProfile(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> getProfileById(int id);
 
-	private abstract String showProfile(int userId);
+	public abstract String showProfile(int userId);
 
-	private abstract boolean editProfile(int userId, String name, String email, String phoneNum);
+	public abstract boolean editProfile(int userId, String name, String email, String phoneNum);
 }

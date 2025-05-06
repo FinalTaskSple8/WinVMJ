@@ -52,11 +52,11 @@ public class BookingImpl extends BookingDecorator {
 		this.servicesCost = servicesCost;
 	}
 
-	private void addService(String serviceName, Real serviceCost) {
+	public void addService(String serviceName, Real serviceCost) {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 

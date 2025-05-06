@@ -14,15 +14,15 @@ public class BookingServiceImpl extends BookingServiceDecorator {
     }
 
     
-	private void requestEarlyCheckIn(Real fee) {
+	public void requestEarlyCheckIn(Real fee) {
 		// TODO: implement this method
 	}
 
-	private void requestLateCheckOut(Real fee) {
+	public void requestLateCheckOut(Real fee) {
 		// TODO: implement this method
 	}
 
-	private Real calculateTotalPrice() {
+	public Real calculateTotalPrice() {
 		// TODO: implement this method
 	}
 }

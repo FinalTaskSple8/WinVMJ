@@ -15,47 +15,42 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.profile.ProfileFactory;
-import prices.auth.vmj.annotations.Restricted;
+import vmj.auth.annotations.Restricted;
 //add other required packages
 
 public class ProfileServiceImpl extends ProfileServiceComponent{
+	@Override
+	public Profile createProfile(Map<String, Object> requestBody) {
+	    // Ambil data dari request
+	    String userIdStr = (String) requestBody.get("userId");
+	    UUID userId = UUID.fromString(userIdStr);
 
-    public List<HashMap<String,Object>> saveProfile(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		Profile profile = createProfile(vmjExchange);
-		profileRepository.saveObject(profile);
-		return getAllProfile(vmjExchange);
-	}
+	    String name = (String) requestBody.get("name");
+	    String email = (String) requestBody.get("email");
+	    String phoneNum = (String) requestBody.get("phoneNum");
 
-    public Profile createProfile(Map<String, Object> requestBody){
-		
-		//to do: fix association attributes
-		Profile Profile = ProfileFactory.createProfile(
-			"SIPH.profile.core.ProfileImpl",
-		user
-		, user
-		);
-		Repository.saveObject(profile);
-		return profile;
-	}
 
-    public Profile createProfile(Map<String, Object> requestBody, int id){
-		
-		//to do: fix association attributes
-		
-		Profile profile = ProfileFactory.createProfile("SIPH.profile.core.ProfileImpl", user, user);
-		return profile;
+	    // Buat dummy user
+	    User user = new UserImpl(userId, name, email, phoneNum);
+
+	    // Create profile instance
+	    Profile profile = ProfileFactory.createProfile(
+	        "SIPH.profile.core.ProfileImpl",
+	        userId,
+	        user
+	    );
+
+	    profileRepository.saveObject(profile);
+	    return profile;
 	}
 
     public HashMap<String, Object> updateProfile(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("");
+		String idStr = (String) requestBody.get("userIdid");
 		int id = Integer.parseInt(idStr);
-		Profile profile = Repository.getObject(id);
+		Profile profile = profileRepository.getObject(id);
 		
 		
-		Repository.updateObject(profile);
+		profileRepository.updateObject(profile);
 		
 		//to do: fix association attributes
 		
@@ -64,26 +59,27 @@ public class ProfileServiceImpl extends ProfileServiceComponent{
 	}
 
     public HashMap<String, Object> getProfile(Map<String, Object> requestBody){
-		List<HashMap<String, Object>> profileList = getAllProfile("profile_impl");
+    	String idStr = (String) requestBody.get("id");
+        UUID targetId = UUID.fromString(idStr);
+        
+		List<HashMap<String, Object>> profileList = getAllProfile(requestBody);
 		for (HashMap<String, Object> profile : profileList){
-			int record_id = ((Double) profile.get("record_id")).intValue();
-			if (record_id == id){
-				return profile;
-			}
+			String roomIdStr = (String) profile.get("id");
+            UUID profileId = UUID.fromString(roomIdStr);
+            if (profileId.equals(targetId)) {
+                return profile;
+            }
 		}
 		return null;
 	}
 
 	public HashMap<String, Object> getProfileById(int id){
-		String idStr = vmjExchange.getGETParam(""); 
-		int id = Integer.parseInt(idStr);
-		Profile profile = profileRepository.getObject(id);
-		return profile.toHashMap();
+		return null;
 	}
 
     public List<HashMap<String,Object>> getAllProfile(Map<String, Object> requestBody){
 		String table = (String) requestBody.get("table_name");
-		List<Profile> List = Repository.getAllObject(table);
+		List<Profile> List = profileRepository.getAllObject(table);
 		return transformListToHashMap(List);
 	}
 
@@ -99,15 +95,17 @@ public class ProfileServiceImpl extends ProfileServiceComponent{
     public List<HashMap<String,Object>> deleteProfile(Map<String, Object> requestBody){
 		String idStr = ((String) requestBody.get("id"));
 		int id = Integer.parseInt(idStr);
-		Repository.deleteObject(id);
+		profileRepository.deleteObject(id);
 		return getAllProfile(requestBody);
 	}
 
-	private String showProfile(int userId) {
+	public String showProfile(int userId) {
 		// TODO: implement this method
+		return "";
 	}
 
-	private boolean editProfile(int userId, String name, String email, String phoneNum) {
+	public boolean editProfile(int userId, String name, String email, String phoneNum) {
 		// TODO: implement this method
+		return false;
 	}
 }

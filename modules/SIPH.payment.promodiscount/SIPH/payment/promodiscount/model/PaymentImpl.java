@@ -52,11 +52,11 @@ public class PaymentImpl extends PaymentDecorator {
 		this.discountAmount = discountAmount;
 	}
 
-	private void processPayment() {
+	public void processPayment() {
 		// TODO: implement this method
 	}
 
-	private void applyDiscount() {
+	public void applyDiscount() {
 		// TODO: implement this method
 	}
 

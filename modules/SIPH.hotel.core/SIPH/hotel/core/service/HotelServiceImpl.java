@@ -30,7 +30,6 @@ public class HotelServiceImpl extends HotelServiceComponent{
 	}
 
     public Hotel createHotel(Map<String, Object> requestBody){
-		String id = (String) requestBody.get("id");
 		String name = (String) requestBody.get("name");
 		String location = (String) requestBody.get("location");
 		String priceStr = (String) requestBody.get("price");
@@ -43,6 +42,7 @@ public class HotelServiceImpl extends HotelServiceComponent{
 		, name
 		, location
 		, price
+		, roomimpl
 		);
 		Repository.saveObject(hotel);
 		return hotel;
@@ -56,12 +56,12 @@ public class HotelServiceImpl extends HotelServiceComponent{
 		
 		//to do: fix association attributes
 		
-		Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price);
+		Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price, roomimpl);
 		return hotel;
 	}
 
     public HashMap<String, Object> updateHotel(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("");
+		String idStr = (String) requestBody.get("id");
 		int id = Integer.parseInt(idStr);
 		Hotel hotel = Repository.getObject(id);
 		
@@ -90,7 +90,7 @@ public class HotelServiceImpl extends HotelServiceComponent{
 	}
 
 	public HashMap<String, Object> getHotelById(int id){
-		String idStr = vmjExchange.getGETParam(""); 
+		String idStr = vmjExchange.getGETParam("id"); 
 		int id = Integer.parseInt(idStr);
 		Hotel hotel = hotelRepository.getObject(id);
 		return hotel.toHashMap();
@@ -118,7 +118,7 @@ public class HotelServiceImpl extends HotelServiceComponent{
 		return getAllHotel(requestBody);
 	}
 
-	private void addRoomToHotel(Room rooms) {
+	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method
 	}
 }

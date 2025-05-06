@@ -1,5 +1,4 @@
 module SIPH.profile.core {
-	requires SIPH.profile.core;
 	exports SIPH.profile;
     exports SIPH.profile.core;
 	requires vmj.routing.route;

@@ -15,7 +15,7 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.room.RoomFactory;
-import prices.auth.vmj.annotations.Restricted;
+import vmj.auth.annotations.Restricted;
 //add other required packages
 
 public class RoomServiceImpl extends RoomServiceComponent{
@@ -24,66 +24,63 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		Room room = createRoom(vmjExchange);
+		Room room = createRoom(vmjExchange.getPayload());
 		roomRepository.saveObject(room);
-		return getAllRoom(vmjExchange);
+		return getAllRoom(vmjExchange.getPayload());
 	}
 
     public Room createRoom(Map<String, Object> requestBody){
-		String hotelIdStr = (String) requestBody.get("hotelId");
-		int hotelId = Integer.parseInt(hotelIdStr);
 		String numberStr = (String) requestBody.get("number");
 		int number = Integer.parseInt(numberStr);
 		String type = (String) requestBody.get("type");
 		String priceStr = (String) requestBody.get("price");
 		int price = Integer.parseInt(priceStr);
 		boolean isAvailable = (boolean) requestBody.get("isAvailable");
+		String hotelIdStr = (String) requestBody.get("hotelId");
+		UUID hotelId = UUID.fromString(hotelIdStr);
 		
 		//to do: fix association attributes
-		Room Room = RoomFactory.createRoom(
+		Room room = RoomFactory.createRoom(
 			"SIPH.room.core.RoomImpl",
 		hotelId
 		, number
 		, type
 		, price
 		, isAvailable
-		, hotelimpl
 		);
-		Repository.saveObject(room);
+		roomRepository.saveObject(room);
 		return room;
 	}
 
     public Room createRoom(Map<String, Object> requestBody, int id){
-		String hotelIdStr = (String) vmjExchange.getRequestBodyForm("hotelId");
-		int hotelId = Integer.parseInt(hotelIdStr);
-		String numberStr = (String) vmjExchange.getRequestBodyForm("number");
+		String numberStr = (String) requestBody.get("number");
 		int number = Integer.parseInt(numberStr);
-		String type = (String) vmjExchange.getRequestBodyForm("type");
-		String priceStr = (String) vmjExchange.getRequestBodyForm("price");
+		String type = (String) requestBody.get("type");
+		String priceStr = (String) requestBody.get("price");
 		int price = Integer.parseInt(priceStr);
-		boolean isAvailable = (boolean) vmjExchange.getRequestBodyForm("isAvailable");
+		boolean isAvailable = (boolean) requestBody.get("isAvailable");
+		String hotelIdStr = (String) requestBody.get("hotelId");
+		UUID hotelId = UUID.fromString(hotelIdStr);
 		
 		//to do: fix association attributes
 		
-		Room room = RoomFactory.createRoom("SIPH.room.core.RoomImpl", hotelId, number, type, price, isAvailable, hotelimpl);
+		Room room = RoomFactory.createRoom("SIPH.room.core.RoomImpl", hotelId, number, type, price, isAvailable);
 		return room;
 	}
 
     public HashMap<String, Object> updateRoom(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("hotelId");
+		String idStr = (String) requestBody.get("hotelIdid");
 		int id = Integer.parseInt(idStr);
-		Room room = Repository.getObject(id);
+		Room room = roomRepository.getObject(id);
 		
-		String hotelIdStr = (String) requestBody.get("hotelId");
-		room.setHotelId(Integer.parseInt(hotelIdStr));
 		String numberStr = (String) requestBody.get("number");
 		room.setNumber(Integer.parseInt(numberStr));
 		room.setType((String) requestBody.get("type"));
 		String priceStr = (String) requestBody.get("price");
 		room.setPrice(Integer.parseInt(priceStr));
-		room.setIsAvailable((String) requestBody.get("isAvailable"));
+		room.setIsAvailable((Boolean) requestBody.get("isAvailable"));
 		
-		Repository.updateObject(room);
+		roomRepository.updateObject(room);
 		
 		//to do: fix association attributes
 		
@@ -91,27 +88,30 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		
 	}
 
-    public HashMap<String, Object> getRoom(Map<String, Object> requestBody){
-		List<HashMap<String, Object>> roomList = getAllRoom("room_impl");
-		for (HashMap<String, Object> room : roomList){
-			int record_id = ((Double) room.get("record_id")).intValue();
-			if (record_id == id){
-				return room;
-			}
-		}
-		return null;
-	}
+    public HashMap<String, Object> getRoom(Map<String, Object> requestBody) {
+        String idStr = (String) requestBody.get("id");
+        UUID targetId = UUID.fromString(idStr);
 
-	public HashMap<String, Object> getRoomById(int id){
-		String idStr = vmjExchange.getGETParam("hotelId"); 
-		int id = Integer.parseInt(idStr);
-		Room room = roomRepository.getObject(id);
-		return room.toHashMap();
+        List<HashMap<String, Object>> roomList = getAllRoom(requestBody);
+        for (HashMap<String, Object> room : roomList) {
+            String roomIdStr = (String) room.get("id");
+            UUID roomId = UUID.fromString(roomIdStr);
+            if (roomId.equals(targetId)) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+
+	public HashMap<String, Object> getRoomById(UUID id){
+
+        return null;
 	}
 
     public List<HashMap<String,Object>> getAllRoom(Map<String, Object> requestBody){
 		String table = (String) requestBody.get("table_name");
-		List<Room> List = Repository.getAllObject(table);
+		List<Room> List = roomRepository.getAllObject(table);
 		return transformListToHashMap(List);
 	}
 
@@ -127,11 +127,17 @@ public class RoomServiceImpl extends RoomServiceComponent{
     public List<HashMap<String,Object>> deleteRoom(Map<String, Object> requestBody){
 		String idStr = ((String) requestBody.get("id"));
 		int id = Integer.parseInt(idStr);
-		Repository.deleteObject(id);
+		roomRepository.deleteObject(id);
 		return getAllRoom(requestBody);
 	}
+    
+    public List<HashMap<String,Object>> saveRoom(Map<String, Object> requestBody){
 
-	private Room getRoomByHotelId(int hotelId) {
+		return null;
+	}
+
+	public Room getRoomByHotelId(int hotelId) {
 		// TODO: implement this method
+		return null;
 	}
 }
