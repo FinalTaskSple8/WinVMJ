@@ -2,6 +2,7 @@ package SIPH.hotel.core;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import java.util.*;
+import SIPH.room.core.RoomImpl;
 
 public interface Hotel {
 	public UUID getId();

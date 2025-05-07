@@ -15,19 +15,37 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.hotel.HotelFactory;
-import prices.auth.vmj.annotations.Restricted;
+import vmj.auth.annotations.Restricted;
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 //add other required packages
 
 public class HotelServiceImpl extends HotelServiceComponent{
 
-    public List<HashMap<String,Object>> saveHotel(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		Hotel hotel = createHotel(vmjExchange);
-		hotelRepository.saveObject(hotel);
-		return getAllHotel(vmjExchange);
+	@Override
+	public List<HashMap<String,Object>> saveHotel(Map<String, Object> requestBody){
+	    Hotel hotel = createHotel(requestBody);
+	    hotelRepository.saveObject(hotel);
+	    return getAllHotel(requestBody);
 	}
+	
+	@Override
+	public List<HashMap<String,Object>> saveHotel(VMJExchange vmjExchange){
+	    if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+	        return null;
+	    }
+
+	    // Ambil data dari VMJExchange dan ubah ke Map
+	    Map<String, Object> requestBody = vmjExchange.getPayload();
+
+	    // Pakai createHotel yang sudah ada
+	    Hotel hotel = createHotel(requestBody);
+
+	    hotelRepository.saveObject(hotel);
+
+	    return getAllHotel(requestBody);
+	}
+
 
     public Hotel createHotel(Map<String, Object> requestBody){
 		String name = (String) requestBody.get("name");
@@ -36,41 +54,39 @@ public class HotelServiceImpl extends HotelServiceComponent{
 		int price = Integer.parseInt(priceStr);
 		
 		//to do: fix association attributes
-		Hotel Hotel = HotelFactory.createHotel(
+		Hotel hotel = HotelFactory.createHotel(
 			"SIPH.hotel.core.HotelImpl",
-		id
-		, name
+		 name
 		, location
 		, price
-		, roomimpl
 		);
-		Repository.saveObject(hotel);
+		hotelRepository.saveObject(hotel);
 		return hotel;
 	}
 
     public Hotel createHotel(Map<String, Object> requestBody, int id){
-		String name = (String) vmjExchange.getRequestBodyForm("name");
-		String location = (String) vmjExchange.getRequestBodyForm("location");
-		String priceStr = (String) vmjExchange.getRequestBodyForm("price");
+		String name = (String) requestBody.get("name");
+		String location = (String) requestBody.get("location");
+		String priceStr = (String) requestBody.get("price");
 		int price = Integer.parseInt(priceStr);
 		
 		//to do: fix association attributes
 		
-		Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price, roomimpl);
+		Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price);
 		return hotel;
 	}
 
     public HashMap<String, Object> updateHotel(Map<String, Object> requestBody){
 		String idStr = (String) requestBody.get("id");
 		int id = Integer.parseInt(idStr);
-		Hotel hotel = Repository.getObject(id);
+		Hotel hotel = hotelRepository.getObject(id);
 		
 		hotel.setName((String) requestBody.get("name"));
 		hotel.setLocation((String) requestBody.get("location"));
 		String priceStr = (String) requestBody.get("price");
 		hotel.setPrice(Integer.parseInt(priceStr));
 		
-		Repository.updateObject(hotel);
+		hotelRepository.updateObject(hotel);
 		
 		//to do: fix association attributes
 		
@@ -79,26 +95,27 @@ public class HotelServiceImpl extends HotelServiceComponent{
 	}
 
     public HashMap<String, Object> getHotel(Map<String, Object> requestBody){
-		List<HashMap<String, Object>> hotelList = getAllHotel("hotel_impl");
-		for (HashMap<String, Object> hotel : hotelList){
-			int record_id = ((Double) hotel.get("record_id")).intValue();
-			if (record_id == id){
-				return hotel;
-			}
-		}
-		return null;
+    	String idStr = (String) requestBody.get("id");
+        UUID targetId = UUID.fromString(idStr);
+
+        List<HashMap<String, Object>> hotelList = getAllHotel(requestBody);
+        for (HashMap<String, Object> hotel : hotelList){
+            String hotelIdStr = (String) hotel.get("id");
+            UUID hotelId = UUID.fromString(hotelIdStr);
+            if (hotelId.equals(targetId)) {
+                return hotel;
+            }
+        }
+        return null;
 	}
 
 	public HashMap<String, Object> getHotelById(int id){
-		String idStr = vmjExchange.getGETParam("id"); 
-		int id = Integer.parseInt(idStr);
-		Hotel hotel = hotelRepository.getObject(id);
-		return hotel.toHashMap();
+		return null;
 	}
 
     public List<HashMap<String,Object>> getAllHotel(Map<String, Object> requestBody){
 		String table = (String) requestBody.get("table_name");
-		List<Hotel> List = Repository.getAllObject(table);
+		List<Hotel> List = hotelRepository.getAllObject(table);
 		return transformListToHashMap(List);
 	}
 
@@ -114,7 +131,7 @@ public class HotelServiceImpl extends HotelServiceComponent{
     public List<HashMap<String,Object>> deleteHotel(Map<String, Object> requestBody){
 		String idStr = ((String) requestBody.get("id"));
 		int id = Integer.parseInt(idStr);
-		Repository.deleteObject(id);
+		hotelRepository.deleteObject(id);
 		return getAllHotel(requestBody);
 	}
 

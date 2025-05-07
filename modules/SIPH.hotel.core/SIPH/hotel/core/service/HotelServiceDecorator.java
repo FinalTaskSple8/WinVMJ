@@ -1,6 +1,7 @@
 package SIPH.hotel.core;
 import java.util.*;
-
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 import vmj.routing.route.VMJExchange;
 
 public abstract class HotelServiceDecorator extends HotelServiceComponent{
@@ -10,12 +11,8 @@ public abstract class HotelServiceDecorator extends HotelServiceComponent{
         this.record = record;
     }
 
-	public HotelImpl createHotel(Map<String, Object> requestBody){
+	public Hotel createHotel(Map<String, Object> requestBody){
 		return record.createHotel(requestBody);
-	}
-
-    public Hotel createHotel(Map<String, Object> requestBody, Map<String, Object> response){
-		return record.createHotel(requestBody, response);
 	}
 
 	public HashMap<String, Object> getHotel(Map<String, Object> requestBody){
@@ -47,6 +44,7 @@ public abstract class HotelServiceDecorator extends HotelServiceComponent{
     }
 
 	public void addRoomToHotel(Room rooms) {
-		return record.addRoomToHotel(rooms);
+		record.addRoomToHotel(rooms);
+		return;
 	}
 }

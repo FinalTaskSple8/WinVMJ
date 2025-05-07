@@ -7,14 +7,15 @@ import vmj.routing.route.exceptions.*;
 import SIPH.hotel.HotelFactory;
 //import prices.auth.vmj.annotations.Restricted;
 //add other required packages
-
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 public class HotelResourceImpl extends HotelResourceComponent{
 	
 	private HotelServiceImpl hotelServiceImpl = new HotelServiceImpl();
 
 	// @Restriced(permission = "")
     @Route(url="call/hotel")
-    public HashMap<String,Object> createhotel(VMJExchange vmjExchange){
+    public HashMap<String,Object> createHotel(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Hotel result = hotelServiceImpl.createHotel(requestBody);
@@ -59,6 +60,17 @@ public class HotelResourceImpl extends HotelResourceComponent{
 		
 		return hotelServiceImpl.deleteHotel(requestBody);
 	}
+    
+    // @Restricted(permission = "")
+    @Route(url = "call/hotel/save")
+    @Override
+    public List<HashMap<String, Object>> saveHotel(VMJExchange vmjExchange) {
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+            return null;
+        }
+        return hotelServiceImpl.saveHotel(vmjExchange);
+    }
+
 
 	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method

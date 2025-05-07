@@ -10,12 +10,8 @@ public abstract class PaymentServiceDecorator extends PaymentServiceComponent{
         this.record = record;
     }
 
-	public PaymentImpl createPayment(Map<String, Object> requestBody){
+	public Payment createPayment(Map<String, Object> requestBody){
 		return record.createPayment(requestBody);
-	}
-
-    public Payment createPayment(Map<String, Object> requestBody, Map<String, Object> response){
-		return record.createPayment(requestBody, response);
 	}
 
 	public HashMap<String, Object> getPayment(Map<String, Object> requestBody){
@@ -42,11 +38,11 @@ public abstract class PaymentServiceDecorator extends PaymentServiceComponent{
 		return record.deletePayment(requestBody);
 	}
 
-	public HashMap<String, Object> getPaymentById(int id){
+	public HashMap<String, Object> getPaymentById(UUID id){
         return record.getPaymentById(id);
     }
 
 	public void processPayment() {
-		return record.processPayment();
+		record.processPayment();
 	}
 }

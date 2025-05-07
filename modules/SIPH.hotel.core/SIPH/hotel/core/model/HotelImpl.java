@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
+
 
 @Entity(name="hotel_impl")
 @Table(name="hotel_impl")
@@ -68,6 +71,14 @@ public class HotelImpl extends HotelComponent {
 
 	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method
+	}
+	
+	public RoomImpl getRoomimpl() {
+		return this.roomimpl;
+	}
+
+	public void setRoomimpl(RoomImpl roomimpl) {
+		this.roomimpl = roomimpl;
 	}
 	
 	public HashMap<String, Object> toHashMap() {

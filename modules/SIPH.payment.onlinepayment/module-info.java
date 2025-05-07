@@ -1,4 +1,5 @@
 module SIPH.payment.onlinepayment {
+	requires SIPH.booking.core;
 	requires SIPH.payment.core;
     exports SIPH.payment.onlinepayment;
 

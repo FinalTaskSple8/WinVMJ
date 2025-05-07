@@ -4,6 +4,8 @@ import java.util.*;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 public abstract class HotelResourceDecorator extends HotelResourceComponent{
 	protected HotelResourceComponent record;
 
@@ -11,7 +13,7 @@ public abstract class HotelResourceDecorator extends HotelResourceComponent{
         this.record = record;
     }
 
-    public Hotel createHotel(VMJExchange vmjExchange){
+    public HashMap<String, Object> createHotel(VMJExchange vmjExchange){
 		return record.createHotel(vmjExchange);
 	}
 
@@ -32,6 +34,7 @@ public abstract class HotelResourceDecorator extends HotelResourceComponent{
 	}
 
 	public void addRoomToHotel(Room rooms) {
-		return record.addRoomToHotel(rooms);
+		record.addRoomToHotel(rooms);
+		return;
 	}
 }

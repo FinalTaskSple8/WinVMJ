@@ -1,21 +1,24 @@
 package SIPH.booking.core;
 import vmj.routing.route.Route;
+import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import java.util.*;
+import java.time.LocalDate;
+import java.math.BigDecimal;
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 
 public interface Booking {
-	public UUID getBookingId();
-	public void setBookingId(UUID bookingId);
 	public UUID getUserId();
 	public void setUserId(UUID userId);
-	public EDate getCheckInDate();
-	public void setCheckInDate(EDate checkInDate);
-	public EDate getCheckOutDate();
-	public void setCheckOutDate(EDate checkOutDate);
-	public EDate getNumberOfGuests();
-	public void setNumberOfGuests(EDate numberOfGuests);
-	public EDate getTotalPrice();
-	public void setTotalPrice(EDate totalPrice);
+	public LocalDate getCheckInDate();
+	public void setCheckInDate(LocalDate checkInDate);
+	public LocalDate getCheckOutDate();
+	public void setCheckOutDate(LocalDate checkOutDate);
+	public int getNumberOfGuests();
+	public void setNumberOfGuests(int numberOfGuests);
+	public BigDecimal getTotalPrice();
+	public void setTotalPrice(BigDecimal totalPrice);
 	public String getStatus();
 	public void setStatus(String status);
 	public UUID getRoomId();

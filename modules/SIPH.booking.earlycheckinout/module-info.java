@@ -1,4 +1,5 @@
 module SIPH.booking.earlycheckinout {
+	requires SIPH.room.core;
 	requires SIPH.booking.core;
     exports SIPH.booking.earlycheckinout;
 

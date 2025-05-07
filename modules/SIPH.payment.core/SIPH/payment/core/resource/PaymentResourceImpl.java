@@ -14,7 +14,7 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 
 	// @Restriced(permission = "")
     @Route(url="call/payment")
-    public HashMap<String,Object> createpayment(VMJExchange vmjExchange){
+    public HashMap<String,Object> createPayment(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Payment result = paymentServiceImpl.createPayment(requestBody);
@@ -22,6 +22,21 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		}
 		throw new NotFoundException("Route tidak ditemukan");
 	}
+    
+    @Override
+    public List<HashMap<String, Object>> savePayment(VMJExchange vmjExchange) {
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+            return null;
+        }
+
+        Map<String, Object> requestBody = vmjExchange.getPayload();
+        Payment result = paymentServiceImpl.createPayment(requestBody);
+        
+        List<HashMap<String, Object>> response = new ArrayList<>();
+        response.add(result.toHashMap());
+        return response;
+    }
+
 
     // @Restriced(permission = "")
     @Route(url="call/payment/update")

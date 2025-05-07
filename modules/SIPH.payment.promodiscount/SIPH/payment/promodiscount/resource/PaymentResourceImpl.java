@@ -1,107 +1,91 @@
 package SIPH.payment.promodiscount;
+
 import java.util.*;
+import java.util.UUID;
 
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
+import SIPH.payment.core.Payment;
+import SIPH.payment.core.PaymentComponent;
+import SIPH.payment.core.PaymentServiceComponent;
 import SIPH.payment.core.PaymentResourceDecorator;
-import SIPH.payment.core.PaymentImpl;
 import SIPH.payment.core.PaymentResourceComponent;
+import vmj.hibernate.integrator.RepositoryUtil;
 
 public class PaymentResourceImpl extends PaymentResourceDecorator {
-    public PaymentResourceImpl (PaymentResourceComponent record) {
-        super(record);
-    }
 
-    // @Restriced(permission = "")
+    private RepositoryUtil<Payment> repository = new RepositoryUtil<>(PaymentImpl.class);
+    private final PaymentServiceImpl service;
+
+    public PaymentResourceImpl(PaymentResourceComponent record, PaymentServiceComponent recordService) {
+        super(record);
+        this.service = new PaymentServiceImpl(recordService);
+    }
+    
+    @Override
+    public List<HashMap<String, Object>> savePayment(VMJExchange vmjExchange) {
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+
+        Map<String, Object> requestBody = vmjExchange.getPayload();
+        Payment payment = service.createPayment(requestBody);
+        repository.saveObject(payment);
+        return getAll(vmjExchange);
+    }
+    
     @Route(url="call/promodiscount/save")
     public List<HashMap<String,Object>> save(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		  = create(vmjExchange);
-		Repository.saveObject();
-		return getAll(vmjExchange);
-	}
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+        Payment payment = create(vmjExchange);
+        repository.saveObject(payment);
+        return getAll(vmjExchange);
+    }
 
     public Payment create(VMJExchange vmjExchange){
-		String code = (String) vmjExchange.getRequestBodyForm("code");
-		
-		  = record.create(vmjExchange);
-		 deco = Factory.create("SIPH.promodiscount.core.PaymentImpl", , code, discountAmount);
-			return deco;
-	}
+    	Map<String, Object> payload = vmjExchange.getPayload();
+    	String code = (String) payload.get("code");
+    	Double discountAmount = Double.valueOf(payload.get("discountAmount").toString());
 
-    public Payment create(VMJExchange vmjExchange, int id){
-		String code = (String) vmjExchange.getRequestBodyForm("code");
-		  = Repository.getObject(id);
-		int recordId = (((Decorator) saved.getRecord()).getId();
-		
-		  = record.create(vmjExchange);
-		 deco = Factory.create("SIPH.promodiscount.core.PaymentImpl", id, , code, discountAmount);
-			return deco;
-	}
+    	HashMap<String, Object> baseMap = record.createPayment(vmjExchange); 
+    	UUID baseId = UUID.fromString(baseMap.get("id").toString()); // ambil ID
+    	PaymentComponent baseObject = new RepositoryUtil<>(PaymentComponent.class).getObject(baseId);
 
-    // @Restriced(permission = "")
+    	return new PaymentImpl(baseObject, code, discountAmount);
+
+    }
+    
     @Route(url="call/promodiscount/update")
     public HashMap<String, Object> update(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		String idStr = (String) vmjExchange.getRequestBodyForm("");
-		int id = Integer.parseInt(idStr);
-		
-		  = Repository.getObject(id);
-		 = create(vmjExchange, id);
-		
-		Repository.updateObject();
-		 = Repository.getObject(id);
-		//to do: fix association attributes
-		
-		return .toHashMap();
-		
-	}
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
 
-	// @Restriced(permission = "")
+        UUID id = UUID.fromString((String) vmjExchange.getRequestBodyForm("id"));
+        Payment updated = create(vmjExchange);
+        repository.updateObject(updated);
+        return repository.getObject(id).toHashMap();
+    }
+
     @Route(url="call/promodiscount/detail")
     public HashMap<String, Object> get(VMJExchange vmjExchange){
-		return record.getPayment(vmjExchange);
-	}
+        return record.getPayment(vmjExchange);
+    }
 
-	// @Restriced(permission = "")
     @Route(url="call/promodiscount/list")
     public List<HashMap<String,Object>> getAll(VMJExchange vmjExchange){
-		List<> List = Repository.getAllObject("_impl");
-		return transformListToHashMap(List);
-	}
+        List<Payment> list = repository.getAllObject("payment_promodiscount");
+        return transformListToHashMap(list);
+    }
 
-    public List<HashMap<String,Object>> transformListToHashMap(List<> List){
-		List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
-        for(int i = 0; i < List.size(); i++) {
-            resultList.add(List.get(i).toHashMap());
-        }
+    public List<HashMap<String,Object>> transformListToHashMap(List<Payment> list){
+        List<HashMap<String,Object>> result = new ArrayList<>();
+        for (Payment p : list) result.add(p.toHashMap());
+        return result;
+    }
 
-        return resultList;
-	}
-
-	// @Restriced(permission = "")
     @Route(url="call/promodiscount/delete")
     public List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange){
-		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-			return null;
-		}
-		
-		String idStr = (String) vmjExchange.getRequestBodyForm("");
-		int id = Integer.parseInt(idStr);
-		Repository.deleteObject(id);
-		return getAll(vmjExchange);
-	}
-
-	public void processPayment() {
-		// TODO: implement this method
-	}
-
-	public void applyDiscount() {
-		// TODO: implement this method
-	}
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+        UUID id = UUID.fromString((String) vmjExchange.getRequestBodyForm("id"));
+        repository.deleteObject(id);
+        return getAll(vmjExchange);
+    }
 }

@@ -1,5 +1,9 @@
 package SIPH.booking.core;
+import java.time.LocalDate;
+import java.math.BigDecimal;
 
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 import java.util.*;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
@@ -9,24 +13,25 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 
 @Entity
 @Table(name="booking_comp")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class BookingComponent implements Booking{
 	@Id
-	protected UUID bookingId; protected UUID userId; protected UUID roomId; protected UUID paymentId; protected UUID id; 
-	protected UUID bookingId;
-	protected UUID userId;
-	protected EDate checkInDate;
-	protected EDate checkOutDate;
-	protected EDate numberOfGuests;
-	protected EDate totalPrice;
+	protected UUID id; 
+	protected UUID userId; protected UUID roomId; protected UUID paymentId;
+	protected LocalDate checkInDate;
+	protected LocalDate checkOutDate;
+	protected int numberOfGuests;
+	protected BigDecimal totalPrice;
 	protected String status;
-	protected UUID roomId;
-	protected UUID paymentId;
-	@ManyToOne(targetEntity=SIPH..core.Component.class)
-	public  roomimpl;
+	
+	@ManyToOne(targetEntity=RoomImpl.class)
+	public RoomImpl roomimpl;
 	protected String objectName = BookingComponent.class.getName();
 
 	public BookingComponent() {
@@ -34,9 +39,8 @@ public abstract class BookingComponent implements Booking{
 	} 
 
 	public BookingComponent(
-        UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id
+        UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id
     ) {
-        this.bookingId = bookingId;
         this.userId = userId;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -49,13 +53,6 @@ public abstract class BookingComponent implements Booking{
         this.id = id;
     }
 
-	public UUID getBookingId() {
-		return this.bookingId;
-	}
-
-	public void setBookingId(UUID bookingId) {
-		this.bookingId = bookingId;
-	}
 	public UUID getUserId() {
 		return this.userId;
 	}
@@ -63,32 +60,32 @@ public abstract class BookingComponent implements Booking{
 	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
-	public EDate getCheckInDate() {
+	public LocalDate getCheckInDate() {
 		return this.checkInDate;
 	}
 
-	public void setCheckInDate(EDate checkInDate) {
+	public void setCheckInDate(LocalDate checkInDate) {
 		this.checkInDate = checkInDate;
 	}
-	public EDate getCheckOutDate() {
+	public LocalDate getCheckOutDate() {
 		return this.checkOutDate;
 	}
 
-	public void setCheckOutDate(EDate checkOutDate) {
+	public void setCheckOutDate(LocalDate checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
-	public EDate getNumberOfGuests() {
+	public int getNumberOfGuests() {
 		return this.numberOfGuests;
 	}
 
-	public void setNumberOfGuests(EDate numberOfGuests) {
+	public void setNumberOfGuests(int numberOfGuests) {
 		this.numberOfGuests = numberOfGuests;
 	}
-	public EDate getTotalPrice() {
+	public BigDecimal getTotalPrice() {
 		return this.totalPrice;
 	}
 
-	public void setTotalPrice(EDate totalPrice) {
+	public void setTotalPrice(BigDecimal totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public String getStatus() {
@@ -125,12 +122,11 @@ public abstract class BookingComponent implements Booking{
  
 	public abstract void cancelBooking();
 
-	public abstract Real calculateTotalPrice();
+	public abstract BigDecimal calculateTotalPrice();
 
 	@Override
     public String toString() {
         return "{" +
-            " bookingId='" + getBookingId() + "'" +
             " userId='" + getUserId() + "'" +
             " checkInDate='" + getCheckInDate() + "'" +
             " checkOutDate='" + getCheckOutDate() + "'" +

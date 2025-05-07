@@ -3,10 +3,14 @@ package SIPH.booking.core;
 import java.util.*;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
+import java.time.LocalDate;
+import java.math.BigDecimal;
 
 import javax.persistence.OneToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.CascadeType;
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 //add other required packages
 
 @MappedSuperclass
@@ -17,60 +21,48 @@ public abstract class BookingDecorator extends BookingComponent{
 	public BookingDecorator () {
 		super();
 		this.record = record;
-		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
+		this.id =  UUID.randomUUID();
+	}
 		
-	public BookingDecorator (BookingComponent record) {
-		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
-		this.record = record;
-	}
+   public BookingDecorator(BookingComponent record) {
+        this.id = UUID.randomUUID(); // Buat ID baru
+        this.record = record;
+    }
 
-	public BookingDecorator (UUID bookingIdUUID userIdUUID roomIdUUID paymentIdUUID id, BookingComponent record) {
-		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid;
-		this.record = record;
-	}
-	
-	public BookingDecorator (BookingComponent record, String objectName) {
-		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();
-		this.record = record;	
-		this.objectName=objectName;
-	}
+    public BookingDecorator(UUID id, BookingComponent record) {
+        this.id = id; // Pakai ID yang dikasih
+        this.record = record;
+    }
 
-	public BookingDecorator() { }
 
-	public UUID getBookingId() {
-		return record.getBookingId();
-	}
-	public void setBookingId(UUID bookingId) {
-		record.setBookingId(bookingId);
-	}
 	public UUID getUserId() {
 		return record.getUserId();
 	}
 	public void setUserId(UUID userId) {
 		record.setUserId(userId);
 	}
-	public EDate getCheckInDate() {
+	public LocalDate getCheckInDate() {
 		return record.getCheckInDate();
 	}
-	public void setCheckInDate(EDate checkInDate) {
+	public void setCheckInDate(LocalDate checkInDate) {
 		record.setCheckInDate(checkInDate);
 	}
-	public EDate getCheckOutDate() {
+	public LocalDate getCheckOutDate() {
 		return record.getCheckOutDate();
 	}
-	public void setCheckOutDate(EDate checkOutDate) {
+	public void setCheckOutDate(LocalDate checkOutDate) {
 		record.setCheckOutDate(checkOutDate);
 	}
-	public EDate getNumberOfGuests() {
+	public int getNumberOfGuests() {
 		return record.getNumberOfGuests();
 	}
-	public void setNumberOfGuests(EDate numberOfGuests) {
+	public void setNumberOfGuests(int numberOfGuests) {
 		record.setNumberOfGuests(numberOfGuests);
 	}
-	public EDate getTotalPrice() {
+	public BigDecimal getTotalPrice() {
 		return record.getTotalPrice();
 	}
-	public void setTotalPrice(EDate totalPrice) {
+	public void setTotalPrice(BigDecimal totalPrice) {
 		record.setTotalPrice(totalPrice);
 	}
 	public String getStatus() {
@@ -99,10 +91,11 @@ public abstract class BookingDecorator extends BookingComponent{
 	}
 
 	public void cancelBooking() {
-		return record.cancelBooking();
+		record.cancelBooking();
+		return;
 	}
 
-	public Real calculateTotalPrice() {
+	public BigDecimal calculateTotalPrice() {
 		return record.calculateTotalPrice();
 	}
 

@@ -13,14 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.time.LocalDate;
+import java.math.BigDecimal;
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 
 
 @Entity(name="booking_impl")
 @Table(name="booking_impl")
 public class BookingImpl extends BookingComponent {
 
-	public BookingImpl(UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id) {
-		this.bookingId = bookingId;
+	public BookingImpl(UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id) {
 		this.userId = userId;
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
@@ -33,9 +36,8 @@ public class BookingImpl extends BookingComponent {
 		this.id = id;
 	}
 
-	public BookingImpl(UUID bookingId, UUID userId, EDate checkInDate, EDate checkOutDate, EDate numberOfGuests, EDate totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl) {
-		this.bookingIduserIdroomIdpaymentIdid =  bookingIduserIdroomIdpaymentIdid.randomUUID();;
-		this.bookingId = bookingId;
+	public BookingImpl(UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl) {
+		this.id =  UUID.randomUUID();;
 		this.userId = userId;
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
@@ -49,46 +51,47 @@ public class BookingImpl extends BookingComponent {
 
 	public BookingImpl() { }
 
-	public UUID getBookingId() {
-		return this.bookingId;
-	}
-
-	public void setBookingId(UUID bookingId) {
-		this.bookingId = bookingId;
-	}
 	public UUID getUserId() {
 		return this.userId;
+	}
+	
+	public RoomImpl getRoomimpl() {
+	    return this.roomimpl;
+	}
+
+	public void setRoomimpl(RoomImpl roomimpl) {
+	    this.roomimpl = roomimpl;
 	}
 
 	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
-	public EDate getCheckInDate() {
+	public LocalDate getCheckInDate() {
 		return this.checkInDate;
 	}
 
-	public void setCheckInDate(EDate checkInDate) {
+	public void setCheckInDate(LocalDate checkInDate) {
 		this.checkInDate = checkInDate;
 	}
-	public EDate getCheckOutDate() {
+	public LocalDate getCheckOutDate() {
 		return this.checkOutDate;
 	}
 
-	public void setCheckOutDate(EDate checkOutDate) {
+	public void setCheckOutDate(LocalDate checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
-	public EDate getNumberOfGuests() {
+	public int getNumberOfGuests() {
 		return this.numberOfGuests;
 	}
 
-	public void setNumberOfGuests(EDate numberOfGuests) {
+	public void setNumberOfGuests(int numberOfGuests) {
 		this.numberOfGuests = numberOfGuests;
 	}
-	public EDate getTotalPrice() {
+	public BigDecimal getTotalPrice() {
 		return this.totalPrice;
 	}
 
-	public void setTotalPrice(EDate totalPrice) {
+	public void setTotalPrice(BigDecimal totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public String getStatus() {
@@ -124,13 +127,13 @@ public class BookingImpl extends BookingComponent {
 		// TODO: implement this method
 	}
 
-	public Real calculateTotalPrice() {
+	public BigDecimal calculateTotalPrice() {
 		// TODO: implement this method
+		return null;
 	}
 	
 	public HashMap<String, Object> toHashMap() {
         HashMap<String, Object> bookingMap = new HashMap<String,Object>();
-		bookingMap.put("bookingId",getBookingId());
 		bookingMap.put("userId",getUserId());
 		bookingMap.put("checkInDate",getCheckInDate());
 		bookingMap.put("checkOutDate",getCheckOutDate());

@@ -9,7 +9,7 @@ public abstract class PaymentResourceComponent implements PaymentResource{
 	
 	public PaymentResourceComponent() { }
  
-    public abstract Payment createPayment(VMJExchange vmjExchange);    
+    public abstract HashMap<String, Object> createPayment(VMJExchange vmjExchange);    
 	public abstract HashMap<String, Object> updatePayment(VMJExchange vmjExchange);
     public abstract HashMap<String, Object> getPayment(VMJExchange vmjExchange);
     public abstract List<HashMap<String,Object>> getAllPayment(VMJExchange vmjExchange);

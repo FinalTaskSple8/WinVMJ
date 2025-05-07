@@ -6,21 +6,20 @@ import vmj.routing.route.VMJExchange;
 //add other required packages
 
 public abstract class PaymentServiceComponent implements PaymentService{
-	protected RepositoryUtil<Payment> Repository;
+	protected RepositoryUtil<Payment> paymentRepository;
 
     public PaymentServiceComponent(){
-        this.Repository = new RepositoryUtil<Payment>(SIPH.payment.core.PaymentComponent.class);
+        this.paymentRepository = new RepositoryUtil<Payment>(SIPH.payment.core.PaymentComponent.class);
     }	
 
     public abstract List<HashMap<String,Object>> savePayment(VMJExchange vmjExchange);
-    public abstract Payment createPayment(Map<String, Object> requestBodye);
-	public abstract Payment createPayment(Map<String, Object> requestBody, Map<String, Object> response);    
+    public abstract Payment createPayment(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> updatePayment(Map<String, Object> requestBody);
     public abstract HashMap<String, Object> getPayment(Map<String, Object> requestBody);
     public abstract List<HashMap<String,Object>> getAllPayment(Map<String, Object> requestBody);
     public abstract List<HashMap<String,Object>> transformListToHashMap(List<Payment> List);
     public abstract List<HashMap<String,Object>> deletePayment(Map<String, Object> requestBody);
-	public abstract HashMap<String, Object> getPaymentById(int id);
+	public abstract HashMap<String, Object> getPaymentById(UUID id);
 
 	public abstract void processPayment();
 }

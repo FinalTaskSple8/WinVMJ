@@ -1,63 +1,70 @@
 package SIPH.payment.promodiscount;
 
 import java.util.*;
-import vmj.routing.route.Route;
-import vmj.routing.route.VMJExchange;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Column;
+import javax.persistence.*;
 
 import SIPH.payment.core.PaymentDecorator;
-import SIPH.payment.core.Payment;
 import SIPH.payment.core.PaymentComponent;
+import SIPH.booking.core.BookingImpl;
 
 @Entity(name="payment_promodiscount")
 @Table(name="payment_promodiscount")
 public class PaymentImpl extends PaymentDecorator {
 
-	protected String code;
-	protected EFloat discountAmount;
-	public PaymentImpl(
+    protected String code;
+    protected Double discountAmount;
+
+    public PaymentImpl() {
         super();
         this.objectName = PaymentImpl.class.getName();
     }
-    
-    public PaymentImpl(String code, EFloat discountAmount) {
-    	super();
-		this.code = code;
-		this.discountAmount = discountAmount;
-		this.objectName = PaymentImpl.class.getName();
+
+    public PaymentImpl(String code, Double discountAmount) {
+        super();
+        this.code = code;
+        this.discountAmount = discountAmount;
+        this.objectName = PaymentImpl.class.getName();
     }
-	
-	public PaymentImpl(PaymentComponent record, String code, EFloat discountAmount) {
-		super(record);
-		this.code = code;
-		this.discountAmount = discountAmount;
-		this.objectName = PaymentImpl.class.getName();
-	}
 
-	public String getCode() {
-		return this.code;
-	}
+    public PaymentImpl(PaymentComponent record, String code, Double discountAmount) {
+        super(record);
+        this.code = code;
+        this.discountAmount = discountAmount;
+        this.objectName = PaymentImpl.class.getName();
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public EFloat getDiscountAmount() {
-		return this.discountAmount;
-	}
+    public String getCode() {
+        return this.code;
+    }
 
-	public void setDiscountAmount(EFloat discountAmount) {
-		this.discountAmount = discountAmount;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void processPayment() {
-		// TODO: implement this method
-	}
+    public Double getDiscountAmount() {
+        return this.discountAmount;
+    }
 
-	public void applyDiscount() {
-		// TODO: implement this method
-	}
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
 
+    @Override
+    public BookingImpl getBookingimpl() {
+        return record.getBookingimpl();
+    }
+
+    @Override
+    public void setBookingimpl(BookingImpl bookingimpl) {
+        record.setBookingimpl(bookingimpl);
+    }
+
+    @Override
+    public void processPayment() {
+        System.out.println("Processing payment with promo code: " + code);
+    }
+
+    public void applyDiscount() {
+        System.out.println("Applying discount: " + discountAmount);
+    }
 }

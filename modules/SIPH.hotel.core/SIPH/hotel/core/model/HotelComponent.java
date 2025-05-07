@@ -5,11 +5,13 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-
+import SIPH.room.core.RoomImpl;
+import SIPH.room.core.Room;
 @Entity
 @Table(name="hotel_comp")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,8 +21,8 @@ public abstract class HotelComponent implements Hotel{
 	protected String name;
 	protected String location;
 	protected int price;
-	@ManyToOne(targetEntity=SIPH..core.Component.class)
-	public  roomimpl;
+	@ManyToOne(targetEntity=RoomImpl.class)
+	public  RoomImpl roomimpl;
 	protected String objectName = HotelComponent.class.getName();
 
 	public HotelComponent() {

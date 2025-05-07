@@ -1,4 +1,5 @@
 module SIPH.booking.roomupgrade {
+	requires SIPH.room.core;
 	requires SIPH.booking.core;
     exports SIPH.booking.roomupgrade;
 

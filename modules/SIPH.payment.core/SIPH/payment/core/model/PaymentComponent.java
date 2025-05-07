@@ -1,36 +1,37 @@
 package SIPH.payment.core;
 
 import java.util.*;
-import vmj.routing.route.Route;
-import vmj.routing.route.VMJExchange;
+import java.math.BigDecimal;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import SIPH.booking.core.BookingImpl;
 
 @Entity
-@Table(name="payment_comp")
+@Table(name = "payment_comp")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class PaymentComponent implements Payment{
-	@Id
-	protected UUID id; protected UUID userId; protected UUID bookingId; 
-	protected UUID userId;
-	protected UUID bookingId;
-	protected Real totalAmount;
-	protected String status;
-	protected String paymentMethod;
-	@ManyToOne(targetEntity=SIPH..core.Component.class)
-	public  bookingimpl;
-	protected String objectName = PaymentComponent.class.getName();
+public abstract class PaymentComponent implements Payment {
 
-	public PaymentComponent() {
+    @Id
+    protected UUID id;
 
-	} 
+    protected UUID userId;
+    protected UUID bookingId;
 
-	public PaymentComponent(
-        UUID userId, UUID bookingId, Real totalAmount, String status, String paymentMethod, BookingImpl bookingimpl, UUID id
+    protected BigDecimal totalAmount; // GANTI Real → BigDecimal
+    protected String status;
+    protected String paymentMethod;
+
+    @ManyToOne(targetEntity = BookingImpl.class)
+    protected BookingImpl bookingimpl;
+
+    protected String objectName = PaymentComponent.class.getName();
+
+    public PaymentComponent() {}
+
+    public PaymentComponent(
+        UUID userId, UUID bookingId, BigDecimal totalAmount,
+        String status, String paymentMethod, BookingImpl bookingimpl, UUID id
     ) {
         this.userId = userId;
         this.bookingId = bookingId;
@@ -41,65 +42,85 @@ public abstract class PaymentComponent implements Payment{
         this.id = id;
     }
 
-	public UUID getUserId() {
-		return this.userId;
-	}
+    @Override
+    public UUID getUserId() {
+        return this.userId;
+    }
 
-	public void setUserId(UUID userId) {
-		this.userId = userId;
-	}
-	public UUID getBookingId() {
-		return this.bookingId;
-	}
+    @Override
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 
-	public void setBookingId(UUID bookingId) {
-		this.bookingId = bookingId;
-	}
-	public Real getTotalAmount() {
-		return this.totalAmount;
-	}
+    @Override
+    public UUID getBookingId() {
+        return this.bookingId;
+    }
 
-	public void setTotalAmount(Real totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-	public String getStatus() {
-		return this.status;
-	}
+    @Override
+    public void setBookingId(UUID bookingId) {
+        this.bookingId = bookingId;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getPaymentMethod() {
-		return this.paymentMethod;
-	}
+    @Override
+    public BigDecimal getTotalAmount() {
+        return this.totalAmount;
+    }
 
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
-	}
-	public abstract BookingImpl getBookingimpl();
-	public abstract void setBookingimpl(BookingImpl bookingimpl);
-	
-	public UUID getId() {
-		return this.id;
-	}
+    @Override
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
- 
-	public abstract void processPayment();
+    @Override
+    public String getStatus() {
+        return this.status;
+    }
 
-	@Override
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    @Override
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    @Override
+    public abstract BookingImpl getBookingimpl();
+
+    @Override
+    public abstract void setBookingimpl(BookingImpl bookingimpl);
+
+    @Override
+    public abstract void processPayment();
+
+    @Override
     public String toString() {
         return "{" +
             " userId='" + getUserId() + "'" +
-            " bookingId='" + getBookingId() + "'" +
-            " totalAmount='" + getTotalAmount() + "'" +
-            " status='" + getStatus() + "'" +
-            " paymentMethod='" + getPaymentMethod() + "'" +
-            " bookingimpl='" + getBookingimpl() + "'" +
-            " id='" + getId() + "'" +
+            ", bookingId='" + getBookingId() + "'" +
+            ", totalAmount='" + getTotalAmount() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", paymentMethod='" + getPaymentMethod() + "'" +
+            ", bookingimpl='" + getBookingimpl() + "'" +
+            ", id='" + getId() + "'" +
             "}";
     }
-	
 }

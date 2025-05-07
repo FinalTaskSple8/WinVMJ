@@ -1,4 +1,5 @@
 module SIPH.booking.additionalservices {
+	requires SIPH.room.core;
 	requires SIPH.booking.core;
     exports SIPH.booking.additionalservices;
 
