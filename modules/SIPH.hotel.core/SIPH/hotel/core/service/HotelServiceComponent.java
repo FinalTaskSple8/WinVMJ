@@ -8,7 +8,8 @@ import SIPH.room.core.RoomImpl;
 import SIPH.room.core.Room;
 public abstract class HotelServiceComponent implements HotelService{
 	protected RepositoryUtil<Hotel> hotelRepository;
-
+	protected RepositoryUtil<RoomImpl> roomRepository = new RepositoryUtil<>(RoomImpl.class);
+	
     public HotelServiceComponent(){
         this.hotelRepository = new RepositoryUtil<Hotel>(SIPH.hotel.core.HotelComponent.class);
     }	

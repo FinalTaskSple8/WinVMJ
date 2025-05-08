@@ -21,17 +21,9 @@ import SIPH.room.core.Room;
 @Entity(name="hotel_impl")
 @Table(name="hotel_impl")
 public class HotelImpl extends HotelComponent {
-
-	public HotelImpl(UUID id, String name, String location, int price, RoomImpl roomimpl) {
-		this.id = id;
-		this.name = name;
-		this.location = location;
-		this.price = price;
-		this.roomimpl = roomimpl;
-	}
-
+	
 	public HotelImpl(String name, String location, int price, RoomImpl roomimpl) {
-		this.id =  id.randomUUID();;
+		this.id =  UUID.randomUUID();;
 		this.name = name;
 		this.location = location;
 		this.price = price;

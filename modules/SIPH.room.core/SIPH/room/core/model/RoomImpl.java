@@ -74,9 +74,13 @@ public class RoomImpl extends RoomComponent {
 	public void setIsAvailable(boolean isAvailable) {
 		this.isAvailable = isAvailable;
 	}
+	
+	@Override
+	@Id
 	public UUID getId() {
-		return this.id;
+	    return this.id;
 	}
+
 
 	public void setId(UUID id) {
 		this.id = id;

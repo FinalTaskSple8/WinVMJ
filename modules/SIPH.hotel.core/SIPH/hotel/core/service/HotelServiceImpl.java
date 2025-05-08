@@ -54,11 +54,16 @@ public class HotelServiceImpl extends HotelServiceComponent{
 		int price = Integer.parseInt(priceStr);
 		
 		//to do: fix association attributes
+		RoomImpl dummyRoom = new RoomImpl();
+		dummyRoom.setId(UUID.randomUUID()); // INI HARUS ADA
+		roomRepository.saveObject(dummyRoom);
+		
 		Hotel hotel = HotelFactory.createHotel(
 			"SIPH.hotel.core.HotelImpl",
 		 name
 		, location
 		, price
+		, dummyRoom
 		);
 		hotelRepository.saveObject(hotel);
 		return hotel;
