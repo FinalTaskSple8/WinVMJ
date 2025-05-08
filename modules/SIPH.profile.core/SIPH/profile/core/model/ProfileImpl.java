@@ -2,6 +2,8 @@ package SIPH.profile.core;
 
 import java.util.*;
 import javax.persistence.*;
+import vmj.auth.model.core.User;
+import vmj.auth.model.core.UserComponent;
 
 @Entity(name = "profile_impl")
 @Table(name = "profile_impl")

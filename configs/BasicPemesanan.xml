@@ -7,10 +7,10 @@
 	<feature name="AdditionalServices"/>
 	<feature name="EarlyCheckInOut"/>
 	<feature automatic="selected" name="Payment"/>
-	<feature manual="selected" name="OnlinePayment"/>
-	<feature manual="selected" name="PromoDiscount"/>
+	<feature name="OnlinePayment"/>
+	<feature name="PromoDiscount"/>
 	<feature automatic="selected" name="UserProfile"/>
 	<feature name="Points"/>
 	<feature automatic="selected" name="HotelManagement"/>
-	<feature name="RoomManagement"/>
+	<feature manual="selected" name="RoomManagement"/>
 </configuration>

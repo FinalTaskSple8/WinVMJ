@@ -1,11 +1,11 @@
 {
-    "HotelManagement": ["SIPH.hotel.core"],
     "RoomManagement": ["SIPH.room.core"],
+    "HotelManagement": ["SIPH.hotel.core"],
+    "UserProfile": ["SIPH.profile.core"],
     "Booking": ["SIPH.booking.core"],
     "Payment": ["SIPH.payment.core"],
     "OnlinePayment": ["SIPH.payment.onlinepayment"],
     "PromoDiscount": ["SIPH.payment.promodiscount"],
-    "UserProfile": ["SIPH.profile.core"],
     "Points": ["SIPH.profile.points"],
     "RoomUpgrade": ["SIPH.booking.roomupgrade"],
     "EarlyCheckInOut": ["SIPH.booking.earlycheckinout"],

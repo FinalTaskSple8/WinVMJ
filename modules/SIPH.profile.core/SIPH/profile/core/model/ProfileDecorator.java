@@ -5,6 +5,8 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
 import javax.persistence.OneToOne;
+import vmj.auth.model.core.User;
+import vmj.auth.model.core.UserComponent;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.CascadeType;
 //add other required packages

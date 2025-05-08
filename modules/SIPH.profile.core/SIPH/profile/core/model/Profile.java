@@ -2,7 +2,8 @@ package SIPH.profile.core;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import java.util.*;
-
+import vmj.auth.model.core.User;
+import vmj.auth.model.core.UserComponent;
 public interface Profile {
 	public UUID getUserId();
 	public void setUserId(UUID userId);

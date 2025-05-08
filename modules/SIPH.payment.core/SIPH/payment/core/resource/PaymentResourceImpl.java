@@ -10,7 +10,7 @@ import SIPH.payment.PaymentFactory;
 
 public class PaymentResourceImpl extends PaymentResourceComponent{
 	
-	private PaymentServiceImpl paymentServiceImpl = new PaymentServiceImpl();
+	private PaymentServiceImpl paymentServiceImpl;
 
 	// @Restriced(permission = "")
     @Route(url="call/payment")

@@ -17,6 +17,10 @@ import vmj.routing.route.exceptions.*;
 import SIPH.profile.ProfileFactory;
 import vmj.auth.annotations.Restricted;
 //add other required packages
+import vmj.auth.model.core.User;
+import vmj.auth.model.core.UserComponent;
+import vmj.auth.model.core.UserImpl;
+
 
 public class ProfileServiceImpl extends ProfileServiceComponent{
 	@Override
@@ -31,7 +35,7 @@ public class ProfileServiceImpl extends ProfileServiceComponent{
 
 
 	    // Buat dummy user
-	    User user = new UserImpl(userId, name, email, phoneNum);
+	    User user = new UserImpl(name, email);
 
 	    // Create profile instance
 	    Profile profile = ProfileFactory.createProfile(

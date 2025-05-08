@@ -11,7 +11,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
-import SIPH.profile.core.UserComponent;
+import vmj.auth.model.core.User;
+import vmj.auth.model.core.UserComponent;
 
 @Entity
 @Table(name="profile_comp")

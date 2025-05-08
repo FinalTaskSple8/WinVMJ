@@ -11,7 +11,7 @@ features
 							AdditionalServices
 							EarlyCheckInOut
 			Payment
-				or
+				alternative
 					OnlinePayment
 					PromoDiscount
 			UserProfile
