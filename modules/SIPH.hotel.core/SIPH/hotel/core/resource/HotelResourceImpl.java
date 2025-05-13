@@ -75,4 +75,20 @@ public class HotelResourceImpl extends HotelResourceComponent{
 	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method
 	}
+	
+//	@Route(url="call/hotel/update-with-room")
+//	public HashMap<String, Object> updateHotelWithRoom(VMJExchange vmjExchange){
+//		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+//			return null;
+//		}
+//		Map<String, Object> requestBody = vmjExchange.getPayload();
+//		return hotelServiceImpl.updateHotelWithRoom(requestBody);
+//	}
+	
+	@Route(url = "call/hotel/search")
+	public List<HashMap<String, Object>> searchHotel(VMJExchange vmjExchange) {
+	    Map<String, Object> requestBody = vmjExchange.getPayload(); 
+	    return hotelServiceImpl.searchHotel(requestBody);
+	}
+
 }

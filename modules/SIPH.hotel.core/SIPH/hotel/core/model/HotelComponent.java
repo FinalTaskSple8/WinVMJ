@@ -21,8 +21,10 @@ public abstract class HotelComponent implements Hotel{
 	protected String name;
 	protected String location;
 	protected int price;
+	
 	@ManyToOne(optional=true, targetEntity=RoomImpl.class)
 	public  RoomImpl roomimpl;
+	
 	protected String objectName = HotelComponent.class.getName();
 
 	public HotelComponent() {

@@ -1,16 +1,6 @@
 package SIPH.hotel.core;
-import java.util.*;
-import com.google.gson.Gson;
-import java.util.*;
-import java.util.logging.Logger;
-import java.io.File;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
+import java.util.*;
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
@@ -18,89 +8,103 @@ import SIPH.hotel.HotelFactory;
 import vmj.auth.annotations.Restricted;
 import SIPH.room.core.RoomImpl;
 import SIPH.room.core.Room;
-//add other required packages
 
-public class HotelServiceImpl extends HotelServiceComponent{
+public class HotelServiceImpl extends HotelServiceComponent {
 
-	@Override
-	public List<HashMap<String,Object>> saveHotel(Map<String, Object> requestBody){
-	    Hotel hotel = createHotel(requestBody);
-	    hotelRepository.saveObject(hotel);
-	    return getAllHotel(requestBody);
-	}
-	
-	@Override
-	public List<HashMap<String,Object>> saveHotel(VMJExchange vmjExchange){
-	    if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-	        return null;
-	    }
+    @Override
+    public List<HashMap<String,Object>> saveHotel(Map<String, Object> requestBody){
+        Hotel hotel = createHotel(requestBody);
+        hotelRepository.saveObject(hotel);
+        return getAllHotel(requestBody);
+    }
 
-	    // Ambil data dari VMJExchange dan ubah ke Map
-	    Map<String, Object> requestBody = vmjExchange.getPayload();
+    @Override
+    public List<HashMap<String,Object>> saveHotel(VMJExchange vmjExchange){
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+            return null;
+        }
 
-	    // Pakai createHotel yang sudah ada
-	    Hotel hotel = createHotel(requestBody);
-
-	    hotelRepository.saveObject(hotel);
-
-	    return getAllHotel(requestBody);
-	}
-
+        Map<String, Object> requestBody = vmjExchange.getPayload();
+        Hotel hotel = createHotel(requestBody);
+        hotelRepository.saveObject(hotel);
+        return getAllHotel(requestBody);
+    }
 
     public Hotel createHotel(Map<String, Object> requestBody){
-		String name = (String) requestBody.get("name");
-		String location = (String) requestBody.get("location");
-		String priceStr = (String) requestBody.get("price");
-		int price = Integer.parseInt(priceStr);
-		
-		//to do: fix association attributes
-		RoomImpl dummyRoom = new RoomImpl();
-		dummyRoom.setId(UUID.randomUUID()); // INI HARUS ADA
-		roomRepository.saveObject(dummyRoom);
-		
-		Hotel hotel = HotelFactory.createHotel(
-			"SIPH.hotel.core.HotelImpl",
-		 name
-		, location
-		, price
-		, dummyRoom
-		);
-		hotelRepository.saveObject(hotel);
-		return hotel;
-	}
+        String name = (String) requestBody.get("name");
+        String location = (String) requestBody.get("location");
+        String priceStr = (String) requestBody.get("price");
+        int price = Integer.parseInt(priceStr);
+        Room dummyRoom = null;
+
+        Hotel hotel = HotelFactory.createHotel(
+            "SIPH.hotel.core.HotelImpl",
+            name, location, price, dummyRoom
+        );
+        hotelRepository.saveObject(hotel);
+        return hotel;
+    }
 
     public Hotel createHotel(Map<String, Object> requestBody, int id){
-		String name = (String) requestBody.get("name");
-		String location = (String) requestBody.get("location");
-		String priceStr = (String) requestBody.get("price");
-		int price = Integer.parseInt(priceStr);
-		
-		//to do: fix association attributes
-		
-		Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price);
-		return hotel;
-	}
+        String name = (String) requestBody.get("name");
+        String location = (String) requestBody.get("location");
+        String priceStr = (String) requestBody.get("price");
+        int price = Integer.parseInt(priceStr);
 
-    public HashMap<String, Object> updateHotel(Map<String, Object> requestBody){
-		String idStr = (String) requestBody.get("id");
-		int id = Integer.parseInt(idStr);
-		Hotel hotel = hotelRepository.getObject(id);
-		
-		hotel.setName((String) requestBody.get("name"));
-		hotel.setLocation((String) requestBody.get("location"));
-		String priceStr = (String) requestBody.get("price");
-		hotel.setPrice(Integer.parseInt(priceStr));
-		
-		hotelRepository.updateObject(hotel);
-		
-		//to do: fix association attributes
-		
-		return hotel.toHashMap();
-		
-	}
+        Hotel hotel = HotelFactory.createHotel("SIPH.hotel.core.HotelImpl", name, location, price);
+        return hotel;
+    }
+
+    public HashMap<String, Object> updateHotel(Map<String, Object> requestBody) {
+        String idStr = (String) requestBody.get("id");
+        UUID id = UUID.fromString(idStr);
+        Hotel hotel = hotelRepository.getObject(id);
+        if (hotel == null) throw new RuntimeException("Hotel not found");
+
+        if (requestBody.containsKey("name")) hotel.setName((String) requestBody.get("name"));
+        if (requestBody.containsKey("location")) hotel.setLocation((String) requestBody.get("location"));
+        if (requestBody.containsKey("price")) {
+            String priceStr = (String) requestBody.get("price");
+            hotel.setPrice(Integer.parseInt(priceStr));
+        }
+
+        if (requestBody.containsKey("room")) {
+            Map<String, Object> roomData = (Map<String, Object>) requestBody.get("room");
+            RoomImpl room;
+
+            if (roomData.containsKey("id")) {
+                UUID roomId = UUID.fromString((String) roomData.get("id"));
+                Room rawRoom = roomRepository.getObject(roomId);
+                if (rawRoom == null) throw new RuntimeException("Room not found");
+                if (!(rawRoom instanceof RoomImpl)) throw new RuntimeException("Room is not of type RoomImpl");
+
+                room = (RoomImpl) rawRoom;
+            } else {
+                room = new RoomImpl();
+                room.setId(UUID.randomUUID());
+            }
+
+            if (roomData.containsKey("number")) {
+                Number numberVal = (Number) roomData.get("number");
+                room.setNumber(numberVal.intValue());
+            }
+            if (roomData.containsKey("type")) room.setType((String) roomData.get("type"));
+            if (roomData.containsKey("price")) {
+                Number priceNum = (Number) roomData.get("price");
+                room.setPrice(priceNum.intValue());
+            }
+            if (roomData.containsKey("isAvailable")) room.setIsAvailable((boolean) roomData.get("isAvailable"));
+
+            roomRepository.saveObject(room);
+            hotel.setRoomimpl(room);
+        }
+
+        hotelRepository.updateObject(hotel);
+        return hotel.toHashMap();
+    }
 
     public HashMap<String, Object> getHotel(Map<String, Object> requestBody){
-    	String idStr = (String) requestBody.get("id");
+        String idStr = (String) requestBody.get("id");
         UUID targetId = UUID.fromString(idStr);
 
         List<HashMap<String, Object>> hotelList = getAllHotel(requestBody);
@@ -112,35 +116,65 @@ public class HotelServiceImpl extends HotelServiceComponent{
             }
         }
         return null;
-	}
+    }
 
-	public HashMap<String, Object> getHotelById(int id){
-		return null;
-	}
+    public List<HashMap<String,Object>> searchHotel(Map<String, Object> requestBody) {
+        String location = (String) requestBody.getOrDefault("location", "");
+        Integer price = requestBody.containsKey("price") ? ((Number) requestBody.get("price")).intValue() : null;
+        Integer number = requestBody.containsKey("number") ? ((Number) requestBody.get("number")).intValue() : null;
+
+        List<Hotel> allHotels = hotelRepository.getAllObject("hotel_impl");
+        List<HashMap<String,Object>> results = new ArrayList<>();
+
+        for (Hotel hotel : allHotels) {
+            boolean match = true;
+
+            if (!location.isEmpty() && !hotel.getLocation().toLowerCase().contains(location.toLowerCase())) {
+                match = false;
+            }
+
+            if (price != null && hotel.getPrice() != price) {
+                match = false;
+            }
+
+            Room room = hotel.getRoomimpl();
+            if (number != null && (room == null || room.getNumber() != number)) {
+                match = false;
+            }
+
+            if (match) results.add(hotel.toHashMap());
+        }
+
+        return results;
+    }
+
+    public HashMap<String, Object> getHotelById(int id){
+        return null;
+    }
 
     public List<HashMap<String,Object>> getAllHotel(Map<String, Object> requestBody){
-		String table = (String) requestBody.get("table_name");
-		List<Hotel> List = hotelRepository.getAllObject(table);
-		return transformListToHashMap(List);
-	}
+        String table = (String) requestBody.get("table_name");
+        List<Hotel> List = hotelRepository.getAllObject(table);
+        return transformListToHashMap(List);
+    }
 
     public List<HashMap<String,Object>> transformListToHashMap(List<Hotel> List){
-		List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
+        List<HashMap<String,Object>> resultList = new ArrayList<HashMap<String,Object>>();
         for(int i = 0; i < List.size(); i++) {
             resultList.add(List.get(i).toHashMap());
         }
 
         return resultList;
-	}
+    }
 
     public List<HashMap<String,Object>> deleteHotel(Map<String, Object> requestBody){
-		String idStr = ((String) requestBody.get("id"));
-		int id = Integer.parseInt(idStr);
-		hotelRepository.deleteObject(id);
-		return getAllHotel(requestBody);
-	}
+        String idStr = ((String) requestBody.get("id"));
+        int id = Integer.parseInt(idStr);
+        hotelRepository.deleteObject(id);
+        return getAllHotel(requestBody);
+    }
 
-	public void addRoomToHotel(Room rooms) {
-		// TODO: implement this method
-	}
+    public void addRoomToHotel(Room rooms) {
+        // TODO: implement this method
+    }
 }
