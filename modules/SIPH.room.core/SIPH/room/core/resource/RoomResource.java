@@ -10,4 +10,5 @@ public interface RoomResource {
     List<HashMap<String,Object>> getAllRoom(VMJExchange vmjExchange);
     List<HashMap<String,Object>> deleteRoom(VMJExchange vmjExchange);
 	HashMap<String, Object> createRoom(VMJExchange vmjExhange);
+    List<HashMap<String,Object>> getRoomByHotelId(VMJExchange vmjExchange);
 }

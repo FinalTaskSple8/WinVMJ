@@ -15,5 +15,5 @@ public abstract class RoomResourceComponent implements RoomResource{
     public abstract List<HashMap<String,Object>> getAllRoom(VMJExchange vmjExchange);
     public abstract List<HashMap<String,Object>> deleteRoom(VMJExchange vmjExchange);
 
-	public abstract Room getRoomByHotelId(int hotelId);
+	public abstract List<HashMap<String,Object>> getRoomByHotelId(VMJExchange vmjExchange);
 }

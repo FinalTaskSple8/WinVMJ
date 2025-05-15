@@ -19,10 +19,10 @@ public abstract class HotelServiceComponent implements HotelService{
     public abstract Hotel createHotel(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> updateHotel(Map<String, Object> requestBody);
     public abstract HashMap<String, Object> getHotel(Map<String, Object> requestBody);
-    public abstract List<HashMap<String,Object>> getAllHotel(Map<String, Object> requestBody);
+    public abstract List<Hotel> getAllHotel();
     public abstract List<HashMap<String,Object>> transformListToHashMap(List<Hotel> List);
-    public abstract List<HashMap<String,Object>> deleteHotel(Map<String, Object> requestBody);
-	public abstract HashMap<String, Object> getHotelById(int id);
+    public abstract List<Hotel> deleteHotel(UUID id);
+	public abstract Hotel getHotelById(UUID id);
 
 	public abstract void addRoomToHotel(Room rooms);
 }

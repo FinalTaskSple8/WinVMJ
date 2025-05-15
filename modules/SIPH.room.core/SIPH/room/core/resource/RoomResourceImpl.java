@@ -18,6 +18,7 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
 			Room result = roomServiceImpl.createRoom(requestBody);
+			System.out.println("DEBUG Response: " + result.toHashMap()); // Tambahkan ini
 			return result.toHashMap();
 		}
 		throw new NotFoundException("Route tidak ditemukan");
@@ -44,8 +45,8 @@ public class RoomResourceImpl extends RoomResourceComponent{
 	// @Restriced(permission = "")
     @Route(url="call/room/list")
     public List<HashMap<String,Object>> getAllRoom(VMJExchange vmjExchange){
-		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return roomServiceImpl.getAllRoom(requestBody);
+		List<Room> roomList = roomServiceImpl.getAllRoom();
+		return roomServiceImpl.transformListToHashMap(roomList);
 	}
 
     
@@ -56,8 +57,18 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		
-		return roomServiceImpl.deleteRoom(requestBody);
+		Object idObj = requestBody.get("id");
+		UUID id;
+		if (idObj instanceof UUID) {
+			id = (UUID) idObj;
+		} else if (idObj instanceof String) {
+			id = UUID.fromString((String) idObj);
+		} else {
+			throw new IllegalArgumentException("Invalid id type: " + (idObj != null ? idObj.getClass() : "null"));
+		}
+		roomServiceImpl.deleteRoom(id);
+		List<Room> roomList = roomServiceImpl.getAllRoom();
+		return roomServiceImpl.transformListToHashMap(roomList);
 	}
     
  // @Restriced(permission = "")
@@ -71,8 +82,19 @@ public class RoomResourceImpl extends RoomResourceComponent{
 		return null;
 	}
 
-	public Room getRoomByHotelId(int hotelId) {
-		// TODO: implement this method
-		return null;
+	@Route(url="call/room/by-hotel")
+	public List<HashMap<String,Object>> getRoomByHotelId(VMJExchange vmjExchange) {
+		Map<String, Object> requestBody = vmjExchange.getPayload();
+		Object hotelIdObj = requestBody.get("hotelId");
+		UUID hotelId;
+		if (hotelIdObj instanceof UUID) {
+			hotelId = (UUID) hotelIdObj;
+		} else if (hotelIdObj instanceof String) {
+			hotelId = UUID.fromString((String) hotelIdObj);
+		} else {
+			throw new IllegalArgumentException("Invalid hotelId type: " + (hotelIdObj != null ? hotelIdObj.getClass() : "null"));
+		}
+		List<Room> rooms = roomServiceImpl.getRoomByHotelId(hotelId);
+		return roomServiceImpl.transformListToHashMap(rooms);
 	}
 }

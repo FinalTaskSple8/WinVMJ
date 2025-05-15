@@ -15,7 +15,7 @@ public class HotelServiceImpl extends HotelServiceComponent {
     public List<HashMap<String,Object>> saveHotel(Map<String, Object> requestBody){
         Hotel hotel = createHotel(requestBody);
         hotelRepository.saveObject(hotel);
-        return getAllHotel(requestBody);
+        return transformListToHashMap(getAllHotel()); // tolong diganti 
     }
 
     @Override
@@ -27,7 +27,7 @@ public class HotelServiceImpl extends HotelServiceComponent {
         Map<String, Object> requestBody = vmjExchange.getPayload();
         Hotel hotel = createHotel(requestBody);
         hotelRepository.saveObject(hotel);
-        return getAllHotel(requestBody);
+        return transformListToHashMap(getAllHotel()); // tolong diganti
     }
 
     public Hotel createHotel(Map<String, Object> requestBody){
@@ -107,7 +107,7 @@ public class HotelServiceImpl extends HotelServiceComponent {
         String idStr = (String) requestBody.get("id");
         UUID targetId = UUID.fromString(idStr);
 
-        List<HashMap<String, Object>> hotelList = getAllHotel(requestBody);
+        List<HashMap<String, Object>> hotelList = transformListToHashMap(getAllHotel());
         for (HashMap<String, Object> hotel : hotelList){
             String hotelIdStr = (String) hotel.get("id");
             UUID hotelId = UUID.fromString(hotelIdStr);
@@ -148,14 +148,14 @@ public class HotelServiceImpl extends HotelServiceComponent {
         return results;
     }
 
-    public HashMap<String, Object> getHotelById(int id){
-        return null;
+    public Hotel getHotelById(UUID id){
+        Hotel hotel = hotelRepository.getObject(id);
+        return hotel;
     }
 
-    public List<HashMap<String,Object>> getAllHotel(Map<String, Object> requestBody){
-        String table = (String) requestBody.get("table_name");
-        List<Hotel> List = hotelRepository.getAllObject(table);
-        return transformListToHashMap(List);
+    public List<Hotel> getAllHotel(){
+        List<Hotel> List = hotelRepository.getAllObject("hotel_impl");
+        return List;
     }
 
     public List<HashMap<String,Object>> transformListToHashMap(List<Hotel> List){
@@ -167,11 +167,9 @@ public class HotelServiceImpl extends HotelServiceComponent {
         return resultList;
     }
 
-    public List<HashMap<String,Object>> deleteHotel(Map<String, Object> requestBody){
-        String idStr = ((String) requestBody.get("id"));
-        int id = Integer.parseInt(idStr);
+    public List<Hotel> deleteHotel(UUID id){
         hotelRepository.deleteObject(id);
-        return getAllHotel(requestBody);
+        return getAllHotel();
     }
 
     public void addRoomToHotel(Room rooms) {

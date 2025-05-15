@@ -26,7 +26,7 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		}
 		Room room = createRoom(vmjExchange.getPayload());
 		roomRepository.saveObject(room);
-		return getAllRoom(vmjExchange.getPayload());
+		return transformListToHashMap(getAllRoom());
 	}
 
     public Room createRoom(Map<String, Object> requestBody){
@@ -48,6 +48,7 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		, price
 		, isAvailable
 		);
+		System.out.println("DEBUG requestBody: " + requestBody);
 		roomRepository.saveObject(room);
 		return room;
 	}
@@ -92,7 +93,7 @@ public class RoomServiceImpl extends RoomServiceComponent{
         String idStr = (String) requestBody.get("id");
         UUID targetId = UUID.fromString(idStr);
 
-        List<HashMap<String, Object>> roomList = getAllRoom(requestBody);
+        List<HashMap<String, Object>> roomList = transformListToHashMap(getAllRoom());
         for (HashMap<String, Object> room : roomList) {
             String roomIdStr = (String) room.get("id");
             UUID roomId = UUID.fromString(roomIdStr);
@@ -109,10 +110,9 @@ public class RoomServiceImpl extends RoomServiceComponent{
         return null;
 	}
 
-    public List<HashMap<String,Object>> getAllRoom(Map<String, Object> requestBody){
-		String table = (String) requestBody.get("table_name");
-		List<Room> List = roomRepository.getAllObject(table);
-		return transformListToHashMap(List);
+    public List<Room> getAllRoom(){
+		return roomRepository.getAllObject("room_impl");
+		
 	}
 
     public List<HashMap<String,Object>> transformListToHashMap(List<Room> List){
@@ -124,11 +124,9 @@ public class RoomServiceImpl extends RoomServiceComponent{
         return resultList;
 	}
 
-    public List<HashMap<String,Object>> deleteRoom(Map<String, Object> requestBody){
-		String idStr = ((String) requestBody.get("id"));
-		int id = Integer.parseInt(idStr);
+    public List<Room> deleteRoom(UUID id){
 		roomRepository.deleteObject(id);
-		return getAllRoom(requestBody);
+		return getAllRoom();
 	}
     
     public List<HashMap<String,Object>> saveRoom(Map<String, Object> requestBody){
@@ -136,8 +134,14 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		return null;
 	}
 
-	public Room getRoomByHotelId(int hotelId) {
-		// TODO: implement this method
-		return null;
+	public List<Room> getRoomByHotelId(UUID hotelId) {
+		List<Room> rooms = getAllRoom();
+		List<Room> result = new ArrayList<>();
+		for (Room room : rooms) {
+			if (room.getHotelId() != null && room.getHotelId().equals(hotelId)) {
+				result.add(room);
+			}
+		}
+		return result;
 	}
 }
