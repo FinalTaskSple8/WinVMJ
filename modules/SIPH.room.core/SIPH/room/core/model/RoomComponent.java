@@ -6,6 +6,7 @@ import vmj.routing.route.VMJExchange;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Column;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
@@ -15,7 +16,8 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class RoomComponent implements Room{
 	@Id
-	protected UUID id; 
+    protected UUID id;
+	
 	protected UUID hotelId;
 	protected int number;
 	protected String type;

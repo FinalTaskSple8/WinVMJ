@@ -37,28 +37,49 @@ public class HotelResourceImpl extends HotelResourceComponent{
 
 	// @Restriced(permission = "")
     @Route(url="call/hotel/detail")
-    public HashMap<String, Object> getHotel(VMJExchange vmjExchange){
+	public HashMap<String, Object> getHotel(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return hotelServiceImpl.getHotel(requestBody);
+		String idStr = (String) requestBody.get("id");
+		UUID id = UUID.fromString(idStr);
+		Hotel hotel = hotelServiceImpl.getHotelById(id);
+		if (hotel == null) {
+			HashMap<String, Object> error = new HashMap<>();
+			error.put("message", "Hotel not found");
+			error.put("vmjErrorCode", 4006);
+			return error;
+		}
+		return hotel.toHashMap();
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/hotel/list")
     public List<HashMap<String,Object>> getAllHotel(VMJExchange vmjExchange){
-		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return hotelServiceImpl.getAllHotel(requestBody);
+		List<Hotel> hotelList = hotelServiceImpl.getAllHotel();
+		return hotelServiceImpl.transformListToHashMap(hotelList);
 	}
 
     
 	// @Restriced(permission = "")
     @Route(url="call/hotel/delete")
-    public List<HashMap<String,Object>> deleteHotel(VMJExchange vmjExchange){
+	public List<HashMap<String,Object>> deleteHotel(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
 		}
-		
-		return hotelServiceImpl.deleteHotel(requestBody);
+		Object idObj = requestBody.get("id");
+		UUID id;
+		if (idObj instanceof UUID) {
+			id = (UUID) idObj;
+		} else if (idObj instanceof String) {
+			id = UUID.fromString((String) idObj);
+		} else {
+			throw new IllegalArgumentException("Invalid id type: " + (idObj != null ? idObj.getClass() : "null"));
+		}
+		// Panggil service untuk hapus hotel
+		hotelServiceImpl.deleteHotel(id);
+		// Ambil list hotel terbaru
+		List<Hotel> hotelList = hotelServiceImpl.getAllHotel();
+		return hotelServiceImpl.transformListToHashMap(hotelList);
 	}
     
     // @Restricted(permission = "")
@@ -75,4 +96,20 @@ public class HotelResourceImpl extends HotelResourceComponent{
 	public void addRoomToHotel(Room rooms) {
 		// TODO: implement this method
 	}
+	
+//	@Route(url="call/hotel/update-with-room")
+//	public HashMap<String, Object> updateHotelWithRoom(VMJExchange vmjExchange){
+//		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
+//			return null;
+//		}
+//		Map<String, Object> requestBody = vmjExchange.getPayload();
+//		return hotelServiceImpl.updateHotelWithRoom(requestBody);
+//	}
+	
+	@Route(url = "call/hotel/search")
+	public List<HashMap<String, Object>> searchHotel(VMJExchange vmjExchange) {
+	    Map<String, Object> requestBody = vmjExchange.getPayload(); 
+	    return hotelServiceImpl.searchHotel(requestBody);
+	}
+
 }

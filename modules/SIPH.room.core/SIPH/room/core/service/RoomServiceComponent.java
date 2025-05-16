@@ -16,10 +16,10 @@ public abstract class RoomServiceComponent implements RoomService{
     public abstract Room createRoom(Map<String, Object> requestBody);
 	public abstract HashMap<String, Object> updateRoom(Map<String, Object> requestBody);
     public abstract HashMap<String, Object> getRoom(Map<String, Object> requestBody);
-    public abstract List<HashMap<String,Object>> getAllRoom(Map<String, Object> requestBody);
+    public abstract List<Room> getAllRoom();
     public abstract List<HashMap<String,Object>> transformListToHashMap(List<Room> List);
-    public abstract List<HashMap<String,Object>> deleteRoom(Map<String, Object> requestBody);
+    public abstract List<Room> deleteRoom(UUID id);
 	public abstract HashMap<String, Object> getRoomById(UUID id);
 
-	public abstract Room getRoomByHotelId(int hotelId);
+	public abstract List<Room> getRoomByHotelId(UUID hotelId);
 }

@@ -18,7 +18,6 @@ import javax.persistence.OneToMany;
 @Entity(name="room_impl")
 @Table(name="room_impl")
 public class RoomImpl extends RoomComponent {
-
 	public RoomImpl(UUID hotelId, int number, String type, int price, boolean isAvailable, UUID id) {
 		this.hotelId = hotelId;
 		this.number = number;
@@ -27,6 +26,19 @@ public class RoomImpl extends RoomComponent {
 		this.isAvailable = isAvailable;
 		this.id = id;
 	}
+	
+	@Column(name = "moduleSequence")
+	private String moduleSequence;
+
+	public String getModuleSequence() {
+	    return moduleSequence;
+	}
+
+	public void setModuleSequence(String moduleSequence) {
+	    this.moduleSequence = moduleSequence;
+	}
+
+
 
 	public RoomImpl(UUID hotelId, int number, String type, int price, boolean isAvailable) {
 		this.id =  UUID.randomUUID();;
@@ -75,17 +87,6 @@ public class RoomImpl extends RoomComponent {
 		this.isAvailable = isAvailable;
 	}
 	
-	@Override
-	@Id
-	public UUID getId() {
-	    return this.id;
-	}
-
-
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
 	public Room getRoomByHotelId(int hotelId) {
 		// TODO: implement this method
 		return null;

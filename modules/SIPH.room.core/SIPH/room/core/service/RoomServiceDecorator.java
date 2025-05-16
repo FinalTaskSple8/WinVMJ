@@ -18,8 +18,8 @@ public abstract class RoomServiceDecorator extends RoomServiceComponent{
 		return record.getRoom(requestBody);
 	}
 
-	public List<HashMap<String,Object>> getAllRoom(Map<String, Object> requestBody){
-		return record.getAllRoom(requestBody);
+	public List<Room> getAllRoom(){
+		return record.getAllRoom();
 	}
 
     public List<HashMap<String,Object>> saveRoom(VMJExchange vmjExchange){
@@ -34,15 +34,15 @@ public abstract class RoomServiceDecorator extends RoomServiceComponent{
 		return record.transformListToHashMap(List);
 	}
 
-    public List<HashMap<String,Object>> deleteRoom(Map<String, Object> requestBody){
-		return record.deleteRoom(requestBody);
+    public List<Room> deleteRoom(UUID id){
+		return record.deleteRoom(id);
 	}
 
 	public HashMap<String, Object> getRoomById(UUID id){
         return record.getRoomById(id);
     }
 
-	public Room getRoomByHotelId(int hotelId) {
+	public List<Room> getRoomByHotelId(UUID hotelId) {
 		return record.getRoomByHotelId(hotelId);
 	}
 }

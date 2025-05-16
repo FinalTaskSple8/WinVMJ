@@ -31,7 +31,7 @@ public abstract class RoomResourceDecorator extends RoomResourceComponent{
 		return record.deleteRoom(vmjExchange);
 	}
 
-	public Room getRoomByHotelId(int hotelId) {
-		return record.getRoomByHotelId(hotelId);
+	public List<HashMap<String,Object>> getRoomByHotelId(VMJExchange vmjExchange) {
+		return record.getRoomByHotelId(vmjExchange);
 	}
 }

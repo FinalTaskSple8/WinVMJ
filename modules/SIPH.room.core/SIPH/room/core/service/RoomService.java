@@ -9,6 +9,7 @@ public interface RoomService {
     List<HashMap<String,Object>> saveRoom(Map<String, Object> requestBody);
     HashMap<String, Object> updateRoom(Map<String, Object> requestBody);
     HashMap<String, Object> getRoomById(UUID id);
-    List<HashMap<String,Object>> getAllRoom(Map<String, Object> requestBody);
-    List<HashMap<String,Object>> deleteRoom(Map<String, Object> requestBody);
+    List<Room> getAllRoom();
+    List<Room> deleteRoom(UUID id);
+    List<Room> getRoomByHotelId(UUID hotelId);
 }
