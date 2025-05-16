@@ -13,16 +13,16 @@ public class BookingResourceImpl extends BookingResourceComponent {
 
 	private BookingServiceImpl bookingServiceImpl = new BookingServiceImpl();
 
-	// @Restricted(permission = "")
-	@Route(url = "call/booking")
-	public HashMap<String, Object> createBooking(VMJExchange vmjExchange) {
-		if (vmjExchange.getHttpMethod().equals("POST")) {
-			Map<String, Object> requestBody = vmjExchange.getPayload();
-			Booking result = bookingServiceImpl.createBooking(requestBody);
-			return result.toHashMap();
-		}
-		throw new NotFoundException("Route tidak ditemukan");
-	}
+	 // @Restricted(permission = "")
+	 @Route(url = "call/booking")
+	 public HashMap<String, Object> createBooking(VMJExchange vmjExchange) {
+	 	if (vmjExchange.getHttpMethod().equals("POST")) {
+	 		Map<String, Object> requestBody = vmjExchange.getPayload();
+	 		Booking result = bookingServiceImpl.createBooking(requestBody);
+	 		return result.toHashMap();
+	 	}
+	 	throw new NotFoundException("Route tidak ditemukan");
+	 }
 	
 	@Override
 	public List<HashMap<String, Object>> saveBooking(VMJExchange vmjExchange) {
