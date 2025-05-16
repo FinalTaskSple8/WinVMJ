@@ -2,7 +2,6 @@ package SIPH.booking.core;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 
-import SIPH.room.core.RoomImpl;
 import SIPH.room.core.Room;
 import java.util.*;
 import vmj.routing.route.Route;
@@ -14,32 +13,31 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
-import SIPH.room.core.RoomImpl;
-import SIPH.room.core.Room;
 
 @Entity
 @Table(name="booking_comp")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class BookingComponent implements Booking{
-	@Id
-	protected UUID id; 
-	protected UUID userId; protected UUID roomId; protected UUID paymentId;
-	protected LocalDate checkInDate;
-	protected LocalDate checkOutDate;
-	protected int numberOfGuests;
-	protected BigDecimal totalPrice;
-	protected String status;
-	
-	@ManyToOne(targetEntity=RoomImpl.class)
-	public RoomImpl roomimpl;
-	protected String objectName = BookingComponent.class.getName();
+public abstract class BookingComponent implements Booking {
+    @Id
+    protected UUID id;
+    protected UUID userId;
+    protected UUID roomId;
+    protected UUID paymentId;
+    protected LocalDate checkInDate;
+    protected LocalDate checkOutDate;
+    protected int numberOfGuests;
+    protected BigDecimal totalPrice;
+    protected String status;
 
-	public BookingComponent() {
+    @ManyToOne(targetEntity=Room.class)
+    public Room room;
+    protected String objectName = BookingComponent.class.getName();
 
-	} 
+    public BookingComponent() {}
 
-	public BookingComponent(
-        UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id
+    public BookingComponent(
+        UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice,
+        String status, UUID roomId, UUID paymentId, Room room, UUID id
     ) {
         this.userId = userId;
         this.checkInDate = checkInDate;
@@ -49,82 +47,90 @@ public abstract class BookingComponent implements Booking{
         this.status = status;
         this.roomId = roomId;
         this.paymentId = paymentId;
-        this.roomimpl = roomimpl;
+        this.room = room;
         this.id = id;
     }
 
-	public UUID getUserId() {
-		return this.userId;
-	}
+    public UUID getUserId() {
+        return this.userId;
+    }
 
-	public void setUserId(UUID userId) {
-		this.userId = userId;
-	}
-	public LocalDate getCheckInDate() {
-		return this.checkInDate;
-	}
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 
-	public void setCheckInDate(LocalDate checkInDate) {
-		this.checkInDate = checkInDate;
-	}
-	public LocalDate getCheckOutDate() {
-		return this.checkOutDate;
-	}
+    public LocalDate getCheckInDate() {
+        return this.checkInDate;
+    }
 
-	public void setCheckOutDate(LocalDate checkOutDate) {
-		this.checkOutDate = checkOutDate;
-	}
-	public int getNumberOfGuests() {
-		return this.numberOfGuests;
-	}
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
 
-	public void setNumberOfGuests(int numberOfGuests) {
-		this.numberOfGuests = numberOfGuests;
-	}
-	public BigDecimal getTotalPrice() {
-		return this.totalPrice;
-	}
+    public LocalDate getCheckOutDate() {
+        return this.checkOutDate;
+    }
 
-	public void setTotalPrice(BigDecimal totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	public String getStatus() {
-		return this.status;
-	}
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public UUID getRoomId() {
-		return this.roomId;
-	}
+    public int getNumberOfGuests() {
+        return this.numberOfGuests;
+    }
 
-	public void setRoomId(UUID roomId) {
-		this.roomId = roomId;
-	}
-	public UUID getPaymentId() {
-		return this.paymentId;
-	}
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
+    }
 
-	public void setPaymentId(UUID paymentId) {
-		this.paymentId = paymentId;
-	}
-	public abstract RoomImpl getRoomimpl();
-	public abstract void setRoomimpl(RoomImpl roomimpl);
-	
-	public UUID getId() {
-		return this.id;
-	}
+    public BigDecimal getTotalPrice() {
+        return this.totalPrice;
+    }
 
-	public void setId(UUID id) {
-		this.id = id;
-	}
- 
-	public abstract void cancelBooking();
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
-	public abstract BigDecimal calculateTotalPrice();
+    public String getStatus() {
+        return this.status;
+    }
 
-	@Override
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public UUID getRoomId() {
+        return this.roomId;
+    }
+
+    public void setRoomId(UUID roomId) {
+        this.roomId = roomId;
+    }
+
+    public UUID getPaymentId() {
+        return this.paymentId;
+    }
+
+    public void setPaymentId(UUID paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public abstract Room getRoom();
+    public abstract void setRoom(Room room);
+
+    public UUID getId() {
+        return this.id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public abstract void cancelBooking();
+
+    public abstract BigDecimal calculateTotalPrice();
+
+    @Override
     public String toString() {
         return "{" +
             " userId='" + getUserId() + "'" +
@@ -135,9 +141,8 @@ public abstract class BookingComponent implements Booking{
             " status='" + getStatus() + "'" +
             " roomId='" + getRoomId() + "'" +
             " paymentId='" + getPaymentId() + "'" +
-            " roomimpl='" + getRoomimpl() + "'" +
+            " room='" + getRoom() + "'" +
             " id='" + getId() + "'" +
             "}";
     }
-	
 }
