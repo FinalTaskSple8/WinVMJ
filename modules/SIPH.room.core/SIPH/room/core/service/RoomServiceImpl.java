@@ -20,6 +20,7 @@ import vmj.auth.annotations.Restricted;
 
 public class RoomServiceImpl extends RoomServiceComponent{
 
+	@Override
     public List<HashMap<String,Object>> saveRoom(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
 			return null;
@@ -29,43 +30,32 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		return transformListToHashMap(getAllRoom());
 	}
 
+	
     public Room createRoom(Map<String, Object> requestBody){
-		String numberStr = (String) requestBody.get("number");
-		int number = Integer.parseInt(numberStr);
+		int number = Integer.parseInt((String) requestBody.get("number"));
 		String type = (String) requestBody.get("type");
-		String priceStr = (String) requestBody.get("price");
-		int price = Integer.parseInt(priceStr);
+		int price = Integer.parseInt((String) requestBody.get("price"));
 		boolean isAvailable = (boolean) requestBody.get("isAvailable");
-		String hotelIdStr = (String) requestBody.get("hotelId");
-		UUID hotelId = UUID.fromString(hotelIdStr);
+		UUID hotelId = UUID.fromString((String) requestBody.get("hotelId"));
 		
 		//to do: fix association attributes
-		Room room = RoomFactory.createRoom(
-			"SIPH.room.core.RoomImpl",
-		hotelId
-		, number
-		, type
-		, price
-		, isAvailable
-		);
+		Room room = RoomFactory.createRoom("SIPH.room.core.RoomImpl", hotelId, number, type, price, isAvailable);
 		System.out.println("DEBUG requestBody: " + requestBody);
 		roomRepository.saveObject(room);
 		return room;
 	}
 
     public Room createRoom(Map<String, Object> requestBody, int id){
-		String numberStr = (String) requestBody.get("number");
-		int number = Integer.parseInt(numberStr);
+		int number = Integer.parseInt((String) requestBody.get("number"));
 		String type = (String) requestBody.get("type");
-		String priceStr = (String) requestBody.get("price");
-		int price = Integer.parseInt(priceStr);
+		int price = Integer.parseInt((String) requestBody.get("price"));
 		boolean isAvailable = (boolean) requestBody.get("isAvailable");
-		String hotelIdStr = (String) requestBody.get("hotelId");
-		UUID hotelId = UUID.fromString(hotelIdStr);
+		UUID hotelId = UUID.fromString((String) requestBody.get("hotelId"));
 		
 		//to do: fix association attributes
 		
 		Room room = RoomFactory.createRoom("SIPH.room.core.RoomImpl", hotelId, number, type, price, isAvailable);
+		roomRepository.saveObject(room);
 		return room;
 	}
 
@@ -105,9 +95,9 @@ public class RoomServiceImpl extends RoomServiceComponent{
     }
 
 
-	public HashMap<String, Object> getRoomById(UUID id){
-
-        return null;
+	public Room getRoomById(UUID id){
+		Room room = roomRepository.getObject(id);
+        return room;
 	}
 
     public List<Room> getAllRoom(){

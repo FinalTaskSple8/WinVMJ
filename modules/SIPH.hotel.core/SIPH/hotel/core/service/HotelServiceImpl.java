@@ -168,6 +168,14 @@ public class HotelServiceImpl extends HotelServiceComponent {
     }
 
     public List<Hotel> deleteHotel(UUID id){
+        // Hapus semua room yang terkait dengan hotel
+        List<Room> rooms = roomRepository.getAllObject("room_impl");
+        for (Room room : rooms) {
+            if (room.getHotelId() != null && room.getHotelId().equals(id)) {
+                roomRepository.deleteObject(room.getId());
+            }
+        }
+        // Hapus hotelnya
         hotelRepository.deleteObject(id);
         return getAllHotel();
     }

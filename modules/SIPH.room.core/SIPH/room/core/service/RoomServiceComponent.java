@@ -19,7 +19,7 @@ public abstract class RoomServiceComponent implements RoomService{
     public abstract List<Room> getAllRoom();
     public abstract List<HashMap<String,Object>> transformListToHashMap(List<Room> List);
     public abstract List<Room> deleteRoom(UUID id);
-	public abstract HashMap<String, Object> getRoomById(UUID id);
+	public abstract Room getRoomById(UUID id);
 
 	public abstract List<Room> getRoomByHotelId(UUID hotelId);
 }
