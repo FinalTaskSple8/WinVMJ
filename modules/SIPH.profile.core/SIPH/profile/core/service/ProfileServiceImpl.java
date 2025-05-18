@@ -77,8 +77,9 @@ public class ProfileServiceImpl extends ProfileServiceComponent{
 		return null;
 	}
 
-	public HashMap<String, Object> getProfileById(int id){
-		return null;
+	public Profile getProfileById(UUID id){
+		Profile profile = profileRepository.getObject(id);
+		return profile;
 	}
 
     public List<HashMap<String,Object>> getAllProfile(Map<String, Object> requestBody){

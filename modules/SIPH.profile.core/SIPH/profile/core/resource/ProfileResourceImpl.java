@@ -35,10 +35,24 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 	}
 
 	// @Restriced(permission = "")
+	@Unsecured
     @Route(url="call/profile/detail")
     public HashMap<String, Object> getProfile(VMJExchange vmjExchange){
+		System.out.println("============================");
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return profileServiceImpl.getProfile(requestBody);
+		System.out.println("************************************");
+		String idStr = (String) requestBody.get("id");
+		UUID id = UUID.fromString(idStr);
+
+		Profile profile = profileServiceImpl.getProfileById(id);
+		if (profile == null) {
+			HashMap<String, Object> error = new HashMap<>();
+			error.put("message", "Profile not found");
+			error.put("vmjErrorCode", 4006);
+			return error;
+		}
+
+		return profile.toHashMap();
 	}
 
 	// @Restriced(permission = "")

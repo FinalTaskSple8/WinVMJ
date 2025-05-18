@@ -9,7 +9,7 @@ INSERT INTO auth_user_impl (id, allowedPermissions, name, email) VALUES
 ON CONFLICT DO NOTHING;
 
 -- Tambah password SHA-512 (password = "123456", salt = "pricesrsrelablabresprices")
-INSERT INTO auth_user_passworded (id, user_id, password) VALUES
+INSERT INTO auth_user_passworded (id, record_id, password) VALUES
 (
   '1ea9ff33-6dd2-4c0a-b113-a90ee32a01ca',
   '1ea9ff33-6dd2-4c0a-b113-a90ee32a01ca',
