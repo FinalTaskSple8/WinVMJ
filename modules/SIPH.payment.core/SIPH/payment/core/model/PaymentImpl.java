@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 
-import SIPH.booking.core.BookingImpl;
+import SIPH.booking.core.*;
 
 @Entity(name = "payment_impl")
 @Table(name = "payment_impl")
@@ -21,7 +21,7 @@ public class PaymentImpl extends PaymentComponent {
         BigDecimal totalAmount,
         String status,
         String paymentMethod,
-        BookingImpl bookingimpl,
+        // BookingImpl bookingimpl,
         UUID id
     ) {
         this.userId = userId;
@@ -29,20 +29,20 @@ public class PaymentImpl extends PaymentComponent {
         this.totalAmount = totalAmount;
         this.status = status;
         this.paymentMethod = paymentMethod;
-        this.bookingimpl = bookingimpl;
+        // this.bookingimpl = bookingimpl;
         this.id = id;
     }
 
-    public PaymentImpl(
-        UUID userId,
-        UUID bookingId,
-        BigDecimal totalAmount,
-        String status,
-        String paymentMethod,
-        BookingImpl bookingimpl
-    ) {
-        this(userId, bookingId, totalAmount, status, paymentMethod, bookingimpl, UUID.randomUUID());
-    }
+    // public PaymentImpl(
+    //     UUID userId,
+    //     UUID bookingId,
+    //     BigDecimal totalAmount,
+    //     String status,
+    //     String paymentMethod,
+    //     BookingImpl bookingimpl
+    // ) {
+    //     this(userId, bookingId, totalAmount, status, paymentMethod, bookingimpl, UUID.randomUUID());
+    // }
 
     public PaymentImpl() {
         super();

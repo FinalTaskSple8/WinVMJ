@@ -7,16 +7,23 @@ import vmj.routing.route.exceptions.*;
 import SIPH.payment.PaymentFactory;
 //import prices.auth.vmj.annotations.Restricted;
 //add other required packages
+import SIPH.payment.core.PaymentImpl;
+import SIPH.payment.core.Payment;
 
 public class PaymentResourceImpl extends PaymentResourceComponent{
 	
 	private PaymentServiceImpl paymentServiceImpl;
+
+	public PaymentResourceImpl() {
+        this.paymentServiceImpl = new PaymentServiceImpl();
+    }
 
 	// @Restriced(permission = "")
     @Route(url="call/payment")
     public HashMap<String,Object> createPayment(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
+			System.out.println("Request Body1: " + requestBody);
 			Payment result = paymentServiceImpl.createPayment(requestBody);
 			return result.toHashMap();
 		}

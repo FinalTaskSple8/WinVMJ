@@ -31,14 +31,14 @@ public abstract class PaymentComponent implements Payment {
 
     public PaymentComponent(
         UUID userId, UUID bookingId, BigDecimal totalAmount,
-        String status, String paymentMethod, BookingImpl bookingimpl, UUID id
+        String status, String paymentMethod, UUID id
     ) {
         this.userId = userId;
         this.bookingId = bookingId;
         this.totalAmount = totalAmount;
         this.status = status;
         this.paymentMethod = paymentMethod;
-        this.bookingimpl = bookingimpl;
+        // this.bookingimpl = bookingimpl;
         this.id = id;
     }
 

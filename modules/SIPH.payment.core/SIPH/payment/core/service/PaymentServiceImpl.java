@@ -3,6 +3,9 @@ package SIPH.payment.core;
 
 import java.math.BigDecimal;
 import java.util.*;
+
+import SIPH.booking.BookingFactory;
+import SIPH.booking.core.Booking;
 import SIPH.booking.core.BookingImpl;
 import com.google.gson.Gson;
 import java.util.*;
@@ -51,6 +54,7 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
         UUID id = UUID.randomUUID();
 
         // bookingimpl bisa null atau dummy dulu kalau belum di-link
+        // BookingImpl bookingimpl = new BookingImpl();
         BookingImpl bookingimpl = null;
 
         Payment payment = PaymentFactory.createPayment(
@@ -60,7 +64,7 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
             totalAmount,
             status,
             paymentMethod,
-            bookingimpl,
+            // bookingimpl,
             id
         );
 
