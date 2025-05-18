@@ -42,7 +42,7 @@ public abstract class PaymentServiceDecorator extends PaymentServiceComponent{
         return record.getPaymentById(id);
     }
 
-	public void processPayment() {
+	public Payment processPayment(Map<String, Object> requestBody) {
 		record.processPayment();
 	}
 }

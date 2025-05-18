@@ -50,8 +50,8 @@ public class PaymentImpl extends PaymentComponent {
 
     @Override
     public void processPayment() {
-        // TODO: implement logic for processing payment
         System.out.println("Processing payment for ID: " + id);
+        this.status = "settlement";
     }
 
     @Override

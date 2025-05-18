@@ -31,7 +31,7 @@ public abstract class PaymentResourceDecorator extends PaymentResourceComponent{
 		return record.deletePayment(vmjExchange);
 	}
 
-	public void processPayment() {
+	public HashMap<String, Object> processPayment(VMJExchange vmjExchange) {
 		record.processPayment();
 	}
 }

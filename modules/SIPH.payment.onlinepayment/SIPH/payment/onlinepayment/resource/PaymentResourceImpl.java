@@ -98,8 +98,9 @@ public class PaymentResourceImpl extends PaymentResourceDecorator {
         return getAll(vmjExchange);
     }
 
-    public void processPayment() {
-        // Optional
+    @Route(url = "call/onlinepayment/process")
+    public HashMap<String, Object> processPayment(VMJExchange vmjExchange) {
+        
     }
 
     public void authenticate() {

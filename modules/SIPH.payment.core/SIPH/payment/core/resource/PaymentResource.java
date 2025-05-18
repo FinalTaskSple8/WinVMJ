@@ -10,4 +10,5 @@ public interface PaymentResource {
     List<HashMap<String,Object>> getAllPayment(VMJExchange vmjExchange);
     List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange);
 	HashMap<String, Object> createPayment(VMJExchange vmjExhange);
+    HashMap<String, Object> processPayment(VMJExchange vmjExchange);
 }

@@ -15,5 +15,5 @@ public abstract class PaymentResourceComponent implements PaymentResource{
     public abstract List<HashMap<String,Object>> getAllPayment(VMJExchange vmjExchange);
     public abstract List<HashMap<String,Object>> deletePayment(VMJExchange vmjExchange);
 
-	public abstract void processPayment();
+    public abstract HashMap<String, Object> processPayment(VMJExchange vmjExchange);
 }

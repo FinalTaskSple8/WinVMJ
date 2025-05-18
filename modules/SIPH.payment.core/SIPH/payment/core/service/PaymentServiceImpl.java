@@ -56,6 +56,7 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
         // bookingimpl bisa null atau dummy dulu kalau belum di-link
         // BookingImpl bookingimpl = new BookingImpl();
         BookingImpl bookingimpl = null;
+        // BookingImpl bookingImpl = bookingRepository.getBookingById(bookingId);
 
         Payment payment = PaymentFactory.createPayment(
             "SIPH.payment.core.PaymentImpl",
@@ -105,7 +106,8 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 
 
 	public HashMap<String, Object> getPaymentById(UUID id){
-		return null;
+        Payment payment = paymentRepository.getObject(id);
+		return payment;
 	}
 
     public List<HashMap<String,Object>> getAllPayment(Map<String, Object> requestBody){
@@ -130,7 +132,23 @@ public class PaymentServiceImpl extends PaymentServiceComponent{
 		return getAllPayment(requestBody);
 	}
 
-	public void processPayment() {
-		// TODO: implement this method
+	public Payment processPayment(Map<String, Object> requestBody) {
+        UUID id = UUID.fromString((String) requestBody.get("id"));
+        BigDecimal totalAmount = new BigDecimal((String) requestBody.get("totalAmount"));
+
+        Payment currentPayment = getPaymentById(id);
+        if (currentPayment == null) {
+            throw new IllegalArgumentException("Payment not found");
+        }
+
+        // Check if payment can be processed (e.g., not already settled)
+        if ("Settlement".equals(currentPayment.getStatus())) {
+            throw new IllegalStateException("Payment has already been processed");
+        }
+        
+        currentPayment.processPayment();
+        
+        paymentRepository.updateObject(currentPayment);
+        return payment;
 	}
 }

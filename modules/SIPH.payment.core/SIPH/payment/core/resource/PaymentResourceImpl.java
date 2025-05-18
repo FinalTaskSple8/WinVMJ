@@ -82,7 +82,16 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		return paymentServiceImpl.deletePayment(requestBody);
 	}
 
-	public void processPayment() {
-		// TODO: implement this method
+	@Route(url="call/payment/process")
+	public HashMap<String, Object> processPayment(VMJExchange vmjExchange) {
+		System.out.println("Process Payment");
+		System.out.println(vmjExchange.getHttpMethod());
+		// if (vmjExchange.getHttpMethod().equals("POST")) {
+		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
+			System.out.println("Request Body1: " + requestBody);
+			Payment result = paymentServiceImpl.processPayment(requestBody);
+			return result.toHashMap();
+		// }
+		throw new NotFoundException("Route tidak ditemukan");
 	}
 }
