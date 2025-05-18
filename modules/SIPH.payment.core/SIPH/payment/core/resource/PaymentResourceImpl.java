@@ -82,6 +82,7 @@ public class PaymentResourceImpl extends PaymentResourceComponent{
 		return paymentServiceImpl.deletePayment(requestBody);
 	}
 
+	// @Restriced(permission = "")
 	@Route(url="call/payment/process")
 	public HashMap<String, Object> processPayment(VMJExchange vmjExchange) {
 		System.out.println("Process Payment");

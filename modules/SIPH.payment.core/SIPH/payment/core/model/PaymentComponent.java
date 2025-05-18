@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import SIPH.booking.core.BookingImpl;
 
-@Entity
+@Entity(name = "payment_comp")
 @Table(name = "payment_comp")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PaymentComponent implements Payment {
