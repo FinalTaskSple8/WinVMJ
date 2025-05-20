@@ -60,15 +60,31 @@ public class BookingServiceImpl extends BookingServiceComponent {
     }
 
     public HashMap<String, Object> updateBooking(Map<String, Object> requestBody) {
-        UUID id = UUID.fromString((String) requestBody.get("id"));
-        Booking booking = bookingRepository.getObject(id);
+    	UUID id;
+    	
+    	id = UUID.fromString((String) requestBody.get("id"));
 
-        booking.setNumberOfGuests(Integer.parseInt((String) requestBody.get("numberOfGuests")));
-        booking.setStatus((String) requestBody.get("status"));
+    	Booking booking = bookingRepository.getObject(id);
+    	if (booking == null) {
+    		throw new NotFoundException("Booking dengan ID " + id + " tidak ditemukan");
+    	}
 
-        bookingRepository.updateObject(booking);
-        return booking.toHashMap();
+		if (requestBody.containsKey("numberOfGuests")) {
+			booking.setNumberOfGuests(Integer.parseInt((String) requestBody.get("numberOfGuests")));
+		}
+		if (requestBody.containsKey("totalPrice")) {
+			booking.setTotalPrice(new BigDecimal((String) requestBody.get("totalPrice")));
+		}
+		if (requestBody.containsKey("status")) {
+			booking.setStatus((String) requestBody.get("status"));
+		}
+
+		bookingRepository.updateObject(booking);
+		return booking.toHashMap();
+
+ 
     }
+
 
     public HashMap<String, Object> getBooking(Map<String, Object> requestBody) {
         UUID id = UUID.fromString((String) requestBody.get("id"));
@@ -78,8 +94,12 @@ public class BookingServiceImpl extends BookingServiceComponent {
 
     public HashMap<String, Object> getBookingById(UUID id) {
         Booking booking = bookingRepository.getObject(id);
+        if (booking == null) {
+            throw new NotFoundException("Booking dengan ID " + id + " tidak ditemukan");
+        }
         return booking.toHashMap();
     }
+
 
     public List<HashMap<String, Object>> getAllBooking(Map<String, Object> requestBody) {
         String table = (String) requestBody.getOrDefault("table_name", "booking_impl");

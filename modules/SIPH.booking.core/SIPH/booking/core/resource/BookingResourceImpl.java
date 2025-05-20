@@ -66,6 +66,21 @@ public class BookingResourceImpl extends BookingResourceComponent {
 		}
 		return bookingServiceImpl.deleteBooking(requestBody);
 	}
+	
+	@Route(url = "call/booking/get-by-id")
+	public HashMap<String, Object> getBookingById(VMJExchange vmjExchange) {
+		if (vmjExchange.getHttpMethod().equals("GET")) {
+			try {
+				String idStr = (String) vmjExchange.getGETParam("id");
+				UUID id = UUID.fromString(idStr);
+				return bookingServiceImpl.getBookingById(id);
+			} catch (IllegalArgumentException e) {
+				throw new BadRequestException("ID tidak valid: " + e.getMessage());
+			}
+		}
+		throw new NotFoundException("Route tidak ditemukan");
+	}
+
 
 	@Override
 	public void cancelBooking() {
