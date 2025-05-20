@@ -8,7 +8,7 @@ import vmj.routing.route.VMJExchange;
 
 public abstract class BookingResourceDecorator extends BookingResourceComponent {
 	protected BookingResourceComponent record;
-
+	
 	public BookingResourceDecorator(BookingResourceComponent record) {
 		this.record = record;
 	}

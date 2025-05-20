@@ -8,10 +8,10 @@ import vmj.hibernate.integrator.RepositoryUtil;
 import vmj.routing.route.VMJExchange;
 
 public abstract class BookingServiceComponent implements BookingService {
-    protected RepositoryUtil<Booking> Repository;
+    protected RepositoryUtil<Booking> bookingRepository;
 
     public BookingServiceComponent() {
-        this.Repository = new RepositoryUtil<>(SIPH.booking.core.BookingComponent.class);
+        this.bookingRepository = new RepositoryUtil<Booking>(SIPH.booking.core.BookingComponent.class);
     }
 
     public abstract List<HashMap<String, Object>> saveBooking(VMJExchange vmjExchange);

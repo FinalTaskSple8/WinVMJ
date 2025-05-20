@@ -2,70 +2,81 @@ package SIPH.booking.earlycheckinout;
 
 import java.util.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
-
+import SIPH.booking.BookingFactory;
 import SIPH.booking.core.Booking;
 import SIPH.booking.core.BookingComponent;
 import SIPH.booking.core.BookingResourceDecorator;
 import SIPH.booking.core.BookingResourceComponent;
+import java.time.LocalDate;
 import vmj.hibernate.integrator.RepositoryUtil;
 
 public class BookingResourceImpl extends BookingResourceDecorator {
 
-    private RepositoryUtil<Booking> Repository = new RepositoryUtil<>(BookingImpl.class);
+    private RepositoryUtil<Booking> bookingRepo;
 
     public BookingResourceImpl(BookingResourceComponent record) {
         super(record);
+        this.bookingRepo = new RepositoryUtil<Booking>(SIPH.booking.core.BookingComponent.class);
     }
 
     @Route(url = "call/earlycheckinout/save")
-    @Override
+    public HashMap<String, Object> createBooking(VMJExchange vmjExchange) {
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+
+        Booking decorated = createFromPayload(vmjExchange.getPayload());
+        bookingRepo.saveObject(decorated);
+
+        return decorated.toHashMap();
+    }
+    
     public List<HashMap<String, Object>> saveBooking(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        Booking booking = create(vmjExchange);
-        Repository.saveObject(booking);
-        return getAll(vmjExchange);
+        return null;
+    }
+    
+    private Booking createFromPayload(Map<String, Object> payload) {
+        UUID userId = UUID.fromString(payload.get("userId").toString());
+        LocalDate checkIn = LocalDate.parse(payload.get("checkInDate").toString());
+        LocalDate checkOut = LocalDate.parse(payload.get("checkOutDate").toString());
+        int guests = Integer.parseInt(payload.get("numberOfGuests").toString());
+        BigDecimal total = new BigDecimal(payload.get("totalPrice").toString());
+        UUID roomId = UUID.fromString(payload.get("roomId").toString());
+
+        Booking core = BookingFactory.createBooking(
+            "SIPH.booking.core.BookingImpl",
+            userId, checkIn, checkOut, guests, total, roomId
+        );
+
+        Booking decorated = BookingFactory.createBooking(
+            "SIPH.booking.earlycheckinout.BookingImpl",
+            core,
+            Boolean.parseBoolean(payload.get("earlyCheckIn").toString()),
+            Boolean.parseBoolean(payload.get("lateCheckOut").toString()),
+            new BigDecimal(payload.get("earlyCheckInFee").toString()),
+            new BigDecimal(payload.get("lateCheckOutFee").toString())
+        );
+
+        return decorated;
     }
 
-    public Booking create(VMJExchange vmjExchange) {
-        boolean earlyCheckIn = Boolean.parseBoolean((String) vmjExchange.getRequestBodyForm("earlyCheckIn"));
-        boolean lateCheckOut = Boolean.parseBoolean((String) vmjExchange.getRequestBodyForm("lateCheckOut"));
-        BigDecimal earlyFee = new BigDecimal((String) vmjExchange.getRequestBodyForm("earlyCheckInFee"));
-        BigDecimal lateFee = new BigDecimal((String) vmjExchange.getRequestBodyForm("lateCheckOutFee"));
 
-        HashMap<String, Object> bookingMap = record.createBooking(vmjExchange);
-        Booking base = Repository.getObject(UUID.fromString(bookingMap.get("id").toString()));
-
-        return new BookingImpl((BookingComponent) base, earlyCheckIn, lateCheckOut, earlyFee, lateFee);
-    }
-
-    public Booking create(VMJExchange vmjExchange, UUID id) {
-        boolean earlyCheckIn = Boolean.parseBoolean((String) vmjExchange.getRequestBodyForm("earlyCheckIn"));
-        boolean lateCheckOut = Boolean.parseBoolean((String) vmjExchange.getRequestBodyForm("lateCheckOut"));
-        BigDecimal earlyFee = new BigDecimal((String) vmjExchange.getRequestBodyForm("earlyCheckInFee"));
-        BigDecimal lateFee = new BigDecimal((String) vmjExchange.getRequestBodyForm("lateCheckOutFee"));
-
-        Booking base = Repository.getObject(id);
-        return new BookingImpl((BookingComponent) base, earlyCheckIn, lateCheckOut, earlyFee, lateFee);
-    }
 
     @Route(url = "call/earlycheckinout/update")
     public HashMap<String, Object> update(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        String idStr = (String) vmjExchange.getRequestBodyForm("id");
-        UUID id = UUID.fromString(idStr);
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
 
-        Booking updated = create(vmjExchange, id);
-        Repository.updateObject(updated);
+        Map<String, Object> body = vmjExchange.getPayload();
+        UUID id = UUID.fromString(body.get("id").toString());
 
-        Booking refreshed = Repository.getObject(id);
+        Booking base = bookingRepo.getObject(id);
+        Booking decorated = createFromPayload(body);
+        decorated.setId(id);  // penting: pastiin update, bukan insert baru
+
+        bookingRepo.updateObject(decorated);
+        Booking refreshed = bookingRepo.getObject(id);
+
         return refreshed.toHashMap();
     }
 
@@ -76,35 +87,27 @@ public class BookingResourceImpl extends BookingResourceDecorator {
 
     @Route(url = "call/earlycheckinout/list")
     public List<HashMap<String, Object>> getAll(VMJExchange vmjExchange) {
-        List<Booking> list = Repository.getAllObject("booking_earlycheckinout");
+        List<Booking> list = bookingRepo.getAllObject("booking_earlycheckinout");
         return transformListToHashMap(list);
-    }
-
-    public List<HashMap<String, Object>> transformListToHashMap(List<Booking> list) {
-        List<HashMap<String, Object>> resultList = new ArrayList<>();
-        for (Booking b : list) {
-            resultList.add(b.toHashMap());
-        }
-        return resultList;
     }
 
     @Route(url = "call/earlycheckinout/delete")
     public List<HashMap<String, Object>> deleteBooking(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        String idStr = (String) vmjExchange.getRequestBodyForm("id");
-        UUID id = UUID.fromString(idStr);
-        Repository.deleteObject(id);
+        if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+
+        Map<String, Object> body = vmjExchange.getPayload();
+        UUID id = UUID.fromString(body.get("id").toString());
+
+        bookingRepo.deleteObject(id);
         return getAll(vmjExchange);
     }
 
-    public void requestEarlyCheckIn(BigDecimal fee) {
-        // Optional: implement if needed
-    }
-
-    public void requestLateCheckOut(BigDecimal fee) {
-        // Optional: implement if needed
+    public List<HashMap<String, Object>> transformListToHashMap(List<? extends Booking> list) {
+        List<HashMap<String, Object>> result = new ArrayList<>();
+        for (Booking b : list) {
+            result.add(b.toHashMap());
+        }
+        return result;
     }
 
     @Override

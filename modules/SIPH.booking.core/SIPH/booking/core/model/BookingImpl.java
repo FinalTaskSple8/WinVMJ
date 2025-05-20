@@ -22,31 +22,14 @@ import SIPH.room.core.Room;
 @Entity(name="booking_impl")
 @Table(name="booking_impl")
 public class BookingImpl extends BookingComponent {
-
-	public BookingImpl(UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id) {
-		this.userId = userId;
-		this.checkInDate = checkInDate;
-		this.checkOutDate = checkOutDate;
-		this.numberOfGuests = numberOfGuests;
-		this.totalPrice = totalPrice;
-		this.status = status;
-		this.roomId = roomId;
-		this.paymentId = paymentId;
-		this.roomimpl = roomimpl;
-		this.id = id;
-	}
-
-	public BookingImpl(UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl) {
+	public BookingImpl(UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, UUID roomId) {
 		this.id =  UUID.randomUUID();;
 		this.userId = userId;
 		this.checkInDate = checkInDate;
 		this.checkOutDate = checkOutDate;
 		this.numberOfGuests = numberOfGuests;
 		this.totalPrice = totalPrice;
-		this.status = status;
 		this.roomId = roomId;
-		this.paymentId = paymentId;
-		this.roomimpl = roomimpl;
 	}
 
 	public BookingImpl() { }
@@ -135,8 +118,8 @@ public class BookingImpl extends BookingComponent {
 	public HashMap<String, Object> toHashMap() {
         HashMap<String, Object> bookingMap = new HashMap<String,Object>();
 		bookingMap.put("userId",getUserId());
-		bookingMap.put("checkInDate",getCheckInDate());
-		bookingMap.put("checkOutDate",getCheckOutDate());
+		bookingMap.put("checkInDate", getCheckInDate().toString());   // ✅ as ISO string
+		bookingMap.put("checkOutDate", getCheckOutDate().toString());
 		bookingMap.put("numberOfGuests",getNumberOfGuests());
 		bookingMap.put("totalPrice",getTotalPrice());
 		bookingMap.put("status",getStatus());
