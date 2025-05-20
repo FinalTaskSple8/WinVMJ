@@ -20,14 +20,14 @@ public class BookingServiceImpl extends BookingServiceComponent {
         // CONVERT PAYLOAD
         Map<String, Object> requestBody = vmjExchange.getPayload();
         Booking booking = createBooking(requestBody);
-        Repository.saveObject(booking);
+        bookingRepository.saveObject(booking);
         return getAllBooking(requestBody);
     }
     
     @Override
     public List<HashMap<String, Object>> saveBooking(Map<String, Object> requestBody) {
         Booking booking = createBooking(requestBody);
-        Repository.saveObject(booking);
+        bookingRepository.saveObject(booking);
         return getAllBooking(requestBody);
     }
 
@@ -39,19 +39,17 @@ public class BookingServiceImpl extends BookingServiceComponent {
         LocalDate checkOutDate = LocalDate.parse((String) requestBody.get("checkOutDate"));
         int numberOfGuests = Integer.parseInt((String) requestBody.get("numberOfGuests"));
         BigDecimal totalPrice = new BigDecimal((String) requestBody.get("totalPrice"));
-        String status = (String) requestBody.get("status");
         UUID roomId = UUID.fromString((String) requestBody.get("roomId"));
-        UUID paymentId = UUID.fromString((String) requestBody.get("paymentId"));
-        UUID id = UUID.randomUUID();
 
-        // RoomImpl association to be fixed if needed
-        RoomImpl roomimpl = null;
  
         Booking booking = BookingFactory.createBooking(
-    	    "SIPH.booking.core.BookingImpl",
-    	    userId, checkInDate, checkOutDate, numberOfGuests,
-    	    totalPrice, status, roomId, paymentId, id
-    	);
+        	    "SIPH.booking.core.BookingImpl",
+        	    userId, checkInDate, checkOutDate, numberOfGuests,
+        	    totalPrice, roomId
+        	);
+        
+        bookingRepository.saveObject(booking);
+
         return booking;
     }
 
@@ -63,29 +61,29 @@ public class BookingServiceImpl extends BookingServiceComponent {
 
     public HashMap<String, Object> updateBooking(Map<String, Object> requestBody) {
         UUID id = UUID.fromString((String) requestBody.get("id"));
-        Booking booking = Repository.getObject(id);
+        Booking booking = bookingRepository.getObject(id);
 
         booking.setNumberOfGuests(Integer.parseInt((String) requestBody.get("numberOfGuests")));
         booking.setStatus((String) requestBody.get("status"));
 
-        Repository.updateObject(booking);
+        bookingRepository.updateObject(booking);
         return booking.toHashMap();
     }
 
     public HashMap<String, Object> getBooking(Map<String, Object> requestBody) {
         UUID id = UUID.fromString((String) requestBody.get("id"));
-        Booking booking = Repository.getObject(id);
+        Booking booking = bookingRepository.getObject(id);
         return booking.toHashMap();
     }
 
     public HashMap<String, Object> getBookingById(UUID id) {
-        Booking booking = Repository.getObject(id);
+        Booking booking = bookingRepository.getObject(id);
         return booking.toHashMap();
     }
 
     public List<HashMap<String, Object>> getAllBooking(Map<String, Object> requestBody) {
         String table = (String) requestBody.getOrDefault("table_name", "booking_impl");
-        List<Booking> list = Repository.getAllObject(table);
+        List<Booking> list = bookingRepository.getAllObject(table);
         return transformListToHashMap(list);
     }
 
@@ -99,7 +97,7 @@ public class BookingServiceImpl extends BookingServiceComponent {
 
     public List<HashMap<String, Object>> deleteBooking(Map<String, Object> requestBody) {
         UUID id = UUID.fromString((String) requestBody.get("id"));
-        Repository.deleteObject(id);
+        bookingRepository.deleteObject(id);
         return getAllBooking(requestBody);
     }
 
