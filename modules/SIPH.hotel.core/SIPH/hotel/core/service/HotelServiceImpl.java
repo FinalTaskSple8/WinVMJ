@@ -129,17 +129,30 @@ public class HotelServiceImpl extends HotelServiceComponent {
         for (Hotel hotel : allHotels) {
             boolean match = true;
 
-            if (!location.isEmpty() && !hotel.getLocation().toLowerCase().contains(location.toLowerCase())) {
-                match = false;
+            if (!location.isEmpty()) {
+                String hotelLocation = hotel.getLocation();
+                if (hotelLocation == null || !hotelLocation.toLowerCase().contains(location.toLowerCase())) {
+                    match = false;
+                }
             }
 
             if (price != null && hotel.getPrice() != price) {
                 match = false;
             }
 
-            Room room = hotel.getRoomimpl();
-            if (number != null && (room == null || room.getNumber() != number)) {
-                match = false;
+            // Check all rooms for the hotel
+            if (number != null) {
+                List<Room> allRooms = roomRepository.getAllObject("room_impl");
+                boolean found = false;
+                for (Room room : allRooms) {
+                    if (room.getHotelId() != null && room.getHotelId().equals(hotel.getId()) && room.getNumber() == number) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    match = false;
+                }
             }
 
             if (match) results.add(hotel.toHashMap());
@@ -147,7 +160,6 @@ public class HotelServiceImpl extends HotelServiceComponent {
 
         return results;
     }
-
     public Hotel getHotelById(UUID id){
         Hotel hotel = hotelRepository.getObject(id);
         return hotel;
