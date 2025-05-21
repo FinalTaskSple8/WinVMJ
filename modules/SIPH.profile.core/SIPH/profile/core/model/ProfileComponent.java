@@ -22,20 +22,16 @@ public abstract class ProfileComponent implements Profile{
 	protected UUID id;
 	protected UUID userId; 
 	
-	@ManyToOne(targetEntity=UserComponent.class)
-	public User user;
 	protected String objectName = ProfileComponent.class.getName();
 
 	public ProfileComponent() {
-
 	} 
 
 	public ProfileComponent(
-        UUID userId, User user, UUID id
+        UUID userId
     ) {
         this.userId = userId;
-        this.user = user;
-        this.id = id;
+        this.id = UUID.randomUUID();
     }
 
 	public UUID getUserId() {
@@ -45,8 +41,6 @@ public abstract class ProfileComponent implements Profile{
 	public void setUserId(UUID userId) {
 		this.userId = userId;
 	}
-	public abstract User getUser();
-	public abstract void setUser(User user);
 	
 	public UUID getId() {
 		return this.id;
@@ -64,7 +58,6 @@ public abstract class ProfileComponent implements Profile{
     public String toString() {
         return "{" +
             " userId='" + getUserId() + "'" +
-            " user='" + getUser() + "'" +
             " id='" + getId() + "'" +
             "}";
     }

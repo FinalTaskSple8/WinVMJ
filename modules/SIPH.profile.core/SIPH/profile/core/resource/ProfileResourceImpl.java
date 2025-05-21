@@ -5,22 +5,64 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import vmj.routing.route.exceptions.*;
 import SIPH.profile.ProfileFactory;
-//import prices.auth.vmj.annotations.Restricted;
+import vmj.auth.annotations.Restricted;
 //add other required packages
 
 public class ProfileResourceImpl extends ProfileResourceComponent{
 	
 	private ProfileServiceImpl profileServiceImpl = new ProfileServiceImpl();
 
-	// @Restriced(permission = "")
+	@Restricted(permissionName  = "user")
     @Route(url="call/profile")
     public HashMap<String,Object> createProfile(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
+			String email = vmjExchange.getAuthPayload().getEmail();
 		    Map<String, Object> requestBody = vmjExchange.getPayload(); 
-			Profile result = profileServiceImpl.createProfile(requestBody);
+			Profile result = profileServiceImpl.createProfile(requestBody, email);
 			return result.toHashMap();
 		}
 		throw new NotFoundException("Route tidak ditemukan");
+	}
+	
+	@Restricted(permissionName = "user")
+	@Route(url = "call/profile/by-email")
+	public HashMap<String, Object> getProfileByEmail(VMJExchange vmjExchange) {
+		if (!vmjExchange.getHttpMethod().equals("POST")) {
+			throw new NotFoundException("Invalid method");
+		}
+
+		String email = vmjExchange.getAuthPayload().getEmail();
+		HashMap<String, Object> profile = profileServiceImpl.getProfileByEmail(email);
+
+		if (profile == null) {
+			HashMap<String, Object> error = new HashMap<>();
+			error.put("message", "Profile not found");
+			error.put("vmjErrorCode", 4006);
+			return error;
+		}
+
+		return profile;
+	}
+	
+	@Restricted(permissionName = "user")
+	@Route(url = "call/profile/update-info")
+	public HashMap<String, Object> updateProfileNameAndPhoneNumber(VMJExchange vmjExchange) {
+		if (!vmjExchange.getHttpMethod().equals("POST")) {
+			throw new NotFoundException("Invalid method");
+		}
+
+		String email = vmjExchange.getAuthPayload().getEmail();
+		Map<String, Object> requestBody = vmjExchange.getPayload();
+
+		String newName = (String) requestBody.get("name");
+		String newPhoneNumber = (String) requestBody.get("phone_number");
+
+		if (newName == null || newPhoneNumber == null) {
+			throw new BadRequestException("Name and phone number must be provided");
+		}
+
+		HashMap<String, Object> updatedProfile = profileServiceImpl.updateNameAndPhoneNumber(email, newName, newPhoneNumber);
+		return updatedProfile;
 	}
    
     // @Restriced(permission = "")
@@ -35,7 +77,6 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 	}
 
 	// @Restriced(permission = "")
-	@Unsecured
     @Route(url="call/profile/detail")
     public HashMap<String, Object> getProfile(VMJExchange vmjExchange){
 		System.out.println("============================");
@@ -44,22 +85,22 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		String idStr = (String) requestBody.get("id");
 		UUID id = UUID.fromString(idStr);
 
-		Profile profile = profileServiceImpl.getProfileById(id);
-		if (profile == null) {
-			HashMap<String, Object> error = new HashMap<>();
-			error.put("message", "Profile not found");
-			error.put("vmjErrorCode", 4006);
-			return error;
-		}
+//		Profile profile = profileServiceImpl.getProfileById(id);
+//		if (profile == null) {
+//			HashMap<String, Object> error = new HashMap<>();
+//			error.put("message", "Profile not found");
+//			error.put("vmjErrorCode", 4006);
+//			return error;
+//		}
 
-		return profile.toHashMap();
+		return null;
 	}
 
 	// @Restriced(permission = "")
     @Route(url="call/profile/list")
     public List<HashMap<String,Object>> getAllProfile(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return profileServiceImpl.getAllProfile(requestBody);
+		return profileServiceImpl.getAllProfile();
 	}
 
     
