@@ -10,8 +10,8 @@ public abstract class ProfileServiceDecorator extends ProfileServiceComponent{
         this.record = record;
     }
 
-	public Profile createProfile(Map<String, Object> requestBody){
-		return record.createProfile(requestBody);
+	public Profile createProfile(Map<String, Object> requestBody, String email){
+		return record.createProfile(requestBody, email);
 	}
 
 
@@ -19,8 +19,8 @@ public abstract class ProfileServiceDecorator extends ProfileServiceComponent{
 		return record.getProfile(requestBody);
 	}
 
-	public List<HashMap<String,Object>> getAllProfile(Map<String, Object> requestBody){
-		return record.getAllProfile(requestBody);
+	public List<HashMap<String,Object>> getAllProfile(){
+		return record.getAllProfile();
 	}
 
 
@@ -34,14 +34,6 @@ public abstract class ProfileServiceDecorator extends ProfileServiceComponent{
 
     public List<HashMap<String,Object>> deleteProfile(Map<String, Object> requestBody){
 		return record.deleteProfile(requestBody);
-	}
-
-	public HashMap<String, Object> getProfileById(int id){
-        return record.getProfileById(id);
-    }
-
-	public String showProfile(int userId) {
-		return record.showProfile(userId);
 	}
 
 	public boolean editProfile(int userId, String name, String email, String phoneNum) {

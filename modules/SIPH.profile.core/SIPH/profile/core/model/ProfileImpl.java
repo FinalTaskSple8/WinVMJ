@@ -17,20 +17,14 @@ public class ProfileImpl extends ProfileComponent {
 
     @Column(name = "phone_num")
     protected String phoneNum;
+    
+    public ProfileImpl() { }
 
-    public ProfileImpl(UUID userId, User user, UUID id) {
-        this.userId = userId;
-        this.user = user;
-        this.id = id;
-    }
-
-    public ProfileImpl(UUID userId, User user) {
-        this.userId = UUID.randomUUID();
-        this.user = user;
-    }
-
-    public ProfileImpl() {
-        this.userId = UUID.randomUUID();
+    public ProfileImpl(UUID userId, String phoneNumber, String name, String email) {
+        super(userId);
+        this.phoneNum = phoneNumber;
+        this.name = name;
+        this.email = email;
     }
 
     @Override
@@ -51,16 +45,6 @@ public class ProfileImpl extends ProfileComponent {
     @Override
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    @Override
-    public User getUser() {
-        return this.user;
-    }
-
-    @Override
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override
@@ -114,7 +98,6 @@ public class ProfileImpl extends ProfileComponent {
     public HashMap<String, Object> toHashMap() {
         HashMap<String, Object> profileMap = new HashMap<>();
         profileMap.put("userId", getUserId());
-        profileMap.put("user", getUser());
         profileMap.put("id", getId());
         profileMap.put("name", getName());
         profileMap.put("email", getEmail());
