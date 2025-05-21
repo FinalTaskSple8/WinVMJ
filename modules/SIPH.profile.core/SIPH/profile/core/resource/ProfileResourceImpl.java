@@ -12,7 +12,7 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 	
 	private ProfileServiceImpl profileServiceImpl = new ProfileServiceImpl();
 
-	@Restricted(permissionName  = "user")
+	@Restricted(permissionName  = "")
     @Route(url="call/profile")
     public HashMap<String,Object> createProfile(VMJExchange vmjExchange){
 		if (vmjExchange.getHttpMethod().equals("POST")) {
@@ -24,7 +24,7 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		throw new NotFoundException("Route tidak ditemukan");
 	}
 	
-	@Restricted(permissionName = "user")
+	@Restricted(permissionName = "")
 	@Route(url = "call/profile/by-email")
 	public HashMap<String, Object> getProfileByEmail(VMJExchange vmjExchange) {
 		if (!vmjExchange.getHttpMethod().equals("POST")) {
@@ -44,7 +44,7 @@ public class ProfileResourceImpl extends ProfileResourceComponent{
 		return profile;
 	}
 	
-	@Restricted(permissionName = "user")
+	@Restricted(permissionName = "")
 	@Route(url = "call/profile/update-info")
 	public HashMap<String, Object> updateProfileNameAndPhoneNumber(VMJExchange vmjExchange) {
 		if (!vmjExchange.getHttpMethod().equals("POST")) {

@@ -12,13 +12,34 @@ public class ProfileFactory{
 
     }
 
-    public static Profile createProfile(String fullyQualifiedName, Object ... base)
-    {
+    public static Profile createProfile(String fullyQualifiedName, Object ... base) {
         Profile record = null;
         try {
             Class<?> clz = Class.forName(fullyQualifiedName);
-            Constructor<?> constructor = clz.getDeclaredConstructors()[0];
-            record = (Profile) constructor.newInstance(base);
+            Constructor<?>[] constructors = clz.getDeclaredConstructors();
+
+            for (Constructor<?> constructor : constructors) {
+                Class<?>[] paramTypes = constructor.getParameterTypes();
+
+                if (paramTypes.length != base.length) continue;
+
+                boolean compatible = true;
+                for (int i = 0; i < paramTypes.length; i++) {
+                    if (base[i] != null && !paramTypes[i].isAssignableFrom(base[i].getClass())) {
+                        compatible = false;
+                        break;
+                    }
+                }
+
+                if (compatible) {
+                    constructor.setAccessible(true);
+                    record = (Profile) constructor.newInstance(base);
+                    return record;
+                }
+            }
+
+            throw new IllegalArgumentException("No matching constructor found for Profile");
+
         } 
         catch (IllegalArgumentException e)
         {
