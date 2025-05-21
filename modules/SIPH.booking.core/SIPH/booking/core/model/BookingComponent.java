@@ -38,20 +38,16 @@ public abstract class BookingComponent implements Booking{
 
 	} 
 
-	public BookingComponent(
-        UUID userId, LocalDate checkInDate, LocalDate checkOutDate, int numberOfGuests, BigDecimal totalPrice, String status, UUID roomId, UUID paymentId, RoomImpl roomimpl, UUID id
-    ) {
-        this.userId = userId;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.numberOfGuests = numberOfGuests;
-        this.totalPrice = totalPrice;
-        this.status = status;
-        this.roomId = roomId;
-        this.paymentId = paymentId;
-        this.roomimpl = roomimpl;
-        this.id = id;
-    }
+	public BookingComponent(UUID userId, LocalDate checkInDate, LocalDate checkOutDate,
+            int numberOfGuests, BigDecimal totalPrice, UUID roomId) {
+		this.id = UUID.randomUUID();
+		this.userId = userId;
+		this.checkInDate = checkInDate;
+		this.checkOutDate = checkOutDate;
+		this.numberOfGuests = numberOfGuests;
+		this.totalPrice = totalPrice;
+		this.roomId = roomId;
+	}
 
 	public UUID getUserId() {
 		return this.userId;

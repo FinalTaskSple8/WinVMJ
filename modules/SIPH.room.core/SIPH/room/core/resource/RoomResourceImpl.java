@@ -37,10 +37,26 @@ public class RoomResourceImpl extends RoomResourceComponent{
 
 	// @Restriced(permission = "")
     @Route(url="call/room/detail")
-    public HashMap<String, Object> getRoom(VMJExchange vmjExchange){
+	public HashMap<String, Object> getRoom(VMJExchange vmjExchange){
 		Map<String, Object> requestBody = vmjExchange.getPayload(); 
-		return roomServiceImpl.getRoom(requestBody);
-	}
+		Object idObj = requestBody.get("id");
+		UUID id;
+		if (idObj instanceof UUID) {
+			id = (UUID) idObj;
+		} else if (idObj instanceof String) {
+			id = UUID.fromString((String) idObj);
+		} else {
+			throw new IllegalArgumentException("Invalid id type: " + (idObj != null ? idObj.getClass() : "null"));
+		}
+		Room room = roomServiceImpl.getRoomById(id);
+		if (room == null) {
+			HashMap<String, Object> error = new HashMap<>();
+			error.put("message", "Room not found");
+			error.put("vmjErrorCode", 4006);
+			return error;
+		}
+		return room.toHashMap();
+}
 
 	// @Restriced(permission = "")
     @Route(url="call/room/list")

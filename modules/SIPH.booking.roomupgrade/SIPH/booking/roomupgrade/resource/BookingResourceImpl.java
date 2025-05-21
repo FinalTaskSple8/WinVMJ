@@ -8,7 +8,7 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
 import SIPH.booking.core.Booking;
-import SIPH.booking.roomupgrade.BookingImpl;
+import SIPH.booking.earlycheckinout.BookingImpl;
 import SIPH.booking.core.BookingComponent;
 import SIPH.booking.core.BookingResourceDecorator;
 import SIPH.booking.core.BookingResourceComponent;
@@ -16,7 +16,7 @@ import vmj.hibernate.integrator.RepositoryUtil;
 
 public class BookingResourceImpl extends BookingResourceDecorator {
 
-    private RepositoryUtil<Booking> Repository = new RepositoryUtil<>(BookingImpl.class);
+    private RepositoryUtil<Booking> bookingRepo = new RepositoryUtil<>(BookingImpl.class);
 
     public BookingResourceImpl(BookingResourceComponent record) {
         super(record);
@@ -29,7 +29,7 @@ public class BookingResourceImpl extends BookingResourceDecorator {
             return null;
         }
         Booking booking = create(vmjExchange);
-        Repository.saveObject(booking);
+        bookingRepo.saveObject(booking);
         return getAll(vmjExchange);
     }
 
@@ -39,7 +39,7 @@ public class BookingResourceImpl extends BookingResourceDecorator {
         BigDecimal upgradeCost = new BigDecimal(upgradeCostStr);
 
         HashMap<String, Object> bookingMap = record.createBooking(vmjExchange);
-        Booking base = Repository.getObject(UUID.fromString(bookingMap.get("id").toString()));
+        Booking base = bookingRepo.getObject(UUID.fromString(bookingMap.get("id").toString()));
 
         return new BookingImpl((BookingComponent) base, upgradedRoomType, upgradeCost);
     }
@@ -49,7 +49,7 @@ public class BookingResourceImpl extends BookingResourceDecorator {
         String upgradeCostStr = (String) vmjExchange.getRequestBodyForm("upgradeCost");
         BigDecimal upgradeCost = new BigDecimal(upgradeCostStr);
 
-        Booking base = Repository.getObject(id);
+        Booking base = bookingRepo.getObject(id);
         return new BookingImpl((BookingComponent) base, upgradedRoomType, upgradeCost);
     }
 
@@ -62,9 +62,9 @@ public class BookingResourceImpl extends BookingResourceDecorator {
         UUID id = UUID.fromString(idStr);
 
         Booking updated = create(vmjExchange, id);
-        Repository.updateObject(updated);
+        bookingRepo.updateObject(updated);
 
-        Booking refreshed = Repository.getObject(id);
+        Booking refreshed = bookingRepo.getObject(id);
         return refreshed.toHashMap();
     }
 
@@ -75,7 +75,7 @@ public class BookingResourceImpl extends BookingResourceDecorator {
 
     @Route(url = "call/roomupgrade/list")
     public List<HashMap<String, Object>> getAll(VMJExchange vmjExchange) {
-        List<Booking> list = Repository.getAllObject("booking_roomupgrade");
+        List<Booking> list = bookingRepo.getAllObject("booking_roomupgrade");
         return transformListToHashMap(list);
     }
 
@@ -94,7 +94,7 @@ public class BookingResourceImpl extends BookingResourceDecorator {
         }
         String idStr = (String) vmjExchange.getRequestBodyForm("id");
         UUID id = UUID.fromString(idStr);
-        Repository.deleteObject(id);
+        bookingRepo.deleteObject(id);
         return getAll(vmjExchange);
     }
 

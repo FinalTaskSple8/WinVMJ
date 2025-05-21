@@ -41,7 +41,7 @@ public class RoomImpl extends RoomComponent {
 
 
 	public RoomImpl(UUID hotelId, int number, String type, int price, boolean isAvailable) {
-		this.id =  UUID.randomUUID();;
+		this.id =  UUID.randomUUID();
 		this.hotelId = hotelId;
 		this.number = number;
 		this.type = type;

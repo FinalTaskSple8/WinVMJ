@@ -3,11 +3,12 @@ package SIPH.booking.earlycheckinout;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import vmj.routing.route.VMJExchange;
 import SIPH.booking.core.BookingServiceDecorator;
 import SIPH.booking.core.BookingServiceComponent;
-import java.util.Map;
+
 public class BookingServiceImpl extends BookingServiceDecorator {
 
     public BookingServiceImpl(BookingServiceComponent record) {
@@ -31,10 +32,9 @@ public class BookingServiceImpl extends BookingServiceDecorator {
     public List<HashMap<String, Object>> saveBooking(VMJExchange vmjExchange) {
         return record.saveBooking(vmjExchange);
     }
-    
+
     @Override
     public List<HashMap<String, Object>> saveBooking(Map<String, Object> requestBody) {
         return record.saveBooking(requestBody);
     }
-
 }

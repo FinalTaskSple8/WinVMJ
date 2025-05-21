@@ -5,7 +5,7 @@ import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 import java.time.LocalDate;
 import java.math.BigDecimal;
-
+import javax.persistence.Transient;
 import javax.persistence.OneToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.CascadeType;
@@ -15,12 +15,12 @@ import SIPH.room.core.Room;
 
 @MappedSuperclass
 public abstract class BookingDecorator extends BookingComponent{
-    @OneToOne(cascade=CascadeType.ALL)
-	protected BookingComponent record;
 
+	@OneToOne(cascade=CascadeType.ALL)
+	protected BookingComponent record;
+	
 	public BookingDecorator () {
 		super();
-		this.record = record;
 		this.id =  UUID.randomUUID();
 	}
 		

@@ -38,7 +38,7 @@ public abstract class RoomServiceDecorator extends RoomServiceComponent{
 		return record.deleteRoom(id);
 	}
 
-	public HashMap<String, Object> getRoomById(UUID id){
+	public Room getRoomById(UUID id){
         return record.getRoomById(id);
     }
 
