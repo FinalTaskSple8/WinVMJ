@@ -2,10 +2,10 @@
 <configuration>
 	<feature automatic="selected" name="SIPH"/>
 	<feature automatic="selected" name="Booking"/>
-	<feature name="AddOns"/>
-	<feature name="RoomUpgrade"/>
+	<feature automatic="selected" name="AddOns"/>
+	<feature manual="selected" name="RoomUpgrade"/>
 	<feature name="AdditionalServices"/>
-	<feature name="EarlyCheckInOut"/>
+	<feature manual="selected" name="EarlyCheckInOut"/>
 	<feature automatic="selected" name="Payment"/>
 	<feature name="OnlinePayment"/>
 	<feature name="PromoDiscount"/>

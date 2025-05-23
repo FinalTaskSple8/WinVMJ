@@ -2,11 +2,11 @@ package SIPH.booking.roomupgrade;
 
 import java.util.*;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 import vmj.routing.route.Route;
 import vmj.routing.route.VMJExchange;
 
+import SIPH.booking.BookingFactory;
 import SIPH.booking.core.Booking;
 import SIPH.booking.earlycheckinout.BookingImpl;
 import SIPH.booking.core.BookingComponent;
@@ -16,55 +16,63 @@ import vmj.hibernate.integrator.RepositoryUtil;
 
 public class BookingResourceImpl extends BookingResourceDecorator {
 
-    private RepositoryUtil<Booking> bookingRepo = new RepositoryUtil<>(BookingImpl.class);
+    private RepositoryUtil<Booking> bookingRepo;
 
     public BookingResourceImpl(BookingResourceComponent record) {
         super(record);
+        this.bookingRepo = new RepositoryUtil<Booking>(SIPH.booking.core.BookingComponent.class);
     }
 
     @Route(url = "call/roomupgrade/save")
-    @Override
+    public HashMap<String, Object> createBooking(VMJExchange vmjExchange) {
+    	if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+    	Booking decorated = createFromPayload(vmjExchange.getPayload());
+        bookingRepo.saveObject(decorated);
+        
+        return decorated.toHashMap();
+    }
+    
     public List<HashMap<String, Object>> saveBooking(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        Booking booking = create(vmjExchange);
-        bookingRepo.saveObject(booking);
-        return getAll(vmjExchange);
+        return null;
     }
+    
+    private Booking createFromPayload(Map<String, Object> payload) {
+        UUID userId = UUID.fromString(payload.get("userId").toString());
+        LocalDate checkIn = LocalDate.parse(payload.get("checkInDate").toString());
+        LocalDate checkOut = LocalDate.parse(payload.get("checkOutDate").toString());
+        int guests = Integer.parseInt(payload.get("numberOfGuests").toString());
+        BigDecimal total = new BigDecimal(payload.get("totalPrice").toString());
+        UUID roomId = UUID.fromString(payload.get("roomId").toString());
 
-    public Booking create(VMJExchange vmjExchange) {
-        String upgradedRoomType = (String) vmjExchange.getRequestBodyForm("upgradedRoomType");
-        String upgradeCostStr = (String) vmjExchange.getRequestBodyForm("upgradeCost");
-        BigDecimal upgradeCost = new BigDecimal(upgradeCostStr);
+        Booking core = BookingFactory.createBooking(
+            "SIPH.booking.core.BookingImpl",
+            userId, checkIn, checkOut, guests, total, roomId
+        );
 
-        HashMap<String, Object> bookingMap = record.createBooking(vmjExchange);
-        Booking base = bookingRepo.getObject(UUID.fromString(bookingMap.get("id").toString()));
+        Booking decorated = BookingFactory.createBooking(
+            "SIPH.booking.roomupgrade.BookingImpl",
+            core,
+            payload.get("upgradedRoomType").toString(),
+            new BigDecimal(payload.get("upgradeCost").toString())
+        );
 
-        return new BookingImpl((BookingComponent) base, upgradedRoomType, upgradeCost);
-    }
-
-    public Booking create(VMJExchange vmjExchange, UUID id) {
-        String upgradedRoomType = (String) vmjExchange.getRequestBodyForm("upgradedRoomType");
-        String upgradeCostStr = (String) vmjExchange.getRequestBodyForm("upgradeCost");
-        BigDecimal upgradeCost = new BigDecimal(upgradeCostStr);
-
-        Booking base = bookingRepo.getObject(id);
-        return new BookingImpl((BookingComponent) base, upgradedRoomType, upgradeCost);
+        return decorated;
     }
 
     @Route(url = "call/roomupgrade/update")
     public HashMap<String, Object> update(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        String idStr = (String) vmjExchange.getRequestBodyForm("id");
-        UUID id = UUID.fromString(idStr);
+    	if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
 
-        Booking updated = create(vmjExchange, id);
-        bookingRepo.updateObject(updated);
+        Map<String, Object> body = vmjExchange.getPayload();
+        UUID id = UUID.fromString(body.get("id").toString());
 
+        Booking base = bookingRepo.getObject(id);
+        Booking decorated = createFromPayload(body);
+        decorated.setId(id);  // penting: pastiin update, bukan insert baru
+
+        bookingRepo.updateObject(decorated);
         Booking refreshed = bookingRepo.getObject(id);
+
         return refreshed.toHashMap();
     }
 
@@ -79,27 +87,23 @@ public class BookingResourceImpl extends BookingResourceDecorator {
         return transformListToHashMap(list);
     }
 
-    public List<HashMap<String, Object>> transformListToHashMap(List<Booking> list) {
-        List<HashMap<String, Object>> resultList = new ArrayList<>();
-        for (Booking b : list) {
-            resultList.add(b.toHashMap());
-        }
-        return resultList;
-    }
-
     @Route(url = "call/roomupgrade/delete")
     public List<HashMap<String, Object>> deleteBooking(VMJExchange vmjExchange) {
-        if (vmjExchange.getHttpMethod().equals("OPTIONS")) {
-            return null;
-        }
-        String idStr = (String) vmjExchange.getRequestBodyForm("id");
-        UUID id = UUID.fromString(idStr);
+    	if (vmjExchange.getHttpMethod().equals("OPTIONS")) return null;
+
+        Map<String, Object> body = vmjExchange.getPayload();
+        UUID id = UUID.fromString(body.get("id").toString());
+
         bookingRepo.deleteObject(id);
         return getAll(vmjExchange);
     }
-
-    public void requestRoomUpgrade(String newRoomType, BigDecimal additionalCost) {
-        // Optional: implement request upgrade logic
+    
+    public List<HashMap<String, Object>> transformListToHashMap(List<? extends Booking> list) {
+        List<HashMap<String, Object>> result = new ArrayList<>();
+        for (Booking b : list) {
+            result.add(b.toHashMap());
+        }
+        return result;
     }
 
     @Override

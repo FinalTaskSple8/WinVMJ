@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import SIPH.booking.core.BookingDecorator;
 import SIPH.booking.core.BookingComponent;
 import SIPH.room.core.RoomImpl;
+import java.util.HashMap;
 
 @Entity(name="booking_roomupgrade")
 @Table(name="booking_roomupgrade")
@@ -15,18 +16,6 @@ public class BookingImpl extends BookingDecorator {
 
     protected String upgradedRoomType;
     protected BigDecimal upgradeCost;
-
-    public BookingImpl() {
-        super();
-        this.objectName = BookingImpl.class.getName();
-    }
-
-    public BookingImpl(String upgradedRoomType, BigDecimal upgradeCost) {
-        super();
-        this.upgradedRoomType = upgradedRoomType;
-        this.upgradeCost = upgradeCost;
-        this.objectName = BookingImpl.class.getName();
-    }
 
     public BookingImpl(BookingComponent record, String upgradedRoomType, BigDecimal upgradeCost) {
         super(record);
@@ -61,15 +50,18 @@ public class BookingImpl extends BookingDecorator {
         return record.getRoomimpl();
     }
 
-    public void requestRoomUpgrade(String newRoomType, BigDecimal additionalCost) {
-        this.upgradedRoomType = newRoomType;
-        this.upgradeCost = additionalCost;
-    }
-
     @Override
     public BigDecimal calculateTotalPrice() {
         if (record == null) return upgradeCost != null ? upgradeCost : BigDecimal.ZERO;
         BigDecimal base = record.calculateTotalPrice();
         return base.add(upgradeCost != null ? upgradeCost : BigDecimal.ZERO);
+    }
+    
+    @Override
+    public HashMap<String, Object> toHashMap() {
+        HashMap<String, Object> map = record.toHashMap();
+        map.put("upgradedRoomType", this.upgradedRoomType);
+        map.put("upgradeCost", this.upgradeCost);
+        return map;
     }
 }
