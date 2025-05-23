@@ -9,4 +9,6 @@ public interface ProfileService {
     HashMap<String, Object> updateProfile(Map<String, Object> requestBody);
     List<HashMap<String,Object>> getAllProfile();
     List<HashMap<String,Object>> deleteProfile(Map<String, Object> requestBody);
+    void addPoints(String id, int amount);
+    void redeemPoints(String id, int amount);
 }

@@ -100,4 +100,18 @@ public class ProfileResourceImpl extends ProfileResourceDecorator {
         repository.deleteObject(id);
         return getAll(vmjExchange);
     }
+
+    @POST
+    @Path("/{id}/points/add")
+    public Response addPoints(@PathParam("id") String id, @QueryParam("amount") int amount) {
+        profileService.addPoints(id, amount);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/{id}/points/redeem")
+    public Response redeemPoints(@PathParam("id") String id, @QueryParam("amount") int amount) {
+        profileService.redeemPoints(id, amount);
+        return Response.ok().build();
+    }
 }

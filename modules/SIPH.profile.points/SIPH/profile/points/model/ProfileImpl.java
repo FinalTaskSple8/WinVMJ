@@ -36,10 +36,7 @@ public class ProfileImpl extends ProfileDecorator {
         this.objectName = ProfileImpl.class.getName();
     }
 
-    public int getPoint() {
-        return this.point;
-    }
-
+    @Override
     public void setPoint(int point) {
         this.point = point;
     }
@@ -53,12 +50,19 @@ public class ProfileImpl extends ProfileDecorator {
     }
 
     public int getPoints() {
-        // TODO: implement logic if needed
         return this.point;
     }
 
-    public void redeemPoints(String redeem) {
-        // TODO: implement redeem logic
+    @Override
+    public void addPoints(int amount) {
+        this.points += amount;
+    }
+
+    @Override
+    public void redeemPoints(int amount) {
+        if (this.points >= amount) {
+            this.points -= amount;
+        }
     }
 
     public void calculatePoints() {

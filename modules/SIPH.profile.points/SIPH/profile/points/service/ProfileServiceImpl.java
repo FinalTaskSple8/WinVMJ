@@ -13,7 +13,16 @@ public class ProfileServiceImpl extends ProfileServiceDecorator {
         super(record);
     }
 
-    
+    @Override
+    public void addPoints(String id, int amount) {
+        Profile profile = getProfileById(id);
+        profile.addPoints(amount);
+    }
 
+    @Override
+    public void redeemPoints(String id, int amount) {
+        Profile profile = getProfileById(id);
+        profile.redeemPoints(amount);
+    }
 
 }
