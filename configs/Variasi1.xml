@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+	<feature automatic="selected" name="SIPH"/>
+	<feature automatic="selected" name="Booking"/>
+	<feature automatic="selected" name="AddOns"/>
+	<feature name="RoomUpgrade"/>
+	<feature name="AdditionalServices"/>
+	<feature manual="selected" name="EarlyCheckInOut"/>
+	<feature automatic="selected" name="Payment"/>
+	<feature name="OnlinePayment"/>
+	<feature name="PromoDiscount"/>
+	<feature automatic="selected" name="UserProfile"/>
+	<feature name="Points"/>
+	<feature automatic="selected" name="HotelManagement"/>
+	<feature manual="selected" name="RoomManagement"/>
+</configuration>

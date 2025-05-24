@@ -39,6 +39,7 @@ public class RoomServiceImpl extends RoomServiceComponent{
 		UUID hotelId = UUID.fromString((String) requestBody.get("hotelId"));
 		
 		//to do: fix association attributes
+		System.out.print(requestBody);
 		Room room = RoomFactory.createRoom("SIPH.room.core.RoomImpl", hotelId, number, type, price, isAvailable);
 		System.out.println("DEBUG requestBody: " + requestBody);
 		roomRepository.saveObject(room);

@@ -3,50 +3,52 @@ package SIPH.room;
 import SIPH.room.core.Room;
 import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
+import java.util.Arrays;
 
-public class RoomFactory{
+public class RoomFactory {
     private static final Logger LOGGER = Logger.getLogger(RoomFactory.class.getName());
 
-    public RoomFactory()
-    {
+    public RoomFactory() {}
 
-    }
-
-    public static Room createRoom(String fullyQualifiedName, Object ... base)
-    {
+    public static Room createRoom(String fullyQualifiedName, Object... base) {
         Room record = null;
         try {
             Class<?> clz = Class.forName(fullyQualifiedName);
-            Constructor<?> constructor = clz.getDeclaredConstructors()[0];
-            record = (Room) constructor.newInstance(base);
-        } 
-        catch (IllegalArgumentException e)
-        {
+            Constructor<?>[] constructors = clz.getDeclaredConstructors();
+
+            for (Constructor<?> constructor : constructors) {
+                try {
+                    record = (Room) constructor.newInstance(base);
+                    return record;
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
+            }
+
+            throw new IllegalArgumentException("No suitable constructor found for: " + fullyQualifiedName);
+
+        } catch (IllegalArgumentException e) {
             LOGGER.severe("Failed to create instance of Room.");
             LOGGER.severe("Given FQN: " + fullyQualifiedName);
-            LOGGER.severe("Failed to run: Check your constructor argument");
+            LOGGER.severe("Constructor argument mismatch");
             System.exit(20);
-        }
-        catch (ClassCastException e)
-        {   LOGGER.severe("Failed to create instance of Room.");
+        } catch (ClassCastException e) {
+            LOGGER.severe("Failed to create instance of Room.");
             LOGGER.severe("Given FQN: " + fullyQualifiedName);
             LOGGER.severe("Failed to cast the object");
             System.exit(30);
-        }
-        catch (ClassNotFoundException e)
-        {
+        } catch (ClassNotFoundException e) {
             LOGGER.severe("Failed to create instance of Room.");
             LOGGER.severe("Given FQN: " + fullyQualifiedName);
-            LOGGER.severe("Decorator can't be applied to the object");
+            LOGGER.severe("Class not found or decorator error");
             System.exit(40);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             LOGGER.severe("Failed to create instance of Room.");
             LOGGER.severe("Given FQN: " + fullyQualifiedName);
+            e.printStackTrace();
             System.exit(50);
         }
-        return record;
-    }
 
+        return null;
+    }
 }
